@@ -7,14 +7,23 @@
     android:id="@+id/post_fragment"
     tools:showIn="@layout/activity_posts"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
         <LinearLayout
             android:orientation="vertical"
             android:weightSum="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <android.support.v4.widget.NestedScrollView
+            <android.support.design.widget.AppBarLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:id="@+id/app_bar_layout"
+                android:background="@color/color_light_yellow"
+                android:animateLayoutChanges="true"
+                android:transitionName="shared_appBar"
+                android:theme="@style/AppTheme.AppBarOverlay"
+                android:fitsSystemWindows="true">
+
+            </android.support.design.widget.AppBarLayout>
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/postConst"
                 android:layout_margin="3dp"
@@ -77,8 +86,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </android.support.v4.widget.SwipeRefreshLayout>
-            </android.support.v4.widget.NestedScrollView>
             <include layout="@layout/content_card_forums"/>
         </LinearLayout>
-
 </RelativeLayout>

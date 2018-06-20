@@ -32,7 +32,6 @@ public class ChatSec_Activity extends Base_appBar_activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_posts);
 
-
         chatDrawer=(DrawerLayout)findViewById(R.id.chat_drawer);
         chat_nav=(NavigationView)findViewById(R.id.chat_nav);
         chat_nav.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -50,7 +49,7 @@ public class ChatSec_Activity extends Base_appBar_activity {
         if (frg != null) {
             android.support.v4.app.FragmentTransaction ft =
                     getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.fragment, new ChatFragment()).commit();
+            ft.replace(R.id.contentFrm_no_tabs, new ChatFragment()).commit();
         }
         DrawerLayout chatDrawer= (DrawerLayout) findViewById(R.id.chat_drawer);
         chatDrawer.closeDrawer(GravityCompat.START);

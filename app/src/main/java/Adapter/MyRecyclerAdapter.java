@@ -115,7 +115,6 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
         private TextView titleTv, lastposterTv, numOfViewersTv,authors,lastReplyDate;
         private TextView numOfReplies,postDates;
         private ImageView imgIcons;
-        private PostsListItems postObj;
 
         public PostsHolder(View itemView, int viewType) {
             super(itemView);
@@ -140,7 +139,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
             });
 
         }
-        MyRecyclerAdapter adp;
+
         @Override
         public void bind(PostsListItems obj) {
             String avatarUrls=obj.getAvatarUrls();

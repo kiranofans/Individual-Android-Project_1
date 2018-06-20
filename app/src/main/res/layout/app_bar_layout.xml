@@ -25,26 +25,44 @@
                 <FrameLayout
                     android:id="@+id/imgViewPagerFrame"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:layout_height="match_parent">
+                    <android.support.constraint.ConstraintLayout
+                        xmlns:android="http://schemas.android.com/apk/res/android"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent">
-
-                        <!--Could be a single ImageView or ViewPager with Images-->
+                        android:layout_height="match_parent"
+                        android:background="@color/color_light_yellow"
+                        xmlns:app="http://schemas.android.com/apk/res-auto">
                         <android.support.v4.view.ViewPager
                             android:id="@+id/imgViewPager"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            app:layout_constraintDimensionRatio="w,3:2"
                             android:layout_gravity="center_vertical"
                             android:scrollIndicators="bottom"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintDimensionRatio="w,3:2"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_weight="1"/>
+                            app:layout_constraintBottom_toBottomOf="parent">
+                        </android.support.v4.view.ViewPager>
+                        <ImageButton
+                            android:id="@+id/left_nav"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_gravity="center_vertical|left"
+                            android:background="@drawable/back_arrow_white"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"/>
+
+                        <ImageButton
+                            android:id="@+id/right_nav"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_gravity="center_vertical|right"
+                            android:background="@drawable/right_arrow_white"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"/>
                     </android.support.constraint.ConstraintLayout>
                 </FrameLayout>
                 <android.support.v7.widget.Toolbar
@@ -56,5 +74,13 @@
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
             </android.support.design.widget.CollapsingToolbarLayout>
         </android.support.design.widget.AppBarLayout>
+         <android.support.v4.widget.NestedScrollView
+             android:id="@+id/nestedScroll"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:clipToPadding="false"
+             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    </android.support.design.widget.CoordinatorLayout>
+        </android.support.v4.widget.NestedScrollView>
+    <include layout="@layout/content_main_no_tabs"/>
+</android.support.design.widget.CoordinatorLayout>
