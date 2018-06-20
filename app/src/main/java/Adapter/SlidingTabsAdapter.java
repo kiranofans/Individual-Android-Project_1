@@ -5,8 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.yamibo.bbs.splashscreen.*;
-
+import Fragments.ActiveUsersFragment;
 import Fragments.ForumsFragment;
 import Fragments.MangaFragment;
 import Fragments.NovelsFragment;

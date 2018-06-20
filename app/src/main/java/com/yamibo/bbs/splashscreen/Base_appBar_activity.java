@@ -1,6 +1,9 @@
 package com.yamibo.bbs.splashscreen;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
@@ -9,8 +12,11 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.SearchView;
@@ -25,11 +31,14 @@ public class Base_appBar_activity extends AppCompatActivity {
     private float preX,preY; private Button plsLogBtn,regBtn;
     private MainNavTabActivity main=new MainNavTabActivity();
     private static android.support.v4.app.Fragment chatFrg;
+    private static View v; private LayoutInflater inflater;
     @SuppressLint("ResourceAsColor")
+    public Base_appBar_activity(){}
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_base_app_bar);
+        setContentView(R.layout.app_bar_layout);
 
         imgVp=(ViewPager)findViewById(R.id.imgViewPager);
 
@@ -43,24 +52,21 @@ public class Base_appBar_activity extends AppCompatActivity {
         //Toolbar (For collapsing Toolbar layout)
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         ActionBar ab=getSupportActionBar();
-        ab.setDisplayHomeAsUpEnabled(true);
+        ab.setHomeButtonEnabled(true); ab.setDisplayHomeAsUpEnabled(true);
+        ab.setHomeAsUpIndicator(android.R.drawable.ic_menu_view);
 
         ViewCompat.setTransitionName(findViewById(R.id.app_bar_layout),largeImg);
 
         collapsyToolbar =(CollapsingToolbarLayout)findViewById(R.id.collapsy_toolbar);
-        collapsyToolbar.setExpandedTitleColor(getResources().getColor(android.R.color.transparent,null));
-        collapsyToolbar.setCollapsedTitleTextColor(R.color.color_dark_red);
-        setChatFrag(chatFrg);
+        collapsyToolbar.setExpandedTitleColor(getResources()
+                .getColor(android.R.color.transparent,null));
+        collapsyToolbar.setCollapsedTitleTextColor(getResources()
+                .getColor(R.color.color_dark_red, null));
 
     }
-    public void setChatFrag(android.support.v4.app.Fragment frg){
-        if (frg != null) {
-            android.support.v4.app.FragmentTransaction ft =
-                    getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.post_fragment, new ChatFragment()).commit();
-        }
-    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu_main2,menu);

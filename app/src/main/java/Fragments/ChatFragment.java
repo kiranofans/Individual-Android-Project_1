@@ -49,16 +49,16 @@ public class ChatFragment extends Fragment implements View.OnClickListener,Swipe
         return v;
     }
     @Override
-    public void onViewCreated(View view,Bundle savedInstanceState){
-        recyclerView = (RecyclerView)view.findViewById(R.id.post_recyc_view);
+    public void onViewCreated(View v,Bundle savedInstanceState){
+        recyclerView = (RecyclerView)v.findViewById(R.id.post_recyc_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        recyclerView1 = (RecyclerView)view.findViewById(R.id.postRecView_2);
+        recyclerView1 = (RecyclerView)v.findViewById(R.id.postRecView_2);
         recyclerView1.setLayoutManager(new LinearLayoutManager((getContext())));
 
         rqstQueue = Volley.newRequestQueue(getContext());
         baseModels_1=new ArrayList<>(); baseModels=new ArrayList<>();
-
+        loadContent();
         if (isRefreshing()) {
             SwipeRefreshLayout.OnRefreshListener refreshListener =
                     new SwipeRefreshLayout.OnRefreshListener() {
@@ -72,7 +72,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener,Swipe
         }
     }
     protected void retrieveDocuments(){
-        loadContent();
+
         if(refreshSwiper.isRefreshing()){
             handler.postDelayed(new Runnable() {
                 @Override

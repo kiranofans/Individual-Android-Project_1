@@ -44,6 +44,8 @@
             android:name=".ChatSec_Activity"
             android:label="海域區" />
         <activity android:name=".Base_appBar_activity"></activity>
+        <activity android:name=".SpaceActivity"
+            android:label="我的空間" />
     </application>
 
 </manifest>

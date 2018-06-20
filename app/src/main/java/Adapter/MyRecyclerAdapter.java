@@ -105,8 +105,8 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
             descriptTv.setText(obj.getDescription());
             titleTv.setText(obj.getForumsTitles());
             numOfDailyNewPosts.setText(obj.getNumOftodayPosts());
-           Picasso.with(context).load(forumsImgUrls).fit().centerInside()
-                    .into(imgIcons);
+           /*Picasso.with(context).load(forumsImgUrls).fit().centerInside()
+                    .into(imgIcons);*/
         }
     }
 
