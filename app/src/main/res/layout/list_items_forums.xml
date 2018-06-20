@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:id="http://schemas.android.com/tools"
+    android:background="@android:color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:id="@+id/cardView_1"
+        app:cardBackgroundColor="@color/color_light_yellow"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/forumsTitleImg"
+                android:src="@drawable/forum"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"/>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:paddingTop="5dp"
+                android:layout_toEndOf="@+id/forumsTitleImg"
+                android:layout_toStartOf="@+id/starImgBtn"
+                android:id="@+id/linearfromRel"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_margin="4dp"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                    android:textStyle="bold"
+                    android:id="@+id/forumsTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_weight="1"
+                    android:textColor="@color/colorAccent"
+                    android:id="@+id/numOfDailyNewPosts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp" />
+            </LinearLayout>
+            <ImageButton
+                android:id="@+id/starImgBtn"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+
+                android:layout_margin="14dp"
+                android:background="@android:color/transparent"
+                android:src="@android:drawable/btn_star_big_on"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/descriptionTxt"
+                    android:textSize="16sp"
+                    android:layout_toStartOf="@+id/starImgBtn"
+                    android:layout_toEndOf="@id/forumsTitleImg"
+                    android:layout_below="@+id/linearfromRel"
+                    android:layout_margin="4dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>

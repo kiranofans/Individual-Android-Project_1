@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">YamiboProject</string>
+
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">電子郵箱</string>
+    <string name="prompt_password">密碼</string>
+    <string name="action_sign_in_up">還不是我們的一員？</string>
+    <string name="action_sign_in_short">請先登錄</string>
+    <string name="error_invalid_email">用戶名錯誤</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">密碼錯誤</string>
+    <string name="error_field_required">此區域必填</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."</string>
+    <string name="title_activity_nav_and_tab">百合會</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">用戶名</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="sign_up_legend">新注册用户做完百合种子的萌发上传头像任务后可以获得几分？<u>答案是9和11之间的那个数字</u>。都这样了你要是还回答不上来我就真没办法救你了...</string>
+
+    <string name="tab_forums">論壇</string>
+    <string name="tab_space">我的空間</string>
+    <string name="tab_manga">漫畫</string>
+    <string name="tab_novel">小說</string>
+    <string name="tab_active">誰在線</string>
+
+    <!--API Urls-->
+    <string name="users_posts"></string>
+    <string-array name="yamibo_api_urls">
+        <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?version=4&module=forumindex]]></item>
+        <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?version=4&module=profile]]></item>
+        <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?version=4&module=forumdisplay&fid=33&page=1]]></item>
+        <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?version=&module=mythread&page=1]]></item>
+    </string-array>
+</resources>
