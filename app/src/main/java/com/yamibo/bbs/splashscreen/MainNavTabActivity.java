@@ -5,7 +5,6 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -54,7 +53,7 @@ public class MainNavTabActivity extends AppCompatActivity implements NavigationV
         imgNav();
 
         //Toolbar (For collapsing Toolbar layout)
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.baseToolbar);
         setSupportActionBar(toolbar);
         ViewCompat.setTransitionName(findViewById(R.id.app_bar_main),largeImg);
 
@@ -142,9 +141,9 @@ public class MainNavTabActivity extends AppCompatActivity implements NavigationV
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.my_account) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.my_space) {
 
         } else if (id == R.id.nav_slideshow) {
 
@@ -209,7 +208,7 @@ public class MainNavTabActivity extends AppCompatActivity implements NavigationV
         preY=y;
         return true;
     }
-    protected void setLogRqstAndRegBtn(){
+    public void setLogRqstAndRegBtn(){
         plsLogBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -82,7 +82,7 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
                         }else if(!(id.equals("16"))){
                             ForumsListItem forumsItems=new ForumsListItem
                                     (forumObj.getString("name"),forumObj.getString("description"),
-                                            forumObj.getString("todayposts"));
+                                            "("+forumObj.getString("todayposts")+")");
                             forumsList_1.add(forumsItems);
                         }
                     }

@@ -42,8 +42,20 @@
         <activity android:name=".AccountRegistPage" />
         <activity
             android:name=".ChatSec_Activity"
-            android:label="海域區" />
-        <activity android:name=".Base_appBar_activity"></activity>
+            android:label="海域區" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data android:name="android.app.default_searchable"
+                android:resource="@xml/searchable"/>
+        </activity>
+        <activity android:name=".BaseActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH"/>
+            </intent-filter>
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/searchable"/>
+        </activity>
         <activity android:name=".SpaceActivity"
             android:label="我的空間" />
     </application>
