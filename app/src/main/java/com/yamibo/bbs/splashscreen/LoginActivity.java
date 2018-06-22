@@ -20,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,8 +31,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import Model.Users;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -52,25 +66,28 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     };
     /**Keep track of the login task to ensure we can cancel it if requested.*/
     private UserLoginTask mAuthTask = null;
-
+    private List<Users> profileList;
+    public static String[] urls;
+    private RequestQueue rqstQueue;
+    private static int pos=0;
     // UI references.
-    private AutoCompleteTextView mEmailView;
-    private EditText mPasswordView;
-    private View mProgressView;
-    private View mLoginFormView;
+    private AutoCompleteTextView usrnameInput;
+    private EditText pswdInput;
+    private View progressView;
+    private View loginForm;
     private Button forgotPswd,contactUs;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.username);
+        usrnameInput = (AutoCompleteTextView) findViewById(R.id.username);
         populateAutoComplete();
         contactUs=(Button)findViewById(R.id.contactBtn);
         forgotPswd=(Button)findViewById(R.id.forgetPswdBtn);
 
-        mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        pswdInput = (EditText) findViewById(R.id.password);
+        pswdInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
@@ -90,8 +107,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
+        loginForm = findViewById(R.id.login_form);
+        progressView = findViewById(R.id.login_progress);
+
+        rqstQueue= Volley.newRequestQueue(this);
+        jsonParserForUser();
     }
 
     private void populateAutoComplete() {
@@ -110,7 +130,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             return true;
         }
         if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
-            Snackbar.make(mEmailView, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
+            Snackbar.make(usrnameInput, R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
                     .setAction(android.R.string.ok, new View.OnClickListener() {
                         @Override
                         @TargetApi(Build.VERSION_CODES.M)
@@ -145,35 +165,36 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     private void attemptLogin() {
         if (mAuthTask != null) {
+
             return;
         }
 
         // Reset errors.
-        mEmailView.setError(null);
-        mPasswordView.setError(null);
+        usrnameInput.setError(null);
+        pswdInput.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
+        String email = usrnameInput.getText().toString();
+        String password = pswdInput.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
+            pswdInput.setError(getString(R.string.error_invalid_password));
+            focusView = pswdInput;
             cancel = true;
         }
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
+            usrnameInput.setError(getString(R.string.error_field_required));
+            focusView = usrnameInput;
             cancel = true;
-        } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
+        } else if (!isUsrnameValid(email)) {
+            usrnameInput.setError(getString(R.string.error_invalid_email));
+            focusView = usrnameInput;
             cancel = true;
         }
 
@@ -190,7 +211,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
-    private boolean isEmailValid(String email) {
+    private boolean isUsrnameValid(String email) {
         //TODO: Replace this with your own logic
         return email.contains("@");
     }
@@ -211,28 +232,28 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
+            loginForm.setVisibility(show ? View.GONE : View.VISIBLE);
+            loginForm.animate().setDuration(shortAnimTime).alpha(
                     show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+                    loginForm.setVisibility(show ? View.GONE : View.VISIBLE);
                 }
             });
 
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressView.animate().setDuration(shortAnimTime).alpha(
+            progressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            progressView.animate().setDuration(shortAnimTime).alpha(
                     show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                    progressView.setVisibility(show ? View.VISIBLE : View.GONE);
                 }
             });
         } else {
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            progressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            loginForm.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
 
@@ -255,14 +276,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        List<String> emails = new ArrayList<>();
+        List<String> username = new ArrayList<>();
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            emails.add(cursor.getString(ProfileQuery.ADDRESS));
+            username.add(cursor.getString(ProfileQuery.ADDRESS));
             cursor.moveToNext();
         }
 
-        addEmailsToAutoComplete(emails);
+        addEmailsToAutoComplete(username);
     }
 
     @Override
@@ -276,7 +297,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 new ArrayAdapter<>(LoginActivity.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
-        mEmailView.setAdapter(adapter);
+        usrnameInput.setAdapter(adapter);
     }
 
 
@@ -296,12 +317,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
-        private final String mEmail;
-        private final String mPassword;
+        private final String username;
+        private final String password;
 
         UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
+            username = email;
+            this.password = password;
         }
 
         @Override
@@ -317,9 +338,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             for (String credential : DUMMY_CREDENTIALS) {
                 String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
+                if (pieces[0].equals(username)) {
                     // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
+                    return pieces[1].equals(password);
                 }
             }
 
@@ -335,8 +356,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             if (success) {
                 finish();
             } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
+                pswdInput.setError(getString(R.string.error_incorrect_password));
+                pswdInput.requestFocus();
             }
         }
 
@@ -346,8 +367,41 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
         }
     }
-    private void setBtns(){
-
+    private int jsonParserForUser(){
+        profileList=new ArrayList<>();
+        urls=getResources().getStringArray(R.array.yamibo_api_urls);
+        JsonObjectRequest profileRqst=new JsonObjectRequest(Request.Method.GET, urls[1], null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONObject var=response.getJSONObject("Variables");
+                            JSONArray varArr=var.getJSONArray("Variables");
+                            JSONArray noticeArr=var.getJSONArray("notice");
+                            /*String uId=var.getString("member_uid");
+                            String username=var.getString("member_username");*/
+                            //JSONObject noticeObj=noticeArr.getJSONObject(pos);
+                            for(pos=0;pos<varArr.length();pos++ ){
+                                JSONObject usrObj=varArr.getJSONObject(pos);
+                                Users usr=new Users(usrObj.getString("member_uid"),
+                                        usrObj.getString("member_username"),
+                                        usrObj.getString("readaccess"),
+                                        usrObj.getString("notice"));
+                                profileList.add(pos,usr);
+                            }
+                            Log.d("TEST","Result Size: "+profileList.size());
+                        } catch (JSONException je) {
+                            je.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        rqstQueue.add(profileRqst);
+        return pos;
     }
 }
 
