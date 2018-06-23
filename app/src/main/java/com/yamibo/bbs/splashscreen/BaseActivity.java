@@ -77,7 +77,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         View nav_view=chat_nav.getHeaderView(0);
 
 
-        plsLogBtn=(Button)nav_view.findViewById(R.id.loginRqstBtn);
+        plsLogBtn=(Button)nav_view.findViewById(R.id.loginReqstBtn);
         regBtn=(Button)nav_view.findViewById(R.id.regBtn);
 
         setLogRqstAndRegBtn();

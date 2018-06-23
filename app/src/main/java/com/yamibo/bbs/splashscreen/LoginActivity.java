@@ -56,7 +56,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     /**Id to identity READ_CONTACTS permission request.*/
     private static final int REQUEST_READ_CONTACTS = 0;
-
+    private SQLiteHandler dbHandler;
+    private SessionManager sessionMg;
+    private String TEST=Registration.class.getSimpleName();
     /**
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
@@ -75,7 +77,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText pswdInput;
     private View progressView;
     private View loginForm;
-    private Button forgotPswd,contactUs;
+    private Button forgotPswd,contactUs,loginBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,20 +100,37 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        Button loginBtn = (Button) findViewById(R.id.loginBtn);
+        loginForm = findViewById(R.id.login_form);
+        progressView = findViewById(R.id.login_progress);
+
+        //SQLite db handler
+        dbHandler = new SQLiteHandler(getApplicationContext());
+
+        //Session manager
+        sessionMg=new SessionManager(getApplicationContext());
+
+        //Check if user is already logged in or not
+        if(sessionMg.isLoggedIn()){
+            //Take the user to main activity
+            startActivity(new Intent(LoginActivity.this,MainNavTabActivity.class));
+            finish();
+        }
+        loginBtn = (Button) findViewById(R.id.loginBtn);
         loginBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                String username=usrnameInput.getText().toString();
+                String password=pswdInput.getText().toString();
+
+                //Check for empty data in the form
                 attemptLogin();
                 startActivity(new Intent(LoginActivity.this,MainNavTabActivity.class));
             }
         });
-
-        loginForm = findViewById(R.id.login_form);
-        progressView = findViewById(R.id.login_progress);
+        //Login button click Event
 
         rqstQueue= Volley.newRequestQueue(this);
-        jsonParserForUser();
+        usersJSONParser();
     }
 
     private void populateAutoComplete() {
@@ -157,7 +176,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
-
     /**
      * Attempts to sign in or register the account specified by the login form.
      * If there are form errors (invalid email, missing fields, etc.), the
@@ -165,7 +183,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     private void attemptLogin() {
         if (mAuthTask != null) {
-
+            //login user
             return;
         }
 
@@ -174,7 +192,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         pswdInput.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = usrnameInput.getText().toString();
+        String username = usrnameInput.getText().toString();
         String password = pswdInput.getText().toString();
 
         boolean cancel = false;
@@ -188,11 +206,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
         // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
+        if (TextUtils.isEmpty(username)) {
             usrnameInput.setError(getString(R.string.error_field_required));
             focusView = usrnameInput;
             cancel = true;
-        } else if (!isUsrnameValid(email)) {
+        } else if (!isUsrnameValid(username)) {
             usrnameInput.setError(getString(R.string.error_invalid_email));
             focusView = usrnameInput;
             cancel = true;
@@ -206,14 +224,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
+            mAuthTask = new UserLoginTask(username, password);
             mAuthTask.execute((Void) null);
         }
     }
 
-    private boolean isUsrnameValid(String email) {
+    private boolean isUsrnameValid(String username) {
         //TODO: Replace this with your own logic
-        return email.contains("@");
+        return username.contains("@");
     }
 
     private boolean isPasswordValid(String password) {
@@ -311,17 +329,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         int IS_PRIMARY = 1;
     }
 
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
+    /**Represents an asynchronous login/registration task used to authenticate
+     * the user.*/
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
         private final String username;
         private final String password;
 
-        UserLoginTask(String email, String password) {
-            username = email;
+        UserLoginTask(String username, String password) {
+            this.username = username;
             this.password = password;
         }
 
@@ -366,8 +382,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = null;
             showProgress(false);
         }
+        //Adding request to request queue
+       // AppController.getInstance().addToRequestQueue();
     }
-    private int jsonParserForUser(){
+    private int usersJSONParser(){
         profileList=new ArrayList<>();
         urls=getResources().getStringArray(R.array.yamibo_api_urls);
         JsonObjectRequest profileRqst=new JsonObjectRequest(Request.Method.GET, urls[1], null,
@@ -377,7 +395,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         try {
                             JSONObject var=response.getJSONObject("Variables");
                             JSONArray varArr=var.getJSONArray("Variables");
-                            JSONArray noticeArr=var.getJSONArray("notice");
+                           // JSONArray noticeArr=var.getJSONArray("notice");
                             /*String uId=var.getString("member_uid");
                             String username=var.getString("member_username");*/
                             //JSONObject noticeObj=noticeArr.getJSONObject(pos);
@@ -404,4 +422,3 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         return pos;
     }
 }
-

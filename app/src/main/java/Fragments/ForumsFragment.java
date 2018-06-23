@@ -36,6 +36,7 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
     private RequestQueue rqstQueue; private int pos;
     private String imgUrl="https://bbs.yamibo.com/template/oyeeh_com_baihe/img/shdm1020/forum_new.gif";
     private static View v;
+
     @TargetApi(Build.VERSION_CODES.N)
 
     public ForumsFragment(){}
@@ -52,9 +53,13 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
          * to avoid null rootView exception*/
         recyclerView=(RecyclerView)v.findViewById(R.id.recycler_view);
         recyclerView1=(RecyclerView)v.findViewById(R.id.recycler_view_2);
+        recyclerView.setHasFixedSize(true);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView1.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
+                LinearLayoutManager.VERTICAL));
+
 
         rqstQueue= Volley.newRequestQueue(getContext());
         forumsJsonParser();

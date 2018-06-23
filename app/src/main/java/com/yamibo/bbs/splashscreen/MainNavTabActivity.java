@@ -82,7 +82,7 @@ public class MainNavTabActivity extends AppCompatActivity implements NavigationV
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         View nav_view=navigationView.getHeaderView(0);
-        plsLogBtn=(Button)nav_view.findViewById(R.id.loginRqstBtn);
+        plsLogBtn=(Button)nav_view.findViewById(R.id.loginReqstBtn);
         regBtn=(Button)nav_view.findViewById(R.id.regBtn);
 
         setLogRqstAndRegBtn();
@@ -91,6 +91,9 @@ public class MainNavTabActivity extends AppCompatActivity implements NavigationV
         forumsFragment=getFragmentManager()
                 .findFragmentById(R.id.forumsFrm);
         activeUserFrag=getFragmentManager().findFragmentById(R.layout.tab_active_user);
+
+
+
 
     }
 
