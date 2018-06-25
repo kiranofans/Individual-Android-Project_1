@@ -23,9 +23,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageButton;
+
+import com.yamibo.bbs.splashscreen.Fragments.TabsFragment;
+
 import java.util.*;
 
-import Fragments.*;
 import Adapter.ImgViewPagerAdapter;
 import Model.DeferredFragmentTransaction;
 

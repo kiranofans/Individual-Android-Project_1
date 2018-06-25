@@ -1,4 +1,4 @@
-package Fragments;
+package com.yamibo.bbs.splashscreen.Fragments;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;

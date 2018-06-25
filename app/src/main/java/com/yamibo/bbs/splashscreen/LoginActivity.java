@@ -45,6 +45,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import Model.Base_Items_Model;
 import Model.Users;
 
 import static android.Manifest.permission.READ_CONTACTS;
@@ -68,7 +69,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     };
     /**Keep track of the login task to ensure we can cancel it if requested.*/
     private UserLoginTask mAuthTask = null;
-    private List<Users> profileList;
+    private List<Base_Items_Model> userDetails;
     public static String[] urls;
     private RequestQueue rqstQueue;
     private static int pos=0;
@@ -87,7 +88,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         populateAutoComplete();
         contactUs=(Button)findViewById(R.id.contactBtn);
         forgotPswd=(Button)findViewById(R.id.forgetPswdBtn);
-
         pswdInput = (EditText) findViewById(R.id.password);
         pswdInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -108,14 +108,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         //Session manager
         sessionMg=new SessionManager(getApplicationContext());
-
+        loginBtn = (Button) findViewById(R.id.loginBtn);
         //Check if user is already logged in or not
         if(sessionMg.isLoggedIn()){
             //Take the user to main activity
             startActivity(new Intent(LoginActivity.this,MainNavTabActivity.class));
             finish();
         }
-        loginBtn = (Button) findViewById(R.id.loginBtn);
+
         loginBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -125,7 +125,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                 //Check for empty data in the form
                 attemptLogin();
-                startActivity(new Intent(LoginActivity.this,MainNavTabActivity.class));
+
             }
         });
         //Login button click Event
@@ -211,7 +211,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             usrnameInput.setError(getString(R.string.error_field_required));
             focusView = usrnameInput;
             cancel = true;
-        } else if (!isUsrnameValid(username)) {
+        } else if (!isUsernameValid(username)) {
             usrnameInput.setError(getString(R.string.error_invalid_email));
             focusView = usrnameInput;
             cancel = true;
@@ -230,9 +230,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
-    private boolean isUsrnameValid(String username) {
+    private boolean isUsernameValid(String username) {
         //TODO: Replace this with your own logic
-        return username.contains("@");
+
+        return username.matches("");
     }
 
     private boolean isPasswordValid(String password) {
@@ -387,7 +388,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
        // AppController.getInstance().addToRequestQueue();
     }
     private int usersJSONParser(){
-        profileList=new ArrayList<>();
+        userDetails =new ArrayList<>();
         urls=getResources().getStringArray(R.array.yamibo_api_urls);
         JsonObjectRequest profileRqst=new JsonObjectRequest(Request.Method.GET, urls[1], null,
                 new Response.Listener<JSONObject>() {
@@ -406,9 +407,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                         usrObj.getString("member_username"),
                                         usrObj.getString("readaccess"),
                                         usrObj.getString("notice"));
-                                profileList.add(pos,usr);
+                                userDetails.add(pos, usr);
                             }
-                            Log.d("TEST","Result Size: "+profileList.size());
+                            Log.d("TEST","Result Size: "+ userDetails.size());
                         } catch (JSONException je) {
                             je.printStackTrace();
                         }

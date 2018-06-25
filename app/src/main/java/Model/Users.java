@@ -1,6 +1,6 @@
 package Model;
 
-public class Users {
+public class Users implements Base_Items_Model{
     private String username,usrPswd,usrID,credits,usrAvatarUrl;
     private Boolean usrStatus;//for active user fragment
     private String notices, othersReplies,usrReplies,groupID;
@@ -122,5 +122,10 @@ public class Users {
 
     public void setUsrStatus(Boolean usrStatus) {
         this.usrStatus = usrStatus;
+    }
+
+    @Override
+    public int getViewType() {
+        return Constants.ViewTypes.USERS;
     }
 }

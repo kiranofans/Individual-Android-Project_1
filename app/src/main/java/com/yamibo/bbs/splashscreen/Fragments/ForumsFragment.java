@@ -1,4 +1,4 @@
-package Fragments;
+package com.yamibo.bbs.splashscreen.Fragments;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -16,7 +16,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.yamibo.bbs.splashscreen.ChatSec_Activity;
@@ -49,11 +48,7 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
        /**This method defines the xml layout file for the fragment*/
         v=inflater.inflate(R.layout.tab_forums,container,false);
-        recyclerView=(RecyclerView)v.findViewById(R.id.recycler_view);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
-                LinearLayoutManager.VERTICAL));
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
 
 
         return v;
@@ -63,8 +58,13 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
         /**The onViewCreated method is called after onCreateView method
          * to avoid null rootView exception*/
         swiper=(SwipeRefreshLayout)v.findViewById(R.id.forumsSwiper);
-        rqstQueue= Volley.newRequestQueue(getContext());
+        recyclerView=(RecyclerView)v.findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
+                LinearLayoutManager.VERTICAL));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        rqstQueue= Volley.newRequestQueue(getContext());
         forumsJsonParser();
     }
     private int forumsJsonParser() {

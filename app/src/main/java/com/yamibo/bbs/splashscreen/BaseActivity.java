@@ -27,9 +27,8 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     private ViewPager imgVp; ImgViewPagerAdapter vpAdp;
     protected static CollapsingToolbarLayout collapsyToolbar;
     private static ImageButton leftNav,rightNav;
-    private float preX,preY; private Button plsLogBtn,regBtn;
+    private float preX,preY;
     private MainNavTabActivity main=new MainNavTabActivity();
-    private static android.support.v4.app.Fragment chatFrg;
     private static View v; private LayoutInflater inflater;
     private SearchView searchView;
     private NavigationView chat_nav;
@@ -76,11 +75,6 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         chat_nav.setNavigationItemSelectedListener(this);
         View nav_view=chat_nav.getHeaderView(0);
 
-
-      /*  plsLogBtn=(Button)nav_view.findViewById(R.id.loginReqstBtn);
-        regBtn=(Button)nav_view.findViewById(R.id.regBtn);*/
-
-        //setLogRqstAndRegBtn();
         searchIntent=getIntent();
         handleIntent(searchIntent);
     }
@@ -196,21 +190,4 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                 null ,false );
         return true;
     }
-  /*  public void setLogRqstAndRegBtn(){
-        plsLogBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(BaseActivity.this,LoginActivity.class));
-            }
-        });
-        regBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent
-                        (BaseActivity.this,AccountRegistPage.class));
-            }
-        });
-        plsLogBtn.setPaintFlags(plsLogBtn.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
-        regBtn.setPaintFlags(regBtn.getPaintFlags()|Paint.UNDERLINE_TEXT_FLAG);
-    }*/
 }

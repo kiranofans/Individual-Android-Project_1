@@ -8,7 +8,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 
 import Adapter.ImgViewPagerAdapter;
-import Fragments.ChatFragment;
+import com.yamibo.bbs.splashscreen.Fragments.ChatFragment;
 
 public class ChatSec_Activity extends BaseActivity {
     private ImgViewPagerAdapter pagerAdp;

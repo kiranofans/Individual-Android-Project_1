@@ -15,7 +15,7 @@ import java.util.*;
 
 import Model.ForumsListItem;
 import Model.PostsListItems;
-import Base_View_Holder.BaseViewHolder;
+import Adapter.Base_View_Holder.BaseViewHolder;
 import Model.Base_Items_Model;
 import Model.Constants;
 

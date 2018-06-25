@@ -1,16 +1,11 @@
 package Adapter;
 
 import android.content.Context;
-import android.database.DataSetObserver;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.yamibo.bbs.splashscreen.R;
@@ -18,7 +13,7 @@ import com.yamibo.bbs.splashscreen.R;
 import java.util.Arrays;
 import java.util.Comparator;
 
-import Base_View_Holder.BaseViewHolder;
+import Adapter.Base_View_Holder.BaseViewHolder;
 /**Provided by Google*/
 public class SectionRecycleViewAdapter extends RecyclerView.Adapter {
         private final Context mContext;
