@@ -77,10 +77,10 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         View nav_view=chat_nav.getHeaderView(0);
 
 
-        plsLogBtn=(Button)nav_view.findViewById(R.id.loginReqstBtn);
-        regBtn=(Button)nav_view.findViewById(R.id.regBtn);
+      /*  plsLogBtn=(Button)nav_view.findViewById(R.id.loginReqstBtn);
+        regBtn=(Button)nav_view.findViewById(R.id.regBtn);*/
 
-        setLogRqstAndRegBtn();
+        //setLogRqstAndRegBtn();
         searchIntent=getIntent();
         handleIntent(searchIntent);
     }
@@ -196,7 +196,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                 null ,false );
         return true;
     }
-    public void setLogRqstAndRegBtn(){
+  /*  public void setLogRqstAndRegBtn(){
         plsLogBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -212,5 +212,5 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         });
         plsLogBtn.setPaintFlags(plsLogBtn.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
         regBtn.setPaintFlags(regBtn.getPaintFlags()|Paint.UNDERLINE_TEXT_FLAG);
-    }
+    }*/
 }

@@ -3,7 +3,6 @@ package Adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,7 +53,6 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
                             (R.layout.list_items_posts, parent, false);
                 return new PostsHolder(v,viewType);
         }
-
         return null;
     }
     @Override
@@ -89,7 +87,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    SectionAdapter sectionAdp=null;
+                    SectionRecycleViewAdapter sectionAdp=null;
                     if (listener != null) {
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
@@ -154,7 +152,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
 
     }
     /**PostsHolder*/
-    public class SectionViewHolder extends BaseViewHolder<SectionAdapter.Sections> {
+    public class SectionViewHolder extends BaseViewHolder<SectionRecycleViewAdapter.Sections> {
         private TextView titleTv;
 
         public SectionViewHolder(View itemView, int viewType) {
@@ -163,7 +161,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
         }
 
         @Override
-        public void bind(SectionAdapter.Sections obj) {
+        public void bind(SectionRecycleViewAdapter.Sections obj) {
 
         }
     }

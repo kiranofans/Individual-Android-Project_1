@@ -104,6 +104,7 @@ public class SplashScreenActivity extends AppCompatActivity {
          * so we can put setContentView() before super.onCreate() method*/
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+        AppController appControl=new AppController();
         splash();
 
         mVisible = true;

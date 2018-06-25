@@ -25,7 +25,7 @@
                 app:contentScrim="@color/color_light_yellow"
                 app:expandedTitleMarginEnd="64dp"
                 app:expandedTitleMarginStart="48dp"
-                app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
                 <FrameLayout
                     android:id="@+id/imgViewPagerFrame"
                     android:layout_width="match_parent"

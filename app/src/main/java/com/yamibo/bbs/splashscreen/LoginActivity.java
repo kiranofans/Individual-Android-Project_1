@@ -121,6 +121,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             public void onClick(View view) {
                 String username=usrnameInput.getText().toString();
                 String password=pswdInput.getText().toString();
+                usersJSONParser();
 
                 //Check for empty data in the form
                 attemptLogin();

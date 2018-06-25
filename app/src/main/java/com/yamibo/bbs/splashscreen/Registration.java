@@ -41,7 +41,7 @@ public class Registration extends AppCompatActivity {
         inputPassword = (EditText) findViewById(R.id.pswdInput);
         inputEmail=(EditText)findViewById(R.id.emailInput);
         inputAnswer=(EditText)findViewById(R.id.secAnswInput);
-        regSubmitBtn = (Button) findViewById(R.id.submitBtn);
+
         //btnLinkToLogin = (Button) findViewById(R.id.);
 
         //Session manager
@@ -66,6 +66,7 @@ public class Registration extends AppCompatActivity {
         pswdTxt=inputPassword.getText().toString();
         pswdConfirmTxt=pswdConfirmInput.getText().toString();
         answerTxt=inputAnswer.getText().toString();
+        regSubmitBtn = (Button) findViewById(R.id.submitBtn);
         regSubmitBtn.setOnClickListener(new View.OnClickListener() {
             final String[] regElement={usernameTxt,emailTxt,pswdTxt,
                     pswdConfirmTxt,answerTxt};
@@ -74,6 +75,10 @@ public class Registration extends AppCompatActivity {
                 for(int i=0;i< regElement.length;i++) {
                     if (!regElement[i].isEmpty()) {
                         registerUser(regElement[0],regElement[1],regElement[2]);
+                        Toast.makeText(getApplicationContext(),"註冊成功",
+                                Toast.LENGTH_LONG).show();
+                        startActivity(new Intent
+                                (Registration.this,LoginActivity.class));
                     }else{
                         Toast.makeText(getApplicationContext(),"還有空沒填呢",
                                 Toast.LENGTH_LONG).show();
@@ -81,7 +86,7 @@ public class Registration extends AppCompatActivity {
                 }
                 startActivity(new Intent
                         (Registration.this,LoginActivity.class));
-                finish();
+               // finish();
             }
         });
     }

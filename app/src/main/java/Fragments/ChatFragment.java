@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Adapter.MyRecyclerAdapter;
-import Adapter.SectionAdapter;
+import Adapter.SectionRecycleViewAdapter;
 import Model.Base_Items_Model;
 import Model.PostsListItems;
 
@@ -42,7 +41,7 @@ MyRecyclerAdapter.OnItemClickListener{
     private static RequestQueue rqstQueue; private int pos;
     private static SwipeRefreshLayout refreshSwiper;
     private static Handler handler=new Handler();
-    private List<SectionAdapter.Sections> secsList;
+    private List<SectionRecycleViewAdapter.Sections> secsList;
     public ChatFragment(){}
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -138,13 +137,13 @@ MyRecyclerAdapter.OnItemClickListener{
                                     baseModels.add(postItems);
                                 }
                             }
-                            secsList.add(new SectionAdapter.Sections(0,"全部主題"));
-                            secsList.add(new SectionAdapter.Sections(4,"版塊主題"));
+                            secsList.add(new SectionRecycleViewAdapter.Sections(0,"全部主題"));
+                            secsList.add(new SectionRecycleViewAdapter.Sections(4,"版塊主題"));
 
                             recycleAdp=new MyRecyclerAdapter(getContext(),baseModels);
                             recycleAdp.setOnItemClickListener(ChatFragment.this);
-                            SectionAdapter.Sections[] secArr=new SectionAdapter.Sections[secsList.size()];
-                            SectionAdapter secAdp =new SectionAdapter(getContext(),R.layout.catlist_sections,
+                            SectionRecycleViewAdapter.Sections[] secArr=new SectionRecycleViewAdapter.Sections[secsList.size()];
+                            SectionRecycleViewAdapter secAdp =new SectionRecycleViewAdapter(getContext(),R.layout.catlist_sections,
                                     R.id.catListNames,recycleAdp);
                             secAdp.setSections(secsList.toArray(secArr));
                             recyclerView.setAdapter(secAdp);

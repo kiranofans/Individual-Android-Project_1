@@ -20,7 +20,7 @@ import java.util.Comparator;
 
 import Base_View_Holder.BaseViewHolder;
 /**Provided by Google*/
-public class SectionAdapter extends RecyclerView.Adapter {
+public class SectionRecycleViewAdapter extends RecyclerView.Adapter {
         private final Context mContext;
         private static final int SECTION_TYPE = 0;
         private boolean isValid = true;
@@ -30,8 +30,8 @@ public class SectionAdapter extends RecyclerView.Adapter {
         private RecyclerView.Adapter mBaseAdapter;
         private SparseArray<Sections> mSections = new SparseArray<>();
 
-        public SectionAdapter(Context context, int sectionResourceId, int textResourceId,
-                              RecyclerView.Adapter<BaseViewHolder> baseAdapter) {
+        public SectionRecycleViewAdapter(Context context, int sectionResourceId, int textResourceId,
+                                         RecyclerView.Adapter<BaseViewHolder> baseAdapter) {
 
             mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             mSectionResourceId = sectionResourceId;

@@ -9,15 +9,14 @@ import android.support.annotation.*;
 import android.support.v4.app.*;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.*;
-import android.util.Log;
 import android.view.*;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.yamibo.bbs.splashscreen.ChatSec_Activity;
@@ -29,7 +28,7 @@ import org.json.*;
 import java.util.*;
 
 import Adapter.MyRecyclerAdapter;
-import Adapter.SectionAdapter;
+import Adapter.SectionRecycleViewAdapter;
 import Model.*;
 
 public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItemClickListener{
@@ -37,10 +36,10 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
     private static MyRecyclerAdapter recycleAdp,recycleAdp_1;
     private static List<Base_Items_Model> forumsList,forumsList_1;
     public static String[] urls;
-    private static List<SectionAdapter.Sections> sectionList;
+    private static List<SectionRecycleViewAdapter.Sections> sectionList;
     private RequestQueue rqstQueue; private int pos;
     private String imgUrl="https://bbs.yamibo.com/template/oyeeh_com_baihe/img/shdm1020/forum_new.gif";
-    private static View v;
+    private static View v;  String name;
     private SwipeRefreshLayout swiper;
     @TargetApi(Build.VERSION_CODES.N)
 
@@ -82,30 +81,32 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
                 try {
                     JSONObject var = response.getJSONObject("Variables");
                     JSONArray forumsArr = var.getJSONArray("forumlist");
+                    JSONArray catArr=var.getJSONArray("catlist");
+
                     for (int i = 0; i < forumsArr.length(); i++) {
                         JSONObject forumObj = forumsArr.getJSONObject(i);
-                        String id=forumObj.getString("fid");
-                            ForumsListItem forumsListItem = new ForumsListItem
-                                    (forumObj.getString("name"),
-                                            (forumObj.getString("description")),
-                                            "(" + forumObj.getString("todayposts") + ")");
-                        if (id.equals("16")) {
+                        String fid=forumObj.getString("fid");
+                        ForumsListItem forumsListItem = new ForumsListItem
+                                (forumObj.getString("name"),
+                                        (forumObj.getString("description")),
+                                        "(" + forumObj.getString("todayposts") + ")");
+                        if(!fid.equals("16")){
                             forumsList.add(forumsListItem);
-
-                        }else if(!(id.equals("16"))){
+                        }else{
                             forumsList.add(forumsListItem);
                         }
+
                     }
-                    sectionList.add(new SectionAdapter.Sections(0,"廟堂"));
-                    sectionList.add(new SectionAdapter.Sections(1,"江湖"));
+                    sectionList.add(new SectionRecycleViewAdapter.Sections(0,"廟堂"));
+                    sectionList.add(new SectionRecycleViewAdapter.Sections(1,"江湖"));
 
                     recycleAdp=new MyRecyclerAdapter(getContext(),forumsList);
                     recycleAdp.setOnItemClickListener(ForumsFragment.this);
-                    SectionAdapter.Sections[] secArr=new SectionAdapter.Sections[sectionList.size()];
-                    SectionAdapter secAdp =new SectionAdapter(getContext(),R.layout.catlist_sections,
+                    SectionRecycleViewAdapter.Sections[] secArr=new SectionRecycleViewAdapter.Sections[sectionList.size()];
+                    SectionRecycleViewAdapter secAdp =new SectionRecycleViewAdapter(getContext(),R.layout.catlist_sections,
                             R.id.catListNames,recycleAdp);
                     secAdp.setSections(sectionList.toArray(secArr));
-                    recyclerView.setAdapter(recycleAdp);
+                    recyclerView.setAdapter(secAdp);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -145,7 +146,7 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
     public static ForumsFragment newInstance(int sectionNumber) {
         ForumsFragment forumsFragment = new ForumsFragment();
         Bundle args = new Bundle();
-        args.putInt("section_number", sectionNumber);
+        args.putInt("Forums", sectionNumber);
         forumsFragment.setArguments(args);
         return forumsFragment;
     }
