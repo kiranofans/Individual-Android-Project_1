@@ -1,10 +1,17 @@
 package Model;
 
+import android.widget.FrameLayout;
+
 public class ForumsListItem implements Base_Items_Model{
     private String forumsTitles,description,subListsName;
     private String catListForums,fId,imgUrl,groupId;
     private String numOftodayPosts, threads,numOfposts;
-    /*Constructors*/
+
+    /**Constructors*/
+    public ForumsListItem (){}
+    public ForumsListItem(String fid){
+        this.fId=fid;
+    }
     public ForumsListItem(String forumsTitles, String description,
                           String todayPosts) {
         //inner forums
@@ -12,10 +19,12 @@ public class ForumsListItem implements Base_Items_Model{
         this.description=description;
         this.numOftodayPosts=todayPosts;
     }
+
     public ForumsListItem(String subListsName, String description, String todayposts, String string){
         this.subListsName=subListsName;
     }
     public ForumsListItem(String threads, String numOfposts) {
+
         this.threads = threads;//threads
         this.numOfposts = numOfposts;
     }
@@ -50,7 +59,7 @@ public class ForumsListItem implements Base_Items_Model{
     public void setCatListForums(String catListForums) {
         this.catListForums = catListForums;
     }
-    public String getfId() {
+    public String getFid() {
         return fId;
     }
 

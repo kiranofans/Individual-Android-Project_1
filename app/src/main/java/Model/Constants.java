@@ -14,6 +14,7 @@ public class Constants {
     @IntDef ({FORUMS_TYPES,POSTS_TYPES,USERS})
     @Retention(RetentionPolicy.SOURCE)
     public @interface ViewTypes{
+        /*cause in sectionAdapter,the viewtype in MyRecyclerViewAdpater -1*/
         int FORUMS_TYPES=100;
         int POSTS_TYPES=200;
         int USERS=300;

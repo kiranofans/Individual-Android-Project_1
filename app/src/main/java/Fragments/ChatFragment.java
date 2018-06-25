@@ -1,5 +1,4 @@
 package Fragments;
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -8,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,10 +28,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Adapter.MyRecyclerAdapter;
+import Adapter.SectionAdapter;
 import Model.Base_Items_Model;
 import Model.PostsListItems;
 
-public class ChatFragment extends Fragment implements View.OnClickListener,SwipeRefreshLayout.OnRefreshListener{
+public class ChatFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener,
+MyRecyclerAdapter.OnItemClickListener{
     private static View v;
     private static RecyclerView recyclerView,recyclerView1;
     private static MyRecyclerAdapter recycleAdp,recycleAdp_1;
@@ -40,7 +42,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener,Swipe
     private static RequestQueue rqstQueue; private int pos;
     private static SwipeRefreshLayout refreshSwiper;
     private static Handler handler=new Handler();
-
+    private List<SectionAdapter.Sections> secsList;
     public ChatFragment(){}
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -53,11 +55,12 @@ public class ChatFragment extends Fragment implements View.OnClickListener,Swipe
         recyclerView = (RecyclerView)v.findViewById(R.id.post_recyc_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        recyclerView1 = (RecyclerView)v.findViewById(R.id.postRecView_2);
-        recyclerView1.setLayoutManager(new LinearLayoutManager((getContext())));
+        /*recyclerView1 = (RecyclerView)v.findViewById(R.id.postRecView_2);
+        recyclerView1.setLayoutManager(new LinearLayoutManager((getContext())));*/
 
         rqstQueue = Volley.newRequestQueue(getContext());
-        baseModels_1=new ArrayList<>(); baseModels=new ArrayList<>();
+        //baseModels_1=new ArrayList<>();
+        baseModels=new ArrayList<>();
         loadContent();
         if (isRefreshing()) {
             SwipeRefreshLayout.OnRefreshListener refreshListener =
@@ -108,7 +111,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener,Swipe
     }
     private void post_subs_JsonParser(){
         refreshSwiper.setRefreshing(true);
-
+        secsList=new ArrayList<>();
         urls=getResources().getStringArray(R.array.yamibo_api_urls);
         JsonObjectRequest request=new JsonObjectRequest(Request.Method.GET, urls[2], null,
                 new Response.Listener<JSONObject>() {
@@ -117,30 +120,34 @@ public class ChatFragment extends Fragment implements View.OnClickListener,Swipe
                         try {
                             JSONObject var = response.getJSONObject("Variables");
                             JSONArray threadArr = var.getJSONArray("forum_threadlist");
-                            String tid="";
+
                             for (int i = 0; i < threadArr.length(); i++) {
                                 JSONObject threadObj = threadArr.getJSONObject(i);
-                                tid=threadObj.getString("tid");
+                                String tid=threadObj.getString("tid");
                                 PostsListItems postItems=new PostsListItems
                                         (threadObj.getString("subject"),
                                                 threadObj.getString("author"),
                                                 threadObj.getString("lastposter"),
-                                                threadObj.getString("views")+"查看",
-                                                threadObj.getString("replies")+"回復");
+                                                "發於："+threadObj.getString("dateline"));
 
                                 if(tid.equals("474447")||tid.equals("20425")||tid.equals("232743")
                                         ||tid.equals("240477")){
-                                    baseModels_1.add(postItems);
+                                    baseModels.add(postItems);
+
                                 }else {
                                     baseModels.add(postItems);
                                 }
                             }
+                            secsList.add(new SectionAdapter.Sections(0,"全部主題"));
+                            secsList.add(new SectionAdapter.Sections(4,"版塊主題"));
 
                             recycleAdp=new MyRecyclerAdapter(getContext(),baseModels);
-                            recyclerView.setAdapter(recycleAdp);
-
-                            recycleAdp_1=new MyRecyclerAdapter(getContext(),baseModels_1);
-                            recyclerView1.setAdapter(recycleAdp_1);
+                            recycleAdp.setOnItemClickListener(ChatFragment.this);
+                            SectionAdapter.Sections[] secArr=new SectionAdapter.Sections[secsList.size()];
+                            SectionAdapter secAdp =new SectionAdapter(getContext(),R.layout.catlist_sections,
+                                    R.id.catListNames,recycleAdp);
+                            secAdp.setSections(secsList.toArray(secArr));
+                            recyclerView.setAdapter(secAdp);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -154,11 +161,9 @@ public class ChatFragment extends Fragment implements View.OnClickListener,Swipe
         });
         refreshSwiper.setRefreshing(false);
         rqstQueue.add(request);
-
     }
-
     @Override
-    public void onClick(View v) {
+    public void onItemClick(int position) {
 
     }
 }

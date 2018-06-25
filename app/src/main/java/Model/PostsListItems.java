@@ -1,33 +1,28 @@
 package Model;
 
-import android.content.Context;
-import android.provider.SyncStateContract;
-
-import java.util.*;
-
 public class PostsListItems implements Base_Items_Model {
     private String newMemberPosts,authors,authorities,replies;
     private String hashTags,postTitles,newPosts,post_dates;
     private String lastReplies,threads,authorIds,lastReplyDate,viewers;
-    private String postGroupId,avatarUrls,messages,pid;
-    public PostsListItems(){}
-    public PostsListItems(String postTitles, String authors, String lastReplies,
-                          String viewers, String replies) {
-        this.replies=replies;
+    private String postGroupId,avatarUrls,messages,pid,tid;
+    public PostsListItems(){
+
+    }
+    public PostsListItems(String postTitles, String authors, String lastReplies,String post_dates) {
         this.authors = authors;
         this.postTitles = postTitles;
         this.lastReplies = lastReplies;//new replies or last poster
-        this.viewers=viewers;
-
+        this.post_dates= post_dates;
     }
 
-    public PostsListItems(String authorIds, String avatarUrls, String messages, String pid) {
+    public PostsListItems(String authorIds, String avatarUrls, String messages) {
         this.authorIds = authorIds;
         this.avatarUrls = avatarUrls;
         this.messages = messages;
-        this.pid = pid;
     }
-
+    public PostsListItems(String tid){
+        this.tid=tid;
+    }
     public String getReplies() {
         return replies;
     }
@@ -134,5 +129,7 @@ public class PostsListItems implements Base_Items_Model {
         this.lastReplyDate = lastReplyDate;
     }
 
-
+    public String getTid(){
+        return tid;
+    }
 }

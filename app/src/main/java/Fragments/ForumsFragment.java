@@ -7,8 +7,11 @@ import android.content.Intent;
 import android.os.*;
 import android.support.annotation.*;
 import android.support.v4.app.*;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.*;
+import android.util.Log;
 import android.view.*;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -26,6 +29,7 @@ import org.json.*;
 import java.util.*;
 
 import Adapter.MyRecyclerAdapter;
+import Adapter.SectionAdapter;
 import Model.*;
 
 public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItemClickListener{
@@ -33,10 +37,11 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
     private static MyRecyclerAdapter recycleAdp,recycleAdp_1;
     private static List<Base_Items_Model> forumsList,forumsList_1;
     public static String[] urls;
+    private static List<SectionAdapter.Sections> sectionList;
     private RequestQueue rqstQueue; private int pos;
     private String imgUrl="https://bbs.yamibo.com/template/oyeeh_com_baihe/img/shdm1020/forum_new.gif";
     private static View v;
-
+    private SwipeRefreshLayout swiper;
     @TargetApi(Build.VERSION_CODES.N)
 
     public ForumsFragment(){}
@@ -45,28 +50,30 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
        /**This method defines the xml layout file for the fragment*/
         v=inflater.inflate(R.layout.tab_forums,container,false);
+        recyclerView=(RecyclerView)v.findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
+                LinearLayoutManager.VERTICAL));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+
         return v;
     }
     @Override
     public void onViewCreated(View v,Bundle savedInstanceState){
         /**The onViewCreated method is called after onCreateView method
          * to avoid null rootView exception*/
-        recyclerView=(RecyclerView)v.findViewById(R.id.recycler_view);
-        recyclerView1=(RecyclerView)v.findViewById(R.id.recycler_view_2);
-        recyclerView.setHasFixedSize(true);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView1.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
-                LinearLayoutManager.VERTICAL));
-
-
+        swiper=(SwipeRefreshLayout)v.findViewById(R.id.forumsSwiper);
         rqstQueue= Volley.newRequestQueue(getContext());
+
         forumsJsonParser();
     }
     private int forumsJsonParser() {
-        forumsList=new ArrayList<Base_Items_Model>();
+        swiper.setRefreshing(true);
+        forumsList=new ArrayList<>();
         forumsList_1=new ArrayList<>();
+        sectionList =new ArrayList<>();
+
         urls=getResources().getStringArray(R.array.yamibo_api_urls);
         JsonObjectRequest request=new JsonObjectRequest(Request.Method.GET, urls[0], null,
                 new Response.Listener<JSONObject>() {
@@ -78,25 +85,27 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
                     for (int i = 0; i < forumsArr.length(); i++) {
                         JSONObject forumObj = forumsArr.getJSONObject(i);
                         String id=forumObj.getString("fid");
-                        if (id.equals("16")) {
                             ForumsListItem forumsListItem = new ForumsListItem
                                     (forumObj.getString("name"),
                                             (forumObj.getString("description")),
                                             "(" + forumObj.getString("todayposts") + ")");
+                        if (id.equals("16")) {
                             forumsList.add(forumsListItem);
+
                         }else if(!(id.equals("16"))){
-                            ForumsListItem forumsItems=new ForumsListItem
-                                    (forumObj.getString("name"),forumObj.getString("description"),
-                                            "("+forumObj.getString("todayposts")+")");
-                            forumsList_1.add(forumsItems);
+                            forumsList.add(forumsListItem);
                         }
                     }
-                    recycleAdp=new MyRecyclerAdapter(getContext(),forumsList);
-                    recyclerView.setAdapter(recycleAdp);
+                    sectionList.add(new SectionAdapter.Sections(0,"廟堂"));
+                    sectionList.add(new SectionAdapter.Sections(1,"江湖"));
 
-                    recycleAdp_1=new MyRecyclerAdapter(getContext(),forumsList_1);
-                    recyclerView1.setAdapter(recycleAdp_1);
-                    recycleAdp_1.setOnItemClickListener(ForumsFragment.this);
+                    recycleAdp=new MyRecyclerAdapter(getContext(),forumsList);
+                    recycleAdp.setOnItemClickListener(ForumsFragment.this);
+                    SectionAdapter.Sections[] secArr=new SectionAdapter.Sections[sectionList.size()];
+                    SectionAdapter secAdp =new SectionAdapter(getContext(),R.layout.catlist_sections,
+                            R.id.catListNames,recycleAdp);
+                    secAdp.setSections(sectionList.toArray(secArr));
+                    recyclerView.setAdapter(recycleAdp);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -107,6 +116,7 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
                     error.printStackTrace();
                 }
         });
+        swiper.setRefreshing(false);
         rqstQueue.add(request);
         return pos;
     }

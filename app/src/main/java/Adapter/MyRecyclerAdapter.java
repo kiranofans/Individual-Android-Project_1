@@ -19,19 +19,12 @@ import Model.PostsListItems;
 import Base_View_Holder.BaseViewHolder;
 import Model.Base_Items_Model;
 import Model.Constants;
-import Model.Sections;
 
-/**Created by 300231329 on 5/29/2018.*/
 /**Using Dynamic Method Dispatch or Runtime Polymorphism*/
 public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
     private Context context;
     private List<?extends Base_Items_Model> anyTypeItems;
     private OnItemClickListener listener;
-    private static final int SECTION_TYPE=0;
-    private int secResourceId;
-    private SparseArray<Sections> sectionList=new SparseArray<>();
-    MyRecyclerAdapter mAdp;
-    private boolean isValid=true;
 
     //An interface way to create OnItemClick events
     public interface OnItemClickListener {
@@ -54,9 +47,8 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
         switch (viewType) {
             case Constants.ViewTypes.FORUMS_TYPES:
                 v = LayoutInflater.from(parent.getContext()).inflate
-                            (R.layout.list_items_forums, parent, false);
+                        (R.layout.list_items_forums, parent, false);
                 return new ForumsHolder(v,viewType);
-
             case Constants.ViewTypes.POSTS_TYPES:
                 v = LayoutInflater.from(parent.getContext()).inflate
                             (R.layout.list_items_posts, parent, false);
@@ -67,11 +59,11 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
     }
     @Override
     public void onBindViewHolder(@NonNull BaseViewHolder holder, int position) {
+
         holder.bind(anyTypeItems.get(position));
     }
-    @Override
+    @Override/**Get the view types*/
     public int getItemViewType(int position){
-        //Get the view type
         return anyTypeItems.get(position).getViewType();
     }
 
@@ -80,16 +72,15 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
         return anyTypeItems.size();
     }
 
-    /*ForumsHolder*/
+    /**ForumsHolder*/
     public class ForumsHolder extends BaseViewHolder<ForumsListItem> {
-        private TextView titleTv, descriptTv,
-                numOfDailyNewPosts,sectionTitle;
+        private TextView titleTv, descriptTv, numOfDailyNewPosts;
         private ImageView imgIcons;
 
         public ForumsHolder(View itemView, int viewType) {
             super(itemView);
             //things to display in RecyclerView
-          //  sectionTitle=(TextView)itemView.findViewById(R.id.catListNames1);
+          // sectionTitle=(TextView)itemView.findViewById(R.id.catListNames1);
             descriptTv = (TextView) itemView.findViewById(R.id.descriptionTxt);
             titleTv = (TextView) itemView.findViewById(R.id.forumsTxt);
             numOfDailyNewPosts = (TextView) itemView.findViewById(R.id.numOfDailyNewPosts);
@@ -98,6 +89,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    SectionAdapter sectionAdp=null;
                     if (listener != null) {
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
@@ -120,9 +112,9 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
         }
     }
 
-    /*PostsHolder*/
+    /**PostsHolder*/
     public class PostsHolder extends BaseViewHolder<PostsListItems>{
-        private TextView titleTv, lastposterTv, numOfViewersTv,authors,lastReplyDate;
+        private TextView titleTv, lastposterTv, postDate,authors,lastReplyDate;
         private TextView numOfReplies,postDates;
         private ImageView imgIcons;
 
@@ -131,10 +123,9 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
             //Declare Views
             lastposterTv = (TextView) itemView.findViewById(R.id.lastRepliedPosters);
             titleTv = (TextView) itemView.findViewById(R.id.postTitle);
-            numOfViewersTv = (TextView) itemView.findViewById(R.id.numOfViews);
+            postDate = (TextView) itemView.findViewById(R.id.postDateTV);
             authors=(TextView)itemView.findViewById(R.id.author);
             imgIcons = (ImageView) itemView.findViewById(R.id.postImgs);
-            numOfReplies=(TextView)itemView.findViewById(R.id.replyTxt);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -153,11 +144,26 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
         @Override
         public void bind(PostsListItems obj) {
             String avatarUrls=obj.getAvatarUrls();
+
             lastposterTv.setText(obj.getLastReplies());
             titleTv.setText(obj.getPostTitles());
-            numOfViewersTv.setText(obj.getViewers());
+            postDate.setText(obj.getPost_dates());
             authors.setText(obj.getAuthors());
-            numOfReplies.setText(obj.getReplies());
+
+        }
+
+    }
+    /**PostsHolder*/
+    public class SectionViewHolder extends BaseViewHolder<SectionAdapter.Sections> {
+        private TextView titleTv;
+
+        public SectionViewHolder(View itemView, int viewType) {
+            super(itemView);
+            titleTv = (TextView) itemView.findViewById(R.id.catListNames);
+        }
+
+        @Override
+        public void bind(SectionAdapter.Sections obj) {
 
         }
     }

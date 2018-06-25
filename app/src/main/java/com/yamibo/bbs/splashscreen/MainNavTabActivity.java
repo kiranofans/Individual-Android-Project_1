@@ -91,10 +91,6 @@ public class MainNavTabActivity extends AppCompatActivity implements NavigationV
         forumsFragment=getFragmentManager()
                 .findFragmentById(R.id.forumsFrm);
         activeUserFrag=getFragmentManager().findFragmentById(R.layout.tab_active_user);
-
-
-
-
     }
 
     //SetFragment function

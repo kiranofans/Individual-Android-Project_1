@@ -25,6 +25,8 @@
     <string name="action_settings">Settings</string>
     <string name="sign_up_legend">新注册用户做完百合种子的萌发上传头像任务后可以获得几分？<u>答案是9和11之间的那个数字</u>。都这样了你要是还回答不上来我就真没办法救你了...</string>
 
+    <string name="chat_sec_title">全部主题</string>
+
     <string name="tab_forums">論壇</string>
     <string name="tab_space">我的空間</string>
     <string name="tab_manga">漫畫</string>
