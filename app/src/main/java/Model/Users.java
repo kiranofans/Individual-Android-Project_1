@@ -6,12 +6,12 @@ public class Users implements Base_Items_Model{
     private String notices, othersReplies,usrReplies,groupID;
     private String readAccess,usrSpace;
 
-    public Users(String notices,String imgUrl,String username, String usrPswd,String groupId) {
+    public Users(String notices,String imgUrl,String username, String usrId,String groupId) {
         this.notices=notices;
         this.usrAvatarUrl=imgUrl;
         this.username = username;
-        this.usrPswd = usrPswd;
-        this. groupID=groupId;
+        this.usrID = usrId;
+        this.groupID=groupId;
     }
     public Users (String usrAvatarUrl, String username, String space, Boolean status){
         this.usrAvatarUrl=usrAvatarUrl;

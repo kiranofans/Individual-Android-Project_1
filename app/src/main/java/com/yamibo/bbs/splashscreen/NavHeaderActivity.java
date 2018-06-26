@@ -1,67 +1,65 @@
 package com.yamibo.bbs.splashscreen;
 
 import android.content.Intent;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.squareup.picasso.Picasso;
+import com.yamibo.bbs.splashscreen.Fragments.ChatFragment;
 
-import java.util.HashMap;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-public class NavHeaderActivity extends AppCompatActivity{
+public class NavHeaderActivity extends MainNavTabActivity{
     private SQLiteHandler dbHandler;
-    private Button logoutBtn;
+
+    private static Button plsLogBtn,regBtn;
+    private NavigationView navView;
+    private static View headerView;
     private SessionManager session;
-    private TextView usernameTv;
-    private ImageButton usrAvatar;
-    private Button plsLogBtn,regBtn;
     @Override
     protected void onCreate(Bundle savedInsttanceState){
         super.onCreate(savedInsttanceState);
         setContentView(R.layout.nav_header_main);
-        usrAvatar=(ImageButton)findViewById(R.id.avartarImgBtn);
-        logoutBtn=(Button)findViewById(R.id.loginReqstBtn);
+        navView=(NavigationView)findViewById(R.id.nav_view);
+        headerView=navView.getHeaderView(0);
 
-        usernameTv=(TextView)findViewById(R.id.usrNameTxt);
         //SQLdb handler
         dbHandler=new SQLiteHandler(getApplicationContext());
 
         //Session Manager
         session=new SessionManager(getApplicationContext());
 
+        //Fetching user details from SQLite or JSON Api
+
         if(!session.isLoggedIn()){
             logoutUser();
         }
 
-        //Fetching user details from SQLite or JSON Api
-        HashMap<String,String> user=dbHandler.getUserDetails();
 
-        String username=user.get("username");
-        String email=user.get("email");
+        //HashMap<String,String> user=dbHandler.getUserDetails();
 
-        usernameTv.setText(username);
-        setBtnOnClicks();
 
+        //String username=user.get("username");
+        //String email=user.get("email");
+
+        //usernameTv.setText(username);
 
     }
-    private void setBtnOnClicks(){
-        usrAvatar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Will start a new activity
-            }
-        });
-    }
+
     private void logoutUser(){
         session.setLogin(false);
         dbHandler.deleteUsers();
@@ -74,4 +72,5 @@ public class NavHeaderActivity extends AppCompatActivity{
     public void onPointerCaptureChanged(boolean hasCapture) {
 
     }
+
 }

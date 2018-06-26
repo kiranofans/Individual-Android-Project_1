@@ -10,9 +10,9 @@
     <string name="prompt_password">密碼</string>
     <string name="action_sign_in_up">還不是我們的一員？</string>
     <string name="action_sign_in_short">請先登錄</string>
-    <string name="error_invalid_email">用戶名錯誤</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">密碼錯誤</string>
+    <string name="invalid_username">用戶名錯誤</string>
+    <string name="error_invalid_email">郵箱格式不正確</string>
+    <string name="error_invalid_password">密碼格式不正確</string>
     <string name="error_field_required">此區域必填</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."</string>

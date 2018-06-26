@@ -5,7 +5,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.SparseArray;
 import android.view.ViewGroup;
-
+/**
+This ViewPager adpater is for undetermined number of ViewPager tabs
+*/
 public abstract class SmartFragmentStatePagerAdapter extends FragmentStatePagerAdapter{
     private SparseArray<Fragment> addedFrags=new SparseArray<Fragment>();
 
@@ -29,6 +31,4 @@ public abstract class SmartFragmentStatePagerAdapter extends FragmentStatePagerA
     public Fragment getAddedFragment(int position){
         return addedFrags.get(position);
     }
-
-
 }

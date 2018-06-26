@@ -6,6 +6,7 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
@@ -20,7 +21,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,7 +29,9 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -37,8 +39,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.squareup.picasso.Picasso;
+import com.yamibo.bbs.splashscreen.Fragments.ForumsFragment;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -55,11 +58,13 @@ import static android.Manifest.permission.READ_CONTACTS;
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
-    /**Id to identity READ_CONTACTS permission request.*/
+    /**
+     * Id to identity READ_CONTACTS permission request.
+     */
     private static final int REQUEST_READ_CONTACTS = 0;
     private SQLiteHandler dbHandler;
     private SessionManager sessionMg;
-    private String TEST=Registration.class.getSimpleName();
+    private String TEST = Registration.class.getSimpleName();
     /**
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
@@ -67,18 +72,22 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "foo@example.com:hello", "bar@example.com:world"
     };
-    /**Keep track of the login task to ensure we can cancel it if requested.*/
+    /**
+     * Keep track of the login task to ensure we can cancel it if requested.*/
     private UserLoginTask mAuthTask = null;
-    private List<Base_Items_Model> userDetails;
-    public static String[] urls;
-    private RequestQueue rqstQueue;
-    private static int pos=0;
+
+    private static int pos = 0;
     // UI references.
     private AutoCompleteTextView usrnameInput;
     private EditText pswdInput;
     private View progressView;
-    private View loginForm;
-    private Button forgotPswd,contactUs,loginBtn;
+    private static ImageButton avatarBtn;
+    private static TextView usrnameTv;
+    private static View loginForm;
+    private static String names,avatarUrl,pswd;
+    private static boolean flag = false;
+    private Button forgotPswd, contactUs,logOutBtn,loginBtn;
+    private static Users listOfUsers;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,9 +95,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         // Set up the login form.
         usrnameInput = (AutoCompleteTextView) findViewById(R.id.username);
         populateAutoComplete();
-        contactUs=(Button)findViewById(R.id.contactBtn);
-        forgotPswd=(Button)findViewById(R.id.forgetPswdBtn);
+
+        contactUs = (Button) findViewById(R.id.contactBtn);
+        forgotPswd = (Button) findViewById(R.id.forgetPswdBtn);
         pswdInput = (EditText) findViewById(R.id.password);
+
         pswdInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -99,7 +110,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 return false;
             }
         });
-
         loginForm = findViewById(R.id.login_form);
         progressView = findViewById(R.id.login_progress);
 
@@ -107,31 +117,26 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         dbHandler = new SQLiteHandler(getApplicationContext());
 
         //Session manager
-        sessionMg=new SessionManager(getApplicationContext());
+        sessionMg = new SessionManager(getApplicationContext());
         loginBtn = (Button) findViewById(R.id.loginBtn);
-        //Check if user is already logged in or not
-        if(sessionMg.isLoggedIn()){
-            //Take the user to main activity
-            startActivity(new Intent(LoginActivity.this,MainNavTabActivity.class));
-            finish();
-        }
-
         loginBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                String username=usrnameInput.getText().toString();
-                String password=pswdInput.getText().toString();
-                usersJSONParser();
+
+                pswd = pswdInput.getText().toString();
 
                 //Check for empty data in the form
                 attemptLogin();
-
             }
         });
-        //Login button click Event
 
-        rqstQueue= Volley.newRequestQueue(this);
-        usersJSONParser();
+        //Check if user is already logged in or not
+        if (sessionMg.isLoggedIn()) {
+            //Take the user to main activity
+            startActivity(new Intent(LoginActivity.this, ForumsFragment.class));
+            finish();
+        }
+
     }
 
     private void populateAutoComplete() {
@@ -187,7 +192,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             //login user
             return;
         }
-
         // Reset errors.
         usrnameInput.setError(null);
         pswdInput.setError(null);
@@ -204,15 +208,19 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             pswdInput.setError(getString(R.string.error_invalid_password));
             focusView = pswdInput;
             cancel = true;
+        }else if(TextUtils.isEmpty(password)){
+            pswdInput.setError("密碼不能為空");
+            focusView=pswdInput;
+            cancel=true;
         }
 
-        // Check for a valid email address.
+        // Check for a valid username.
         if (TextUtils.isEmpty(username)) {
             usrnameInput.setError(getString(R.string.error_field_required));
             focusView = usrnameInput;
             cancel = true;
         } else if (!isUsernameValid(username)) {
-            usrnameInput.setError(getString(R.string.error_invalid_email));
+            usrnameInput.setError(getString(R.string.invalid_username));
             focusView = usrnameInput;
             cancel = true;
         }
@@ -232,13 +240,30 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private boolean isUsernameValid(String username) {
         //TODO: Replace this with your own logic
+        /** UTF-8 (Unicode)
+         * \u4e00-\u9fa5: Chinese
+         * \u0800-\u4e00: Japanese */
+        username = usrnameInput.getText().toString();
+        String pattern="([a-zA-Z0-9_\\u4e00-\\u9fa5\\u0800-\\u4e00]+$)";
+        if(!username.matches(pattern)){
+            Toast.makeText(this,"用戶名不對",Toast.LENGTH_SHORT).show();
 
-        return username.matches("");
+            return false;
+        }
+        return username.matches(pattern);
     }
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+        String pattern = "([a-zA-Z0-9].{5,40})";
+      //  Log.d("T5", "isMatched: "+password.matches(pattern));
+
+        if(password.length()<6){
+            Toast.makeText(this,"密碼長度需在6個字節或以上", Toast.LENGTH_LONG).show();
+        }else if(!password.matches(pattern)){
+            Toast.makeText(this,"密碼不包含數字或字母以外的符號",Toast.LENGTH_LONG).show();
+        }
+        return password.matches(pattern);
     }
 
     /**
@@ -303,7 +328,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             cursor.moveToNext();
         }
 
-        addEmailsToAutoComplete(username);
+        addUsernameToAutoComplete(username);
     }
 
     @Override
@@ -317,10 +342,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 new ArrayAdapter<>(LoginActivity.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
-        usrnameInput.setAdapter(adapter);
+      //  emailInput.setAdapter(adapter);
     }
 
-
+    private void addUsernameToAutoComplete(List<String> usernames){
+        ArrayAdapter<String> adp=new ArrayAdapter<>
+                (LoginActivity.this,android.R.layout.simple_dropdown_item_1line,usernames);
+        usrnameInput.setAdapter(adp);
+    }
     private interface ProfileQuery {
         String[] PROJECTION = {
                 ContactsContract.CommonDataKinds.Email.ADDRESS,
@@ -374,7 +403,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             if (success) {
                 finish();
             } else {
-                pswdInput.setError(getString(R.string.error_incorrect_password));
+                pswdInput.setError(getString(R.string.error_invalid_password));
                 pswdInput.requestFocus();
             }
         }
@@ -387,40 +416,5 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         //Adding request to request queue
        // AppController.getInstance().addToRequestQueue();
     }
-    private int usersJSONParser(){
-        userDetails =new ArrayList<>();
-        urls=getResources().getStringArray(R.array.yamibo_api_urls);
-        JsonObjectRequest profileRqst=new JsonObjectRequest(Request.Method.GET, urls[1], null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            JSONObject var=response.getJSONObject("Variables");
-                            JSONArray varArr=var.getJSONArray("Variables");
-                           // JSONArray noticeArr=var.getJSONArray("notice");
-                            /*String uId=var.getString("member_uid");
-                            String username=var.getString("member_username");*/
-                            //JSONObject noticeObj=noticeArr.getJSONObject(pos);
-                            for(pos=0;pos<varArr.length();pos++ ){
-                                JSONObject usrObj=varArr.getJSONObject(pos);
-                                Users usr=new Users(usrObj.getString("member_uid"),
-                                        usrObj.getString("member_username"),
-                                        usrObj.getString("readaccess"),
-                                        usrObj.getString("notice"));
-                                userDetails.add(pos, usr);
-                            }
-                            Log.d("TEST","Result Size: "+ userDetails.size());
-                        } catch (JSONException je) {
-                            je.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-        });
-        rqstQueue.add(profileRqst);
-        return pos;
-    }
+
 }

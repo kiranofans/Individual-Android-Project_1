@@ -13,6 +13,7 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -23,8 +24,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.yamibo.bbs.splashscreen.Fragments.TabsFragment;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.*;
 
@@ -39,6 +50,12 @@ public class MainNavTabActivity extends AppCompatActivity implements NavigationV
     private Fragment forumsFragment,activeUserFrag,novelFrag,mangaFrag;
     private boolean isRunning;
     protected Queue<DeferredFragmentTransaction> fragTransQueue =new ArrayDeque<DeferredFragmentTransaction>();
+    private Button logoutBtn;
+    private View headerView;
+    private TextView usernameTv;
+    private static ImageButton avatarBtn;
+    public static String[] urls;
+    private RequestQueue rqstQueue;
     @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,17 +100,27 @@ public class MainNavTabActivity extends AppCompatActivity implements NavigationV
         //NavigationView
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        View nav_view=navigationView.getHeaderView(0);
-        plsLogBtn=(Button)nav_view.findViewById(R.id.loginReqstBtn);
-        regBtn=(Button)nav_view.findViewById(R.id.regBtn);
+        headerView=navigationView.getHeaderView(0);
+        avatarBtn=(ImageButton)headerView.findViewById(R.id.avatarImgBtn);
+        usernameTv=(TextView)headerView.findViewById(R.id.usrNameTxt);
+        plsLogBtn=(Button)headerView.findViewById(R.id.loginReqstBtn);
+        regBtn=(Button)headerView.findViewById(R.id.regBtn);
 
-        setLogRqstAndRegBtn();
+        setLogRqstAndRegBtn();setBtnOnClicks();
 
         setFragment(new TabsFragment());//init
         forumsFragment=getFragmentManager()
                 .findFragmentById(R.id.forumsFrm);
         activeUserFrag=getFragmentManager().findFragmentById(R.layout.tab_active_user);
     }
+    private void setBtnOnClicks(){
+        avatarBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Will start a new activity
+                startActivity(new Intent(MainNavTabActivity.this, SpaceActivity.class));
+            }
+        });
 
     //SetFragment function
     private void setFragment(android.support.v4.app.Fragment fg) {
@@ -186,6 +213,7 @@ public class MainNavTabActivity extends AppCompatActivity implements NavigationV
             }
         });
     }
+
     @Override
     public boolean onTouchEvent(MotionEvent event){
       //  final float TOUCH_SCALE_FACTOR=180.0f/320;
@@ -297,5 +325,43 @@ public class MainNavTabActivity extends AppCompatActivity implements NavigationV
     protected void onPause(){
         super.onPause();
         isRunning=false;
+    }
+    private void usersJSONParser(){
+        urls=getResources().getStringArray(R.array.yamibo_api_urls);
+        JsonObjectRequest profileRqst=new JsonObjectRequest(Request.Method.GET, urls[1], null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        /*try {*/
+                        if(response!=null){
+                            String usrNames=response.optString("member_username");
+                            if(usrNames!=null){
+                                JSONArray jArr=response.optJSONArray("Variables");
+                                if(jArr!=null){
+                                    for(int i=0;i<jArr.length();i++){
+                                        Log.i("T6", "Username: "+usrNames);
+
+                                    }
+                                }
+                            }
+                        }
+                            /*JSONObject usrVar=response.getJSONObject("Variables");
+                            Picasso.with(NavHeaderActivity.this).load(""+usrVar.get("member_avatar"))
+                                    .fit().centerInside().into(avatarBtn);
+                            String names=""+usrVar.get("member_username");
+                            usernameTv.setText(names);
+                            Log.d("TEST6","Username: "+names);*/
+                        /*catch (JSONException je) {
+                            je.printStackTrace();
+                        }*/
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        rqstQueue.add(profileRqst);
     }
 }

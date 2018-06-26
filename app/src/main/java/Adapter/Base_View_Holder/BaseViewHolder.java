@@ -16,7 +16,6 @@ public abstract class BaseViewHolder<T> extends RecyclerView.ViewHolder {
     SparseArray<Base_Items_Model> sectionList;
     public BaseViewHolder(View itemView) {
         super(itemView);
-       //this.sectionTitleTv=(TextView)itemView.findViewById(secTxtId);
     }
     public abstract void bind(T object);
 

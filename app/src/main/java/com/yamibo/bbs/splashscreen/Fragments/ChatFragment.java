@@ -119,7 +119,6 @@ MyRecyclerAdapter.OnItemClickListener{
                         try {
                             JSONObject var = response.getJSONObject("Variables");
                             JSONArray threadArr = var.getJSONArray("forum_threadlist");
-
                             for (int i = 0; i < threadArr.length(); i++) {
                                 JSONObject threadObj = threadArr.getJSONObject(i);
                                 String tid=threadObj.getString("tid");
