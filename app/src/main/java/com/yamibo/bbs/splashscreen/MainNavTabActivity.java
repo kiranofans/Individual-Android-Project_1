@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,107 +14,99 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.util.*;
 import android.view.MotionEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.*;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
+import com.android.volley.*;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.yamibo.bbs.splashscreen.Fragments.TabsFragment;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.w3c.dom.Text;
-
-import java.util.*;
-
+import org.json.*;
 import Adapter.ImgViewPagerAdapter;
-import Model.DeferredFragmentTransaction;
 
-public class MainNavTabActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
-    private ViewPager imgVp; ImgViewPagerAdapter vpAdp;
+public class MainNavTabActivity extends AppCompatActivity implements
+        NavigationView.OnNavigationItemSelectedListener {
+    private ViewPager imgVp;
+    private ImgViewPagerAdapter vpAdp;
     protected static CollapsingToolbarLayout collapsyToolbar;
-    private static  ImageButton leftNav,rightNav;
-    private float preX,preY; private Button plsLogBtn,regBtn;
-    private Fragment forumsFragment,activeUserFrag,novelFrag,mangaFrag;
+    private static ImageButton leftNav, rightNav;
+    private float preX, preY;
+    private Button plsLogBtn, regBtn;
+    private Fragment forumsFragment, activeUserFrag, novelFrag, mangaFrag;
     private boolean isRunning;
-    protected Queue<DeferredFragmentTransaction> fragTransQueue =new ArrayDeque<DeferredFragmentTransaction>();
     private Button logoutBtn;
+    private Toolbar toolbar;
     private View headerView;
+    private NavigationView nav_view;
+    private DrawerLayout drawer;
     private TextView usernameTv;
     private static ImageButton avatarBtn;
     public static String[] urls;
     private RequestQueue rqstQueue;
+
     @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_nav);
-        imgVp=(ViewPager)findViewById(R.id.imgViewPager);
+        imgVp = (ViewPager) findViewById(R.id.imgViewPager);
+        usernameTv = (TextView) headerView.findViewById(R.id.usrNameTxt);
 
-        String largeImg="https://cdn-images-1.medium.com/max/1440/1*7Ur8GqhvuHU7uKFlDJsx1g.png";
         //ViewPager with images
-        vpAdp=new ImgViewPagerAdapter(this);
+        vpAdp = new ImgViewPagerAdapter(this);
         imgVp.setAdapter(vpAdp);
-        leftNav=(ImageButton)findViewById(R.id.left_nav);
-        rightNav=(ImageButton)findViewById(R.id.right_nav);
+        leftNav = (ImageButton) findViewById(R.id.left_nav);
+        rightNav = (ImageButton) findViewById(R.id.right_nav);
         imgNav();
 
-        //Toolbar (For collapsing Toolbar layout)
-        Toolbar toolbar = (Toolbar) findViewById(R.id.baseToolbar);
+        setCollapsyToolbar();
+        setNavDrawerView();
+
+        headerView = nav_view.getHeaderView(0);
+
+        nav_view.setNavigationItemSelectedListener(this);
+        setLogRqstAndRegBtn();
+        setBtnOnClicks();
+
+        setFragment(new TabsFragment());//init
+        forumsFragment = getFragmentManager()
+                .findFragmentById(R.id.forumsFrm);
+        activeUserFrag = getFragmentManager().findFragmentById(R.layout.tab_active_user);
+    }
+
+    private void setCollapsyToolbar() {
+        toolbar = (Toolbar) findViewById(R.id.baseToolbar);
         setSupportActionBar(toolbar);
-        ViewCompat.setTransitionName(findViewById(R.id.app_bar_main),largeImg);
-
-        collapsyToolbar =(CollapsingToolbarLayout)findViewById(R.id.collapsy_toolbar);
+        ViewCompat.setTransitionName(findViewById(R.id.app_bar_main), "");
+        collapsyToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsy_toolbar);
         collapsyToolbar.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
-        collapsyToolbar.setCollapsedTitleTextColor(R.color.color_dark_red);
+        collapsyToolbar.setCollapsedTitleTextColor(getResources()
+                .getColor(R.color.color_dark_red, null));
 
-        //Floating Action Button
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+    }
 
-       //Drawer
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+    private void setNavDrawerView() {
+        nav_view = (NavigationView) findViewById(R.id.nav_view);
+
+        //Drawer
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
-        //NavigationView
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        headerView=navigationView.getHeaderView(0);
-        avatarBtn=(ImageButton)headerView.findViewById(R.id.avatarImgBtn);
-        usernameTv=(TextView)headerView.findViewById(R.id.usrNameTxt);
-        plsLogBtn=(Button)headerView.findViewById(R.id.loginReqstBtn);
-        regBtn=(Button)headerView.findViewById(R.id.regBtn);
-
-        setLogRqstAndRegBtn();setBtnOnClicks();
-
-        setFragment(new TabsFragment());//init
-        forumsFragment=getFragmentManager()
-                .findFragmentById(R.id.forumsFrm);
-        activeUserFrag=getFragmentManager().findFragmentById(R.layout.tab_active_user);
     }
-    private void setBtnOnClicks(){
+    private void setBtnOnClicks() {
+        avatarBtn = (ImageButton) headerView.findViewById(R.id.avatarImgBtn);
+        plsLogBtn = (Button) headerView.findViewById(R.id.loginReqstBtn);
+        regBtn = (Button) headerView.findViewById(R.id.regBtn);
         avatarBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,9 +114,9 @@ public class MainNavTabActivity extends AppCompatActivity implements NavigationV
                 startActivity(new Intent(MainNavTabActivity.this, SpaceActivity.class));
             }
         });
-
+    }
     //SetFragment function
-    private void setFragment(android.support.v4.app.Fragment fg) {
+    private void setFragment (android.support.v4.app.Fragment fg){
         if (fg != null) {
             //Have to use v4.app.FragmentTransaction
             android.support.v4.app.FragmentTransaction ft =
@@ -134,9 +127,8 @@ public class MainNavTabActivity extends AppCompatActivity implements NavigationV
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
     }
-
     @Override
-    public void onBackPressed() {
+    public void onBackPressed () {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -145,13 +137,13 @@ public class MainNavTabActivity extends AppCompatActivity implements NavigationV
         }
     }
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu (Menu menu){
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.nav_and_tab, menu);
         return true;
     }
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected (MenuItem item){
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
@@ -163,9 +155,8 @@ public class MainNavTabActivity extends AppCompatActivity implements NavigationV
         }
         return super.onOptionsItemSelected(item);
     }
-
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected (MenuItem item){
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -187,159 +178,63 @@ public class MainNavTabActivity extends AppCompatActivity implements NavigationV
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-   public void imgNav(){
-       leftNav.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               //startActivity(new Intent(getApplicationContext(),Main2Activity.class));
-                int tab=imgVp.getCurrentItem();
-                if(tab>0){
+    public void imgNav () {
+        leftNav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //startActivity(new Intent(getApplicationContext(),Main2Activity.class));
+                int tab = imgVp.getCurrentItem();
+                if (tab > 0) {
                     tab--;
                     imgVp.setCurrentItem(tab);
 
-                }else if(tab==0){
+                } else if (tab == 0) {
                     imgVp.setCurrentItem(tab);
 
                 }
-           }
-       });
-       //Images right navigation
+            }
+        });
+        //Images right navigation
         rightNav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int tab=imgVp.getCurrentItem();
+                int tab = imgVp.getCurrentItem();
                 tab++;
                 imgVp.setCurrentItem(tab);
             }
         });
     }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event){
-      //  final float TOUCH_SCALE_FACTOR=180.0f/320;
-
-        float x=event.getX();
-        float y=event.getY();
-        switch (event.getAction()){
-            case MotionEvent.ACTION_DOWN:
-                float dx=x-preX;
-                float dy=y-preY;
-                //Reverse direction of rotation above the mid-line
-                leftNav.setVisibility(View.VISIBLE);
-                rightNav.setVisibility(View.VISIBLE);
-            break;
-            case MotionEvent.ACTION_UP:
-                leftNav.setVisibility(View.INVISIBLE);
-                rightNav.setVisibility(View.INVISIBLE);
-                break;
-        }
-        preX=x;
-        preY=y;
-        return true;
-    }
-    public void setLogRqstAndRegBtn(){
+    public void setLogRqstAndRegBtn () {
         plsLogBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainNavTabActivity.this,LoginActivity.class));
+                startActivity(new Intent(MainNavTabActivity.this, LoginActivity.class));
             }
         });
         regBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent
-                        (MainNavTabActivity.this,AccountRegistPage.class));
+                        (MainNavTabActivity.this, AccountRegistPage.class));
             }
         });
-        plsLogBtn.setPaintFlags(plsLogBtn.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
-        regBtn.setPaintFlags(regBtn.getPaintFlags()|Paint.UNDERLINE_TEXT_FLAG);
+        plsLogBtn.setPaintFlags(plsLogBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        regBtn.setPaintFlags(regBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
     }
-
-    /** @param fragFrameId the view the fragment is going to be inflated in
-     * @param replaceFrag    the fragment that is going to be inflated.*/
-    public void replaceFragAddToBackStack(int fragFrameId, final android.support.v4.app.Fragment replaceFrag){
-        if(!isRunning){
-            //This handles switching of fragments when the activity is paused. To prevent IllegalSttateException
-            //This transaction will be used in the resume part too.
-            DeferredFragmentTransaction fragTrans=new DeferredFragmentTransaction(){
-                @Override
-                public void commit(){
-                    replaceFragAddToBackStack(getContentFrameId(), getReplacingFrag());
-                }
-            };
-            fragTrans.setContentFrameId(fragFrameId);
-            fragTrans.setReplaceFrag(replaceFrag);
-
-            fragTransQueue.add(fragTrans);
-        }else{
-            replaceFragAddToBackStack(fragFrameId,replaceFrag);
-        }
-    }
-    private void replaceFragAddToBackStackInternal(int fragFrameId, android.support.v4.app.Fragment replaceFrag){
-        FragmentManager fragMg=this.getSupportFragmentManager();
-        fragMg.beginTransaction().replace(fragFrameId,replaceFrag)
-                .addToBackStack(replaceFrag.getClass().getSimpleName()).commit();
-    }
-
-    /**Replaces the fragment currently occupying the view with id contentFrameId.
-     *
-     * @param fragFrameId    the view the fragment is going to be inflated in
-     * @param replaceFrag the fragment that is going to be inflated.*/
-    public void replaceFrag(int fragFrameId, android.support.v4.app.Fragment replaceFrag){
-        if(!isRunning){
-            /**This handles switching of fragments when the activity
-             * is paused in order to prevent IllegalStateException
-             * This transaction will be used in the resume part too*/
-            DeferredFragmentTransaction fragTrans=new DeferredFragmentTransaction() {
-                @Override
-                public void commit() {
-                    replaceFragInternal(getContentFrameId(),getReplacingFrag() );
-                }
-            };
-            fragTrans.setContentFrameId(fragFrameId);
-            fragTrans.setReplaceFrag(replaceFrag);
-
-            fragTransQueue.add(fragTrans);
-        }else {
-            replaceFragInternal(fragFrameId,replaceFrag);
-        }
-    }
-    private void replaceFragInternal(int fragFrameId, android.support.v4.app.Fragment replaceFrag){
-        FragmentManager fragMg=getSupportFragmentManager();
-        fragMg.beginTransaction().replace(fragFrameId,replaceFrag).commit();
-    }
-
-    @Override
-    protected void onResume(){
-        super.onResume();
-        isRunning=true;
-    }
-    @Override
-    protected void onPostResume(){
-        super.onPostResume();
-        while(!fragTransQueue.isEmpty()){
-            fragTransQueue.remove().commit();
-        }
-    }
-    @Override
-    protected void onPause(){
-        super.onPause();
-        isRunning=false;
-    }
-    private void usersJSONParser(){
-        urls=getResources().getStringArray(R.array.yamibo_api_urls);
-        JsonObjectRequest profileRqst=new JsonObjectRequest(Request.Method.GET, urls[1], null,
+    private void usersJSONParser () {
+        urls = getResources().getStringArray(R.array.yamibo_api_urls);
+        JsonObjectRequest profileRqst = new JsonObjectRequest(Request.Method.GET, urls[1], null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         /*try {*/
-                        if(response!=null){
-                            String usrNames=response.optString("member_username");
-                            if(usrNames!=null){
-                                JSONArray jArr=response.optJSONArray("Variables");
-                                if(jArr!=null){
-                                    for(int i=0;i<jArr.length();i++){
-                                        Log.i("T6", "Username: "+usrNames);
+                        if (response != null) {
+                            String usrNames = response.optString("member_username");
+                            if (usrNames != null) {
+                                JSONArray jArr = response.optJSONArray("Variables");
+                                if (jArr != null) {
+                                    for (int i = 0; i < jArr.length(); i++) {
+                                        Log.i("T6", "Username: " + usrNames);
 
                                     }
                                 }
@@ -363,5 +258,16 @@ public class MainNavTabActivity extends AppCompatActivity implements NavigationV
             }
         });
         rqstQueue.add(profileRqst);
+    }
+    private void floatingFab () {
+        //Floating Action Button
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
     }
 }
