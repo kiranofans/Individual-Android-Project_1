@@ -54,11 +54,7 @@ MyRecyclerAdapter.OnItemClickListener{
         recyclerView = (RecyclerView)v.findViewById(R.id.post_recyc_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        /*recyclerView1 = (RecyclerView)v.findViewById(R.id.postRecView_2);
-        recyclerView1.setLayoutManager(new LinearLayoutManager((getContext())));*/
-
         rqstQueue = Volley.newRequestQueue(getContext());
-        //baseModels_1=new ArrayList<>();
         baseModels=new ArrayList<>();
         loadContent();
         if (isRefreshing()) {
@@ -74,7 +70,6 @@ MyRecyclerAdapter.OnItemClickListener{
         }
     }
     protected void retrieveDocuments(){
-
         if(refreshSwiper.isRefreshing()){
             handler.postDelayed(new Runnable() {
                 @Override
@@ -88,14 +83,12 @@ MyRecyclerAdapter.OnItemClickListener{
     private void loadContent(){
         refreshSwiper=(SwipeRefreshLayout)v.findViewById(R.id.swipe_container);
         refreshSwiper.setOnRefreshListener(ChatFragment.this);
-
         refreshSwiper.post(new Runnable() {
             @Override
             public void run() {
                 post_subs_JsonParser();
             }
         });
-
     }
     @Override
     public void onRefresh() {

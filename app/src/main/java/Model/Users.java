@@ -6,6 +6,7 @@ public class Users implements Base_Items_Model{
     private String notices, othersReplies,usrReplies,groupID;
     private String readAccess,usrSpace;
 
+    public Users(){}
     public Users(String notices,String imgUrl,String username, String usrId,String groupId) {
         this.notices=notices;
         this.usrAvatarUrl=imgUrl;

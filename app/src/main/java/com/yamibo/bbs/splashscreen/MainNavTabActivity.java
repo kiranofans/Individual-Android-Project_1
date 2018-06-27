@@ -5,51 +5,56 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.*;
-import android.view.MotionEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.*;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.*;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.squareup.picasso.Picasso;
 import com.yamibo.bbs.splashscreen.Fragments.TabsFragment;
 import org.json.*;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import Adapter.ImgViewPagerAdapter;
 
 public class MainNavTabActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener {
-    private ViewPager imgVp;
-    private ImgViewPagerAdapter vpAdp;
+    private static ViewPager imgVp;
+    private static ImgViewPagerAdapter vpAdp;
     protected static CollapsingToolbarLayout collapsyToolbar;
-    private static ImageButton leftNav, rightNav;
+    private static ImageView leftNav, rightNav,avatarBtn;
     private float preX, preY;
-    private Button plsLogBtn, regBtn;
+    private Button plsLogBtn, regBtn,logoutBtn;
     private Fragment forumsFragment, activeUserFrag, novelFrag, mangaFrag;
     private boolean isRunning;
-    private Button logoutBtn;
     private Toolbar toolbar;
-    private View headerView;
+    private View headerView,loginView;
     private NavigationView nav_view;
     private DrawerLayout drawer;
     private TextView usernameTv;
-    private static ImageButton avatarBtn;
-    public static String[] urls;
+    public static String[] urls; private String username;
+    private AutoCompleteTextView userInput;
     private RequestQueue rqstQueue;
 
     @SuppressLint("ResourceType")
@@ -58,31 +63,37 @@ public class MainNavTabActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_nav);
         imgVp = (ViewPager) findViewById(R.id.imgViewPager);
+        nav_view = (NavigationView) findViewById(R.id.nav_view);
+        headerView = nav_view.getHeaderView(0);
+        plsLogBtn = (Button) headerView.findViewById(R.id.loginReqstBtn);
+        regBtn = (Button) headerView.findViewById(R.id.regBtn);
+        avatarBtn = (ImageView) headerView.findViewById(R.id.avatarImgBtn);
+        loginView=View.inflate(this,R.layout.activity_login,null);
         usernameTv = (TextView) headerView.findViewById(R.id.usrNameTxt);
 
         //ViewPager with images
         vpAdp = new ImgViewPagerAdapter(this);
         imgVp.setAdapter(vpAdp);
-        leftNav = (ImageButton) findViewById(R.id.left_nav);
-        rightNav = (ImageButton) findViewById(R.id.right_nav);
-        imgNav();
 
-        setCollapsyToolbar();
-        setNavDrawerView();
-
-        headerView = nav_view.getHeaderView(0);
+        imgNav();setCollapsedToolbar();setNavDrawerView();
 
         nav_view.setNavigationItemSelectedListener(this);
-        setLogRqstAndRegBtn();
-        setBtnOnClicks();
+        setLogRqstAndRegBtn();setBtnOnClicks();
 
+        rqstQueue = Volley.newRequestQueue(this); usersJSONParser();
+
+        //ViewPager Tabs and tab fragments
         setFragment(new TabsFragment());//init
+        initFragments();
+    }
+    private void initFragments(){
         forumsFragment = getFragmentManager()
                 .findFragmentById(R.id.forumsFrm);
         activeUserFrag = getFragmentManager().findFragmentById(R.layout.tab_active_user);
+        novelFrag=getFragmentManager().findFragmentById(R.layout.tab_novels);
+        mangaFrag=getFragmentManager().findFragmentById(R.layout.tab_manga);
     }
-
-    private void setCollapsyToolbar() {
+    private void setCollapsedToolbar() {
         toolbar = (Toolbar) findViewById(R.id.baseToolbar);
         setSupportActionBar(toolbar);
         ViewCompat.setTransitionName(findViewById(R.id.app_bar_main), "");
@@ -90,13 +101,9 @@ public class MainNavTabActivity extends AppCompatActivity implements
         collapsyToolbar.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
         collapsyToolbar.setCollapsedTitleTextColor(getResources()
                 .getColor(R.color.color_dark_red, null));
-
     }
 
     private void setNavDrawerView() {
-        nav_view = (NavigationView) findViewById(R.id.nav_view);
-
-        //Drawer
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -104,9 +111,6 @@ public class MainNavTabActivity extends AppCompatActivity implements
         toggle.syncState();
     }
     private void setBtnOnClicks() {
-        avatarBtn = (ImageButton) headerView.findViewById(R.id.avatarImgBtn);
-        plsLogBtn = (Button) headerView.findViewById(R.id.loginReqstBtn);
-        regBtn = (Button) headerView.findViewById(R.id.regBtn);
         avatarBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,9 +119,8 @@ public class MainNavTabActivity extends AppCompatActivity implements
             }
         });
     }
-    //SetFragment function
     private void setFragment (android.support.v4.app.Fragment fg){
-        if (fg != null) {
+        if (fg != null) {/**Set ViewPager tabs fragment*/
             //Have to use v4.app.FragmentTransaction
             android.support.v4.app.FragmentTransaction ft =
                     getSupportFragmentManager().beginTransaction();
@@ -144,9 +147,9 @@ public class MainNavTabActivity extends AppCompatActivity implements
     }
     @Override
     public boolean onOptionsItemSelected (MenuItem item){
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+        /** Handle action bar item clicks here. The action bar will
+         automatically handle clicks on the Home/Up button, so long
+         as you specify a parent activity in AndroidManifest.xml.*/
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
@@ -157,7 +160,7 @@ public class MainNavTabActivity extends AppCompatActivity implements
     }
     @Override
     public boolean onNavigationItemSelected (MenuItem item){
-        // Handle navigation view item clicks here.
+        /** Handle navigation view item clicks here.*/
         int id = item.getItemId();
 
         if (id == R.id.my_account) {
@@ -173,12 +176,13 @@ public class MainNavTabActivity extends AppCompatActivity implements
         } else if (id == R.id.nav_send) {
 
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
     public void imgNav () {
+        leftNav = (ImageButton) findViewById(R.id.left_nav);
+        rightNav = (ImageButton) findViewById(R.id.right_nav);
         leftNav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -227,29 +231,23 @@ public class MainNavTabActivity extends AppCompatActivity implements
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        /*try {*/
-                        if (response != null) {
-                            String usrNames = response.optString("member_username");
-                            if (usrNames != null) {
-                                JSONArray jArr = response.optJSONArray("Variables");
-                                if (jArr != null) {
-                                    for (int i = 0; i < jArr.length(); i++) {
-                                        Log.i("T6", "Username: " + usrNames);
+                        try {
+                            userInput=(AutoCompleteTextView)loginView.findViewById(R.id.username);
+                            String userName=userInput.getText().toString();
+                            String usernames="";
+                            JSONObject var=response.getJSONObject("Variables");
+                            String imgUrl=var.getString("member_avatar");
+                            JSONObject spaceObj=var.getJSONObject("space");
 
-                                    }
-                                }
-                            }
-                        }
-                            /*JSONObject usrVar=response.getJSONObject("Variables");
-                            Picasso.with(NavHeaderActivity.this).load(""+usrVar.get("member_avatar"))
-                                    .fit().centerInside().into(avatarBtn);
-                            String names=""+usrVar.get("member_username");
-                            usernameTv.setText(names);
-                            Log.d("TEST6","Username: "+names);*/
-                        /*catch (JSONException je) {
+                            usernames=var.optString("username");
+
+                            Picasso.with(getApplicationContext())
+                                    .load(imgUrl).fit().centerInside().into(avatarBtn);
+                            Log.d("T6","ImgUrl: "+imgUrl+"\nUsername:"+usernames+"\nIsUsrname: "+
+                                    var.has("username"));
+                        }catch (JSONException je){
                             je.printStackTrace();
-                        }*/
-
+                        }
                     }
                 }, new Response.ErrorListener() {
             @Override

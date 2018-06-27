@@ -6,18 +6,22 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/my_account"
+            android:checkable="true"
             android:icon="@mipmap/account"
             android:title="我的賬戶" />
         <item
             android:id="@+id/my_space"
+            android:checkable="true"
             android:icon="@drawable/ic_menu_gallery"
             android:title="我的空間" />
         <item
             android:id="@+id/nav_slideshow"
+            android:checkable="true"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Slideshow" />
         <item
             android:id="@+id/nav_manage"
+            android:checkable="true"
             android:icon="@drawable/ic_menu_manage"
             android:title="工具" />
     </group>
@@ -26,10 +30,12 @@
         <menu>
             <item
                 android:id="@+id/nav_share"
+                android:checkable="true"
                 android:icon="@drawable/ic_menu_share"
                 android:title="Share" />
             <item
                 android:id="@+id/nav_send"
+                android:checkable="true"
                 android:icon="@drawable/ic_menu_send"
                 android:title="Send Feedback" />
         </menu>

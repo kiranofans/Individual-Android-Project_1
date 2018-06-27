@@ -10,6 +10,7 @@ import android.support.v4.app.*;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.*;
 import android.view.*;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -40,6 +41,7 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
     private String imgUrl="https://bbs.yamibo.com/template/oyeeh_com_baihe/img/shdm1020/forum_new.gif";
     private static View v;  String name;
     private SwipeRefreshLayout swiper;
+    private MainNavTabActivity main=new MainNavTabActivity();
     @TargetApi(Build.VERSION_CODES.N)
 
     public ForumsFragment(){}
@@ -48,27 +50,24 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
        /**This method defines the xml layout file for the fragment*/
         v=inflater.inflate(R.layout.tab_forums,container,false);
-
-
-
         return v;
     }
     @Override
     public void onViewCreated(View v,Bundle savedInstanceState){
         /**The onViewCreated method is called after onCreateView method
          * to avoid null rootView exception*/
-        swiper=(SwipeRefreshLayout)v.findViewById(R.id.forumsSwiper);
         recyclerView=(RecyclerView)v.findViewById(R.id.recycler_view);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
-                LinearLayoutManager.VERTICAL));
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),LinearLayoutManager.VERTICAL));
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        recyclerView1=(RecyclerView)v.findViewById(R.id.recycler_view_2);
+        recyclerView1.addItemDecoration(new DividerItemDecoration(getContext(),LinearLayoutManager.VERTICAL));
+        recyclerView1.setLayoutManager(new LinearLayoutManager(getContext()));
 
         rqstQueue= Volley.newRequestQueue(getContext());
         forumsJsonParser();
     }
     private int forumsJsonParser() {
-        swiper.setRefreshing(true);
         forumsList=new ArrayList<>();
         forumsList_1=new ArrayList<>();
         sectionList =new ArrayList<>();
@@ -90,23 +89,20 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
                                 (forumObj.getString("name"),
                                         (forumObj.getString("description")),
                                         "(" + forumObj.getString("todayposts") + ")");
-                        if(!fid.equals("16")){
+                        if(fid.equals("16")){
                             forumsList.add(forumsListItem);
                         }else{
-                            forumsList.add(forumsListItem);
+                            forumsList_1.add(forumsListItem);
+
                         }
-
                     }
-                    sectionList.add(new SectionRecycleViewAdapter.Sections(0,"廟堂"));
-                    sectionList.add(new SectionRecycleViewAdapter.Sections(1,"江湖"));
-
                     recycleAdp=new MyRecyclerAdapter(getContext(),forumsList);
                     recycleAdp.setOnItemClickListener(ForumsFragment.this);
-                    SectionRecycleViewAdapter.Sections[] secArr=new SectionRecycleViewAdapter.Sections[sectionList.size()];
-                    SectionRecycleViewAdapter secAdp =new SectionRecycleViewAdapter(getContext(),R.layout.catlist_sections,
-                            R.id.catListNames,recycleAdp);
-                    secAdp.setSections(sectionList.toArray(secArr));
-                    recyclerView.setAdapter(secAdp);
+                    recyclerView.setAdapter(recycleAdp);
+
+                    recycleAdp_1=new MyRecyclerAdapter(getContext(),forumsList_1);
+                    recycleAdp_1.setOnItemClickListener(ForumsFragment.this);
+                    recyclerView1.setAdapter(recycleAdp_1);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -117,7 +113,6 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
                     error.printStackTrace();
                 }
         });
-        swiper.setRefreshing(false);
         rqstQueue.add(request);
         return pos;
     }
