@@ -40,5 +40,6 @@
         <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?version=4&module=profile]]></item>
         <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?version=4&module=forumdisplay&fid=33&page=1]]></item>
         <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?version=&module=mythread&page=1]]></item>
+        <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?module=login&loginsubmit=yes]]></item>
     </string-array>
 </resources>

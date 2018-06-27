@@ -21,6 +21,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -65,6 +66,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private SQLiteHandler dbHandler;
     private SessionManager sessionMg;
     private String TEST = Registration.class.getSimpleName();
+    private RequestQueue rqstQueue;
     /**
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
@@ -110,6 +112,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 return false;
             }
         });
+        rqstQueue=Volley.newRequestQueue(getApplicationContext());
         loginForm = findViewById(R.id.login_form);
         progressView = findViewById(R.id.login_progress);
 
@@ -122,18 +125,19 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         loginBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 pswd = pswdInput.getText().toString();
 
                 //Check for empty data in the form
-                attemptLogin();
+                attemptLogin(); JasonLogin();
             }
         });
 
         //Check if user is already logged in or not
         if (sessionMg.isLoggedIn()) {
+
             //Take the user to main activity
             startActivity(new Intent(LoginActivity.this, ForumsFragment.class));
+
             finish();
         }
 
@@ -230,6 +234,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // form field with an error.
             focusView.requestFocus();
         } else {
+
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
@@ -416,5 +421,36 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         //Adding request to request queue
        // AppController.getInstance().addToRequestQueue();
     }
+    private void JasonLogin(){
+        String[] urls = getResources().getStringArray(R.array.yamibo_api_urls);
 
+        JsonObjectRequest request=new JsonObjectRequest(Request.Method.POST, urls[4], null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONObject msgObj=response.getJSONObject("Message");
+                            JSONObject varObj=response.getJSONObject("Variables");
+                            String welcomeBack=msgObj.getString("messagestr");
+                            String isLoggedIn=msgObj.getString("messageval");
+                            String username=varObj.getString("member_username");
+
+                            if(usrnameInput.getText().toString().equals(username)){
+                                //add user details to nav header
+                                MainNavTabActivity main= new MainNavTabActivity();
+                            }
+                            Log.d("T7","Is Username: "+varObj.has("member_username"));
+
+                        } catch (JSONException je) {
+                            je.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        rqstQueue.add(request);
+    }
 }

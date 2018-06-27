@@ -237,14 +237,18 @@ public class MainNavTabActivity extends AppCompatActivity implements
                             String usernames="";
                             JSONObject var=response.getJSONObject("Variables");
                             String imgUrl=var.getString("member_avatar");
-                            JSONObject spaceObj=var.getJSONObject("space");
+                            //JSONObject spaceObj=var.getJSONObject("space");
 
-                            usernames=var.optString("username");
-
+                           // usernames=
+                            //String uid=;
+                            //String gId=;
                             Picasso.with(getApplicationContext())
                                     .load(imgUrl).fit().centerInside().into(avatarBtn);
-                            Log.d("T6","ImgUrl: "+imgUrl+"\nUsername:"+usernames+"\nIsUsrname: "+
-                                    var.has("username"));
+                            usernameTv.setText(usernames);
+                            Log.d("T6","ImgUrl: "+imgUrl+"\nUsername:"+var.get("member_username")+
+                                    "\nIsUsrname: "+ var.has("username")+
+                                    " Uid: "+var.get("member_uid")+" GroupId: "+var.get("groupid")+" readaccess:"+
+                                    var.get("readaccess"));
                         }catch (JSONException je){
                             je.printStackTrace();
                         }
@@ -268,4 +272,5 @@ public class MainNavTabActivity extends AppCompatActivity implements
             }
         });
     }
+
 }
