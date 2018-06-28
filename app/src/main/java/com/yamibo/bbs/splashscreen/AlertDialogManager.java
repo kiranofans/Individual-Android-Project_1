@@ -5,6 +5,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 
 public class AlertDialogManager {
+    /**
+     * Function to display simple Alert Dialog
+     * @param context - application context
+     * @param title - alert dialog title
+     * @param msg - alert message
+     * @param status - success/failure (used to set icon)
+     *               - pass null if you don't want icon
+     * */
     public void showAlertDialog(Context context,String title,String msg,Boolean status){
         AlertDialog alertDialog=new AlertDialog.Builder(context).create();
 
@@ -16,7 +24,8 @@ public class AlertDialogManager {
 
         if(status!=null){
             //Setting alert dialog icon
-            alertDialog.setIcon((status)? android.R.drawable.checkbox_on_background);
+            alertDialog.setIcon((status) ? android.R.drawable.checkbox_on_background :
+            android.R.drawable.ic_delete);
         }
 
         //Setting OK button
