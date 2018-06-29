@@ -104,13 +104,11 @@ public class SplashScreenActivity extends AppCompatActivity {
          * so we can put setContentView() before super.onCreate() method*/
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
-        AppController appControl=new AppController();
         splash();
 
         mVisible = true;
         mControlsView = findViewById(R.id.fullscreen_content_controls);
         mContentView = findViewById(R.id.fullscreen_content);
-
 
         // Set up the user interaction to manually show or hide the system UI.
         mContentView.setOnClickListener(new View.OnClickListener() {

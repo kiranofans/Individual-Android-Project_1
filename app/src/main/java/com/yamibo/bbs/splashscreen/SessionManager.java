@@ -7,35 +7,43 @@ import android.util.Log;
 
 import java.util.HashMap;
 
+import Model.Users;
+
 public class SessionManager {
     private static String LOGCAT_TAG=SessionManager.class.getSimpleName();
-    SharedPreferences sharePrefs;
-
+    private static SharedPreferences sharePrefs;
     SharedPreferences.Editor editor;
-    Context _context;
-
-    int PRIVATE_MODE=0;
-
+    private Context _context;
+    private static SessionManager instance;
     private static final String SHARED_NAME="com.yamibo.bbs.splashscreen";
-    private static final String IS_KEY_LOGGEDIN="login_succeed";
+    private static final String IS_KEY_LOGGEDIN="1f11YOJkZaB/lKtA4fznjlW3ZkwVmRm1wMleFHKIgZtJvvnUtxMkGqMZ2Lemq1+CrpBbcekwBunxG+IczOVPaare9g";
     public static final String KEY_USERNAME="member_username";
     public static final String KEY_COOKIEPRE="cookiepre";
     public static final String KEY_EMAIL="email";
     public static final String KEY_GROUPID="groupid";
     // Constructor
-    public SessionManager(Context context){
+    private SessionManager(Context context){
         this._context=context;
-        sharePrefs=context.getSharedPreferences(SHARED_NAME,Context.MODE_PRIVATE);
-        editor=sharePrefs.edit();
+
+    }
+    public static synchronized SessionManager getInstance(Context context){
+        if(instance==null){
+            instance=new SessionManager(context);
+        }
+        return instance;
     }
     public void createLoginSession(String username){
+        sharePrefs=_context.getSharedPreferences(SHARED_NAME,Context.MODE_PRIVATE);
+        editor=sharePrefs.edit();
+
         //Storing login value as TRUE
         editor.putBoolean(IS_KEY_LOGGEDIN,true);
         editor.putString(KEY_USERNAME,username);
         editor.apply();
         Log.d(LOGCAT_TAG,"User login session modified");
     }
-    public boolean  checkIfLoggedIn(){
+    public boolean checkIfLoggedIn(){
+        sharePrefs=_context.getSharedPreferences(SHARED_NAME,Context.MODE_PRIVATE);
         if(!this.isLoggedIn()){
             //user is not logged in redirect the user to login page
             Intent intent=new Intent(_context,LoginActivity.class);
@@ -53,8 +61,9 @@ public class SessionManager {
     }
 
     /**Get stored session data*/
-    public HashMap<String,String> getUserDetails(){
+    public HashMap<String, String> getUserDetails(Users user){
         HashMap<String,String> users=new HashMap<>();
+        sharePrefs=_context.getSharedPreferences(SHARED_NAME,Context.MODE_PRIVATE);
 
         //username
         users.put(KEY_USERNAME,sharePrefs.getString(KEY_USERNAME,null));
@@ -66,6 +75,8 @@ public class SessionManager {
     }
     public void logoutUser(){
         //Clearing all data frm shared preferences
+        sharePrefs=_context.getSharedPreferences(SHARED_NAME,Context.MODE_PRIVATE);
+
         editor.clear();
         editor.apply();
 
@@ -84,6 +95,7 @@ public class SessionManager {
 
     /**Quick check for login*/
     public boolean isLoggedIn(){
+        sharePrefs=_context.getSharedPreferences(SHARED_NAME,Context.MODE_PRIVATE);
         return sharePrefs.getBoolean(IS_KEY_LOGGEDIN,false);
     }
 }

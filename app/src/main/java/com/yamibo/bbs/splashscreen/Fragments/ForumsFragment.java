@@ -10,7 +10,6 @@ import android.support.v4.app.*;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.*;
 import android.view.*;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -19,7 +18,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.yamibo.bbs.splashscreen.ChatSec_Activity;
+import com.yamibo.bbs.splashscreen.PostActivity;
 import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 import com.yamibo.bbs.splashscreen.R;
 
@@ -122,7 +121,7 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
             Toast.makeText(getContext(), "Hi,it's index "+position,
                     Toast.LENGTH_SHORT).show();
         }else{
-            Intent chatIntent=new Intent(getActivity(),ChatSec_Activity.class);
+            Intent chatIntent=new Intent(getActivity(),PostActivity.class);
             ((MainNavTabActivity)getActivity()).startActivity(chatIntent);
 
         }

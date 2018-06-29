@@ -32,10 +32,6 @@ import com.squareup.picasso.Picasso;
 import com.yamibo.bbs.splashscreen.Fragments.TabsFragment;
 import org.json.*;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import Adapter.ImgViewPagerAdapter;
 
 public class MainNavTabActivity extends AppCompatActivity implements
@@ -83,10 +79,10 @@ public class MainNavTabActivity extends AppCompatActivity implements
         rqstQueue = Volley.newRequestQueue(this); usersJSONParser();
 
         //ViewPager Tabs and tab fragments
-        setFragment(new TabsFragment());//init
-        initFragments();
+        setTabsFragments(new TabsFragment());//init
+        initChildFragments();
     }
-    private void initFragments(){
+    private void initChildFragments(){
         forumsFragment = getFragmentManager()
                 .findFragmentById(R.id.forumsFrm);
         activeUserFrag = getFragmentManager().findFragmentById(R.layout.tab_active_user);
@@ -119,7 +115,7 @@ public class MainNavTabActivity extends AppCompatActivity implements
             }
         });
     }
-    private void setFragment (android.support.v4.app.Fragment fg){
+    private void setTabsFragments(android.support.v4.app.Fragment fg){
         if (fg != null) {/**Set ViewPager tabs fragment*/
             //Have to use v4.app.FragmentTransaction
             android.support.v4.app.FragmentTransaction ft =

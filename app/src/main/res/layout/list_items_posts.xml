@@ -63,7 +63,6 @@
                     android:layout_margin="3dp"
                     android:singleLine="true"
                     android:textStyle="bold"
-                    android:text="作者"
                     android:autoSizeTextType="uniform"
                     android:textAlignment="textEnd"
                     app:layout_constraintBottom_toBottomOf="parent"

@@ -42,7 +42,7 @@
                 android:id="@+id/recycler_view_2"/>
         </LinearLayout>
 
-        <include layout="@layout/content_card_forums" />
+        <include layout="@layout/content_card" />
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

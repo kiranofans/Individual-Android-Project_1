@@ -46,7 +46,7 @@ MyRecyclerAdapter.OnItemClickListener{
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        v=inflater.inflate(R.layout.fragment_post,container,false);
+        v=inflater.inflate(R.layout.fragment_posts,container,false);
         return v;
     }
     @Override

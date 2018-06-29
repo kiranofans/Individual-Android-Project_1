@@ -41,11 +41,7 @@ public class Registration extends AppCompatActivity {
         inputPassword = (EditText) findViewById(R.id.pswdInput);
         inputEmail=(EditText)findViewById(R.id.emailInput);
         inputAnswer=(EditText)findViewById(R.id.secAnswInput);
-
         //btnLinkToLogin = (Button) findViewById(R.id.);
-
-        //Session manager
-        session=new SessionManager(getApplicationContext());
 
         //SQLite db handler
         dbHandler=new SQLiteHandler(getApplicationContext());

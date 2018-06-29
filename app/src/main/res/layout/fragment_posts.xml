@@ -33,6 +33,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </android.support.v4.widget.SwipeRefreshLayout>
-        <include layout="@layout/content_card_forums"/>
+        <include layout="@layout/content_card"/>
     </LinearLayout>
 </RelativeLayout>

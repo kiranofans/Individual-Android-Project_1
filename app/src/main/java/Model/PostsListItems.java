@@ -4,11 +4,17 @@ public class PostsListItems implements Base_Items_Model {
     private String newMemberPosts,authors,authorities,replies;
     private String hashTags,postTitles,newPosts,post_dates;
     private String lastReplies,threads,authorIds,lastReplyDate,viewers;
+    private String bannerImgURL,admins;
     private String postGroupId,avatarUrls,messages,pid,tid;
-    public PostsListItems(){
-
+    public PostsListItems(){ }
+    public PostsListItems(String bannerImgURL,String admins)
+    {
+        this.bannerImgURL=bannerImgURL;
+        this.admins=admins;
     }
-    public PostsListItems(String postTitles, String authors, String lastReplies,String post_dates) {
+
+    public PostsListItems(String postTitles, String authors,
+                          String lastReplies,String post_dates) {
         this.authors = authors;
         this.postTitles = postTitles;
         this.lastReplies = lastReplies;//new replies or last poster
@@ -61,6 +67,22 @@ public class PostsListItems implements Base_Items_Model {
 
     public void setPid(String pid) {
         this.pid = pid;
+    }
+
+    public String getBannerImgURL() {
+        return bannerImgURL;
+    }
+
+    public void setBannerImgURL(String bannerImgURL) {
+        this.bannerImgURL = bannerImgURL;
+    }
+
+    public String getAdmins() {
+        return admins;
+    }
+
+    public void setAdmins(String admins) {
+        this.admins = admins;
     }
 
     @Override

@@ -8,11 +8,4 @@
         android:title="@string/action_settings"
         android:icon="@mipmap/lily_flower"
         app:showAsAction="never" />
-    <item
-        android:id="@+id/act_search"
-        android:icon="@mipmap/search_img"
-        android:title="Search"
-        android:tooltipText="Search"
-        app:showAsAction="collapseActionView|ifRoom"
-        app:actionViewClass="android.widget.SearchView" />
 </menu>
