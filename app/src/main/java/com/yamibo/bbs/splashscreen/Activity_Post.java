@@ -41,6 +41,9 @@ public class Activity_Post extends AppCompatActivity {
         postToolbar.hideOverflowMenu();
 
         int pos=0;
+        for (int i=0;i<fragments.length;i++){
+            pos=i;
+        }
         switch(pos){
             case 0:
                 setChatFrag(new FragmentChat());
