@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import com.yamibo.bbs.splashscreen.R;
 
 public class ImgViewPagerAdapter extends PagerAdapter {
-    private int[] imgs={R.drawable.planet,R.drawable.arcer};
+    private int[] imgs={R.drawable.bubble_kitty,R.drawable.arcer};
     public Context context;
     private LayoutInflater inflater;
     public ImgViewPagerAdapter(Context context) {

@@ -74,14 +74,14 @@ public class Registration extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(),"註冊成功",
                                 Toast.LENGTH_LONG).show();
                         startActivity(new Intent
-                                (Registration.this,LoginActivity.class));
+                                (Registration.this,Activity_Login.class));
                     }else{
                         Toast.makeText(getApplicationContext(),"還有空沒填呢",
                                 Toast.LENGTH_LONG).show();
                     }
                 }
                 startActivity(new Intent
-                        (Registration.this,LoginActivity.class));
+                        (Registration.this,Activity_Login.class));
                // finish();
             }
         });
@@ -119,7 +119,7 @@ public class Registration extends AppCompatActivity {
                                         Toast.LENGTH_SHORT).show();
 
                                 //Launch login activity
-                                startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+                                startActivity(new Intent(getApplicationContext(),Activity_Login.class));
                                 finish();
                             }else {
                                 //Error occurred in registration

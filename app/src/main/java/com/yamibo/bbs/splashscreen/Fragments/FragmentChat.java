@@ -16,8 +16,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.yamibo.bbs.splashscreen.R;
+import com.yamibo.bbs.splashscreen.VolleySingleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,7 +31,7 @@ import Adapter.SectionRecycleViewAdapter;
 import Model.Base_Items_Model;
 import Model.PostsListItems;
 
-public class ChatFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener,
+public class FragmentChat extends Fragment implements SwipeRefreshLayout.OnRefreshListener,
 MyRecyclerAdapter.OnItemClickListener{
     private static View v;
     private static RecyclerView recyclerView,recyclerView1;
@@ -42,19 +42,17 @@ MyRecyclerAdapter.OnItemClickListener{
     private static SwipeRefreshLayout refreshSwiper;
     private static Handler handler=new Handler();
     private List<SectionRecycleViewAdapter.Sections> secsList;
-    public ChatFragment(){}
+    public FragmentChat(){}
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         v=inflater.inflate(R.layout.fragment_posts,container,false);
+        recyclerView = (RecyclerView)v.findViewById(R.id.post_recView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         return v;
     }
     @Override
     public void onViewCreated(View v,Bundle savedInstanceState){
-        recyclerView = (RecyclerView)v.findViewById(R.id.post_recyc_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        rqstQueue = Volley.newRequestQueue(getContext());
         baseModels=new ArrayList<>();
         loadContent();
         if (isRefreshing()) {
@@ -82,7 +80,7 @@ MyRecyclerAdapter.OnItemClickListener{
 
     private void loadContent(){
         refreshSwiper=(SwipeRefreshLayout)v.findViewById(R.id.swipe_container);
-        refreshSwiper.setOnRefreshListener(ChatFragment.this);
+        refreshSwiper.setOnRefreshListener(FragmentChat.this);
         refreshSwiper.post(new Runnable() {
             @Override
             public void run() {
@@ -133,7 +131,7 @@ MyRecyclerAdapter.OnItemClickListener{
                             secsList.add(new SectionRecycleViewAdapter.Sections(4,"版塊主題"));
 
                             recycleAdp=new MyRecyclerAdapter(getContext(),baseModels);
-                            recycleAdp.setOnItemClickListener(ChatFragment.this);
+                            recycleAdp.setOnItemClickListener(FragmentChat.this);
                             SectionRecycleViewAdapter.Sections[] secArr=new SectionRecycleViewAdapter.Sections[secsList.size()];
                             SectionRecycleViewAdapter secAdp =new SectionRecycleViewAdapter(getContext(),R.layout.catlist_sections,
                                     R.id.catListNames,recycleAdp);
@@ -151,7 +149,8 @@ MyRecyclerAdapter.OnItemClickListener{
             }
         });
         refreshSwiper.setRefreshing(false);
-        rqstQueue.add(request);
+        VolleySingleton.getInstance(getContext()).addToRequestQueue(request);
+
     }
     @Override
     public void onItemClick(int position) {

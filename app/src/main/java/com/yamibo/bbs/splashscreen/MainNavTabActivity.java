@@ -4,15 +4,15 @@ import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.*;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -25,25 +25,22 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.*;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
-import com.squareup.picasso.Picasso;
+import com.yamibo.bbs.splashscreen.Fragments.FragmentMyAcct;
+import com.yamibo.bbs.splashscreen.Fragments.FragmentSpace;
 import com.yamibo.bbs.splashscreen.Fragments.TabsFragment;
-import org.json.*;
 
 import Adapter.ImgViewPagerAdapter;
 
 public class MainNavTabActivity extends AppCompatActivity implements
-        NavigationView.OnNavigationItemSelectedListener {
+        NavigationView.OnNavigationItemSelectedListener,FragmentMyAcct.OnFragmentInteractionListener {
     private static ViewPager imgVp;
     private static ImgViewPagerAdapter vpAdp;
-    protected static CollapsingToolbarLayout collapsyToolbar;
+    protected static CollapsingToolbarLayout collpseToolbar;
     private static ImageView leftNav, rightNav,avatarBtn;
     private float preX, preY;
     private Button plsLogBtn, regBtn,logoutBtn;
-    private Fragment forumsFragment, activeUserFrag, novelFrag, mangaFrag;
-    private boolean isRunning;
+    private static FragmentManager fragMg;
+    private boolean isRunning; private FragmentTransaction ft;
     private Toolbar toolbar;
     private View headerView,loginView;
     private NavigationView nav_view;
@@ -51,7 +48,7 @@ public class MainNavTabActivity extends AppCompatActivity implements
     private TextView usernameTv;
     public static String[] urls; private String username;
     private AutoCompleteTextView userInput;
-    private RequestQueue rqstQueue;
+    static  ActionBarDrawerToggle toggle;
 
     @SuppressLint("ResourceType")
     @Override
@@ -67,6 +64,8 @@ public class MainNavTabActivity extends AppCompatActivity implements
         loginView=View.inflate(this,R.layout.activity_login,null);
         usernameTv = (TextView) headerView.findViewById(R.id.usrNameTxt);
 
+        drawer=(DrawerLayout)findViewById(R.id.drawer_layout);
+
         //ViewPager with images
         vpAdp = new ImgViewPagerAdapter(this);
         imgVp.setAdapter(vpAdp);
@@ -76,13 +75,12 @@ public class MainNavTabActivity extends AppCompatActivity implements
         nav_view.setNavigationItemSelectedListener(this);
         setLogRqstAndRegBtn();setBtnOnClicks();
 
-        rqstQueue = Volley.newRequestQueue(this); usersJSONParser();
-
         //ViewPager Tabs and tab fragments
         setTabsFragments(new TabsFragment());//init
         initChildFragments();
     }
     private void initChildFragments(){
+        Fragment forumsFragment, activeUserFrag, novelFrag, mangaFrag;
         forumsFragment = getFragmentManager()
                 .findFragmentById(R.id.forumsFrm);
         activeUserFrag = getFragmentManager().findFragmentById(R.layout.tab_active_user);
@@ -93,14 +91,14 @@ public class MainNavTabActivity extends AppCompatActivity implements
         toolbar = (Toolbar) findViewById(R.id.baseToolbar);
         setSupportActionBar(toolbar);
         ViewCompat.setTransitionName(findViewById(R.id.app_bar_main), "");
-        collapsyToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsy_toolbar);
-        collapsyToolbar.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
-        collapsyToolbar.setCollapsedTitleTextColor(getResources()
+        collpseToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsy_toolbar);
+        collpseToolbar.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
+        collpseToolbar.setCollapsedTitleTextColor(getResources()
                 .getColor(R.color.color_dark_red, null));
     }
 
     private void setNavDrawerView() {
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -111,24 +109,21 @@ public class MainNavTabActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 //Will start a new activity
-                startActivity(new Intent(MainNavTabActivity.this, SpaceActivity.class));
+                startActivity(new Intent(MainNavTabActivity.this, Activity_Space.class));
             }
         });
     }
     private void setTabsFragments(android.support.v4.app.Fragment fg){
+        fragMg=getSupportFragmentManager();
         if (fg != null) {/**Set ViewPager tabs fragment*/
             //Have to use v4.app.FragmentTransaction
-            android.support.v4.app.FragmentTransaction ft =
-                    getSupportFragmentManager().beginTransaction();
+            ft =fragMg.beginTransaction();
             ft.replace(R.id.rootViewPage, new TabsFragment()).commit();
-
         }
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
     }
     @Override
     public void onBackPressed () {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -158,23 +153,32 @@ public class MainNavTabActivity extends AppCompatActivity implements
     public boolean onNavigationItemSelected (MenuItem item){
         /** Handle navigation view item clicks here.*/
         int id = item.getItemId();
+        if(id==R.id.item_home){
+            ft=fragMg.beginTransaction();
+            ft.replace(R.id.rootViewPage,new TabsFragment()).commit();
+        }else if (id == R.id.item_account) {
+            ft=fragMg.beginTransaction();
+            ft.replace(R.id.rootViewPage,new FragmentMyAcct()).commit();
+        } else if (id == R.id.item_space) {
+            ft=fragMg.beginTransaction();
+            ft.replace(R.id.rootViewPage,new FragmentSpace()).commit();
 
-        if (id == R.id.my_account) {
-            // Handle the camera action
-        } else if (id == R.id.my_space) {
+        } else if (id == R.id.item_gallery) {
+            ft=fragMg.beginTransaction();
+            ft.replace(R.id.rootViewPage,new TabsFragment()).commit();
 
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
+        } else if (id == R.id.item_manage) {
+            ft=fragMg.beginTransaction();
+            ft.replace(R.id.rootViewPage,new TabsFragment()).commit();
         } else if (id == R.id.nav_share) {
-
+           //display the social medias in a dialog box or something
         } else if (id == R.id.nav_send) {
-
+            ft=fragMg.beginTransaction();
+            ft.replace(R.id.rootViewPage,new TabsFragment()).commit();
         }
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
+        toolbar=(Toolbar)findViewById(R.id.baseToolbar);
+        setNavDrawerView();
+        return false;
     }
     public void imgNav () {
         leftNav = (ImageButton) findViewById(R.id.left_nav);
@@ -208,7 +212,7 @@ public class MainNavTabActivity extends AppCompatActivity implements
         plsLogBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainNavTabActivity.this, LoginActivity.class));
+                startActivity(new Intent(MainNavTabActivity.this, Activity_Login.class));
             }
         });
         regBtn.setOnClickListener(new View.OnClickListener() {
@@ -221,43 +225,12 @@ public class MainNavTabActivity extends AppCompatActivity implements
         plsLogBtn.setPaintFlags(plsLogBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         regBtn.setPaintFlags(regBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
     }
-    private void usersJSONParser () {
-        urls = getResources().getStringArray(R.array.yamibo_api_urls);
-        JsonObjectRequest profileRqst = new JsonObjectRequest(Request.Method.GET, urls[1], null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            userInput=(AutoCompleteTextView)loginView.findViewById(R.id.username);
-                            String userName=userInput.getText().toString();
-                            String usernames="";
-                            JSONObject var=response.getJSONObject("Variables");
-                            String imgUrl=var.getString("member_avatar");
-                            //JSONObject spaceObj=var.getJSONObject("space");
 
-                           // usernames=
-                            //String uid=;
-                            //String gId=;
-                            Picasso.with(getApplicationContext())
-                                    .load(imgUrl).fit().centerInside().into(avatarBtn);
-                            usernameTv.setText(usernames);
-                            Log.d("T6","ImgUrl: "+imgUrl+"\nUsername:"+var.get("member_username")+
-                                    "\nIsUsrname: "+ var.has("username")+
-                                    " Uid: "+var.get("member_uid")+" GroupId: "+var.get("groupid")+" readaccess:"+
-                                    var.get("readaccess"));
-                        }catch (JSONException je){
-                            je.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-        });
-        rqstQueue.add(profileRqst);
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
-    private void floatingFab () {
+   /* private void floatingFab () {
         //Floating Action Button
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -267,6 +240,6 @@ public class MainNavTabActivity extends AppCompatActivity implements
                         .setAction("Action", null).show();
             }
         });
-    }
+    }*/
 
 }

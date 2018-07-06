@@ -18,7 +18,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.yamibo.bbs.splashscreen.PostActivity;
+import com.yamibo.bbs.splashscreen.Activity_Post;
 import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 import com.yamibo.bbs.splashscreen.R;
 
@@ -121,7 +121,7 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
             Toast.makeText(getContext(), "Hi,it's index "+position,
                     Toast.LENGTH_SHORT).show();
         }else{
-            Intent chatIntent=new Intent(getActivity(),PostActivity.class);
+            Intent chatIntent=new Intent(getActivity(),Activity_Post.class);
             ((MainNavTabActivity)getActivity()).startActivity(chatIntent);
 
         }

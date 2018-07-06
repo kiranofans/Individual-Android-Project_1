@@ -46,7 +46,7 @@ public class SessionManager {
         sharePrefs=_context.getSharedPreferences(SHARED_NAME,Context.MODE_PRIVATE);
         if(!this.isLoggedIn()){
             //user is not logged in redirect the user to login page
-            Intent intent=new Intent(_context,LoginActivity.class);
+            Intent intent=new Intent(_context,Activity_Login.class);
 
             //Closing all the activities
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -81,7 +81,7 @@ public class SessionManager {
         editor.apply();
 
         //After logout redirect user to login activity
-        Intent intent=new Intent(_context,LoginActivity.class);
+        Intent intent=new Intent(_context,Activity_Login.class);
 
         //closing all the activities
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

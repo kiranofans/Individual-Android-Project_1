@@ -1,4 +1,4 @@
-package com.yamibo.bbs.splashscreen;
+package com.yamibo.bbs.splashscreen.Fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,8 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class PersonalSpace extends Fragment implements View.OnClickListener{
-    public PersonalSpace(){
+import com.yamibo.bbs.splashscreen.R;
+
+public class FragmentSpace extends Fragment{
+    public FragmentSpace(){
 
     }
 
@@ -20,7 +22,7 @@ public class PersonalSpace extends Fragment implements View.OnClickListener{
         return v;
     }
     @Override
-    public void onClick(View v) {
+    public void onViewCreated(View v,Bundle savedInstanceState){
 
     }
 }

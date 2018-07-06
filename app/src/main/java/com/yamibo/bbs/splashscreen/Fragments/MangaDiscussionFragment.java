@@ -18,4 +18,9 @@ public class MangaDiscussionFragment extends Fragment {
         v=inflater.inflate(R.layout.fragment_posts,container,false);
         return v;
     }
+    @Override
+    public void onViewCreated(View v,Bundle savedInstanceState){
+        super.onViewCreated(v, savedInstanceState);
+
+    }
 }

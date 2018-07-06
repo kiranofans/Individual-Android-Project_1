@@ -36,7 +36,8 @@
                         <ImageView
                             android:id="@+id/imgView_toolbar"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="80dp"
+                            android:src="@mipmap/bear_banner"
                             app:layout_constraintDimensionRatio="w,3:1"
                             android:layout_gravity="center_vertical"
                             android:scrollIndicators="bottom"
