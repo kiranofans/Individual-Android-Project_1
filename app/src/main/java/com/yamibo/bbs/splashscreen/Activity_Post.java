@@ -25,8 +25,6 @@ public class Activity_Post extends AppCompatActivity {
         setContentView(R.layout.activity_posts);
 
         setToolbarAndFragments();
-       // setChatFrag(new FragmentChat());
-
     }
     private void setToolbarAndFragments(){
         Fragment[] fragments={new FragmentChat()};
