@@ -11,7 +11,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
     <FrameLayout
         android:id="@+id/contentFrm_no_tabs"
-        android:name="Fragments.ChatFragment"
+        android:name="Fragments"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </android.support.constraint.ConstraintLayout>

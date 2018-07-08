@@ -35,12 +35,21 @@
 
     <!--API Urls-->
     <string name="users_posts"></string>
+
+    <string-array name="forums_urls">
+        <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?version=4&module=forumdisplay&fid=33&page=1]]></item><!--海域區-->
+        <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?version=4&module=forumdisplay&fid=16&page=1]]></item><!--管理版-->
+        <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?version=4&module=forumdisplay&fid=5&page=1]]></item><!--動漫區-->
+        <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?version=4&module=forumdisplay&fid=44&page=1]]></item><!--遊戲區-->
+        <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?version=4&module=forumdisplay&fid=13&page=1]]></item><!--貼圖區-->
+        <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?version=4&module=forumdisplay&fid=49&page=1]]></item><!--文學區-->
+
+    </string-array>
     <string-array name="yamibo_api_urls">
-        <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?version=4&module=forumindex]]></item>
-        <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?version=4&module=profile]]></item>
-        <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?version=4&module=forumdisplay&fid=33&page=1]]></item>
-        <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?version=&module=mythread&page=1]]></item>
-        <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?module=login&loginsubmit=yes]]></item>
+        <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?version=4&module=forumindex]]></item><!--版塊名稱-->
+        <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?version=4&module=profile]]></item><!--個人信息-->
+        <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?version=&module=mythread&page=1]]></item><!--我的帖子-->
+        <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?module=login&loginsubmit=yes]]></item><!--Login-->
     </string-array>
     <string name="title_activity_login2">Sign in</string>
     <string name="action_sign_in">Sign in or register</string>

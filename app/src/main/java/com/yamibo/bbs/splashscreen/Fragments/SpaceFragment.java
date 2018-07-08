@@ -10,15 +10,13 @@ import android.view.ViewGroup;
 
 import com.yamibo.bbs.splashscreen.R;
 
-public class FragmentSpace extends Fragment{
-    public FragmentSpace(){
-
-    }
+public class SpaceFragment extends Fragment{
+    public SpaceFragment(){}
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v=inflater.inflate(R.layout.activity_space,container,false);
+        View v=inflater.inflate(R.layout.fragment_space,container,false);
         return v;
     }
     @Override

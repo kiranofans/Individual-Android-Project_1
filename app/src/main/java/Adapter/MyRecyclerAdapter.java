@@ -3,11 +3,13 @@ package Adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.yamibo.bbs.splashscreen.R;
 
@@ -71,7 +73,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
     }
 
     /**ForumsHolder*/
-    public class ForumsHolder extends BaseViewHolder<ForumsListItem> {
+    public class ForumsHolder extends BaseViewHolder<ForumsListItem>{
         private TextView titleTv, descriptTv, numOfDailyNewPosts;
         private ImageView imgIcons;
 
@@ -80,14 +82,12 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
             //things to display in RecyclerView
           // sectionTitle=(TextView)itemView.findViewById(R.id.catListNames1);
             descriptTv = (TextView) itemView.findViewById(R.id.descriptionTxt);
-            titleTv = (TextView) itemView.findViewById(R.id.forumsTxt);
+            titleTv = (TextView) itemView.findViewById(R.id.forumsTitleTV);
             numOfDailyNewPosts = (TextView) itemView.findViewById(R.id.numOfDailyNewPosts);
             imgIcons = (ImageView) itemView.findViewById(R.id.forumsTitleImg);
-
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    SectionRecycleViewAdapter sectionAdp=null;
                     if (listener != null) {
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
@@ -142,26 +142,10 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
         @Override
         public void bind(PostsListItems obj) {
             String avatarUrls=obj.getAvatarUrls();
-
             lastposterTv.setText(obj.getLastReplies());
             titleTv.setText(obj.getPostTitles());
             postDate.setText(obj.getPost_dates());
             authors.setText(obj.getAuthors());
-
-        }
-
-    }
-    /**PostsHolder*/
-    public class SectionViewHolder extends BaseViewHolder<SectionRecycleViewAdapter.Sections> {
-        private TextView titleTv;
-
-        public SectionViewHolder(View itemView, int viewType) {
-            super(itemView);
-            titleTv = (TextView) itemView.findViewById(R.id.catListNames);
-        }
-
-        @Override
-        public void bind(SectionRecycleViewAdapter.Sections obj) {
 
         }
     }

@@ -61,7 +61,7 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity
-            android:name=".Activity_Space"
+            android:name=".Activity_Profile"
             android:label="我的空間" />
         <activity
             android:name=".LoginActivity2"

@@ -25,17 +25,22 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.yamibo.bbs.splashscreen.Fragments.FragmentMyAcct;
-import com.yamibo.bbs.splashscreen.Fragments.FragmentSpace;
+import com.yamibo.bbs.splashscreen.Fragments.AccountFragment;
+import com.yamibo.bbs.splashscreen.Fragments.AdminFragment;
+import com.yamibo.bbs.splashscreen.Fragments.ChatFragment;
+import com.yamibo.bbs.splashscreen.Fragments.MangaDiscussionFragment;
+import com.yamibo.bbs.splashscreen.Fragments.NovelsFragment;
+import com.yamibo.bbs.splashscreen.Fragments.ProfileFragment;
+import com.yamibo.bbs.splashscreen.Fragments.SpaceFragment;
 import com.yamibo.bbs.splashscreen.Fragments.TabsFragment;
 
 import Adapter.ImgViewPagerAdapter;
 
 public class MainNavTabActivity extends AppCompatActivity implements
-        NavigationView.OnNavigationItemSelectedListener,FragmentMyAcct.OnFragmentInteractionListener {
+        NavigationView.OnNavigationItemSelectedListener,AccountFragment.OnFragmentInteractionListener {
     private static ViewPager imgVp;
     private static ImgViewPagerAdapter vpAdp;
-    protected static CollapsingToolbarLayout collpseToolbar;
+    protected static CollapsingToolbarLayout collapseToolbar;
     private static ImageView leftNav, rightNav,avatarBtn;
     private float preX, preY;
     private Button plsLogBtn, regBtn,logoutBtn;
@@ -70,7 +75,8 @@ public class MainNavTabActivity extends AppCompatActivity implements
         vpAdp = new ImgViewPagerAdapter(this);
         imgVp.setAdapter(vpAdp);
 
-        imgNav();setCollapsedToolbar();setNavDrawerView();
+        imgNav();  setCollapsedBarMain();
+        setNavDrawerView();
 
         nav_view.setNavigationItemSelectedListener(this);
         setLogRqstAndRegBtn();setBtnOnClicks();
@@ -78,6 +84,7 @@ public class MainNavTabActivity extends AppCompatActivity implements
         //ViewPager Tabs and tab fragments
         setTabsFragments(new TabsFragment());//init
         initChildFragments();
+
     }
     private void initChildFragments(){
         Fragment forumsFragment, activeUserFrag, novelFrag, mangaFrag;
@@ -87,13 +94,13 @@ public class MainNavTabActivity extends AppCompatActivity implements
         novelFrag=getFragmentManager().findFragmentById(R.layout.tab_novels);
         mangaFrag=getFragmentManager().findFragmentById(R.layout.tab_manga);
     }
-    private void setCollapsedToolbar() {
+    private void setCollapsedBarMain() {
         toolbar = (Toolbar) findViewById(R.id.baseToolbar);
         setSupportActionBar(toolbar);
         ViewCompat.setTransitionName(findViewById(R.id.app_bar_main), "");
-        collpseToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsy_toolbar);
-        collpseToolbar.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
-        collpseToolbar.setCollapsedTitleTextColor(getResources()
+        collapseToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsy_toolbar);
+        collapseToolbar.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
+        collapseToolbar.setCollapsedTitleTextColor(getResources()
                 .getColor(R.color.color_dark_red, null));
     }
 
@@ -109,7 +116,8 @@ public class MainNavTabActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 //Will start a new activity
-                startActivity(new Intent(MainNavTabActivity.this, Activity_Space.class));
+                ft=fragMg.beginTransaction();
+                ft.replace(R.id.rootViewPage,new ProfileFragment()).commit();
             }
         });
     }
@@ -158,10 +166,10 @@ public class MainNavTabActivity extends AppCompatActivity implements
             ft.replace(R.id.rootViewPage,new TabsFragment()).commit();
         }else if (id == R.id.item_account) {
             ft=fragMg.beginTransaction();
-            ft.replace(R.id.rootViewPage,new FragmentMyAcct()).commit();
+            ft.replace(R.id.rootViewPage,new AccountFragment()).commit();
         } else if (id == R.id.item_space) {
             ft=fragMg.beginTransaction();
-            ft.replace(R.id.rootViewPage,new FragmentSpace()).commit();
+            ft.replace(R.id.rootViewPage,new SpaceFragment()).commit();
 
         } else if (id == R.id.item_gallery) {
             ft=fragMg.beginTransaction();
@@ -230,16 +238,4 @@ public class MainNavTabActivity extends AppCompatActivity implements
     public void onFragmentInteraction(Uri uri) {
 
     }
-   /* private void floatingFab () {
-        //Floating Action Button
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-    }*/
-
 }

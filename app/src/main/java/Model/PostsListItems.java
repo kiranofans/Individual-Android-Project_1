@@ -1,11 +1,44 @@
 package Model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class PostsListItems implements Base_Items_Model {
-    private String newMemberPosts,authors,authorities,replies;
-    private String hashTags,postTitles,newPosts,post_dates;
-    private String lastReplies,threads,authorIds,lastReplyDate,viewers;
+
+    private String newMemberPosts,hashTags,newPosts,threads,authorities;
+    @SerializedName("author")
+    private String authors;
+
+    @SerializedName("replies")//num of replies
+    private String replies;
+
+    @SerializedName("reply")
+    private String usrReply; //people's replies
+
+    @SerializedName("subject")
+    private String postTitles;
+
+    @SerializedName("dateline")
+    private String post_dates;
+
+    @SerializedName("lastposter")
+    private String lastReplies;
+
+    private String authorIds,viewers;
+
+    @SerializedName("lastpost")
+    private String lastReplyDate;
     private String bannerImgURL,admins;
-    private String postGroupId,avatarUrls,messages,pid,tid;
+
+    @SerializedName("pid")
+    private String pid;
+
+    @SerializedName("tid")
+    private String tid;
+
+    @SerializedName("avatar")
+    private String avatarUrls;
+
+    private String postGroupId,messages;
     public PostsListItems(){ }
     public PostsListItems(String bannerImgURL,String admins)
     {

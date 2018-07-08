@@ -1,6 +1,8 @@
 package Model;
 
-public class Manga {
+import com.fasterxml.jackson.databind.ser.Serializers;
+
+public class Manga implements Base_Items_Model{
     private String mangaTitle,author,type,category,contracted;
 
     public Manga(String mangaTitle, String author, String type,
@@ -50,5 +52,10 @@ public class Manga {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    @Override
+    public int getViewType() {
+        return Constants.ViewTypes.MANGAS;
     }
 }

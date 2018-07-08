@@ -13,14 +13,14 @@ import com.yamibo.bbs.splashscreen.R;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link FragmentMyAcct.OnFragmentInteractionListener} interface
+ * {@link AccountFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  */
-public class FragmentMyAcct extends Fragment{
+public class AccountFragment extends Fragment{
 
     private OnFragmentInteractionListener mListener;
 
-    public FragmentMyAcct() {
+    public AccountFragment() {
         // Required empty public constructor
     }
 

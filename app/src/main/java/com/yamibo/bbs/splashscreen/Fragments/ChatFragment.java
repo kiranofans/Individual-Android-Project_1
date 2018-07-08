@@ -3,19 +3,24 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.SearchView;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 import com.yamibo.bbs.splashscreen.R;
 import com.yamibo.bbs.splashscreen.VolleySingleton;
 
@@ -31,18 +36,23 @@ import Adapter.SectionRecycleViewAdapter;
 import Model.Base_Items_Model;
 import Model.PostsListItems;
 
-public class FragmentChat extends Fragment implements SwipeRefreshLayout.OnRefreshListener,
+public class ChatFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener,
 MyRecyclerAdapter.OnItemClickListener{
     private static View v;
-    private static RecyclerView recyclerView,recyclerView1;
-    private static MyRecyclerAdapter recycleAdp,recycleAdp_1;
-    private static List<Base_Items_Model> baseModels,baseModels_1;
+    private static RecyclerView recyclerView;
+    private static MyRecyclerAdapter recycleAdp;
+    private static List<Base_Items_Model> chatList;
     private static String[] urls;
-    private static RequestQueue rqstQueue; private int pos;
     private static SwipeRefreshLayout refreshSwiper;
     private static Handler handler=new Handler();
+    private SearchView searchView;
+    private CollapsingToolbarLayout collapseToolbar;
+    private Toolbar postToolbar;
     private List<SectionRecycleViewAdapter.Sections> secsList;
-    public FragmentChat(){}
+    private ImageView imgView;
+
+    public ChatFragment(){/*empty constructor is required*/}
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -53,7 +63,7 @@ MyRecyclerAdapter.OnItemClickListener{
     }
     @Override
     public void onViewCreated(View v,Bundle savedInstanceState){
-        baseModels=new ArrayList<>();
+        chatList =new ArrayList<>();
         loadContent();
         if (isRefreshing()) {
             SwipeRefreshLayout.OnRefreshListener refreshListener =
@@ -80,17 +90,17 @@ MyRecyclerAdapter.OnItemClickListener{
 
     private void loadContent(){
         refreshSwiper=(SwipeRefreshLayout)v.findViewById(R.id.swipe_container);
-        refreshSwiper.setOnRefreshListener(FragmentChat.this);
+        refreshSwiper.setOnRefreshListener(ChatFragment.this);
         refreshSwiper.post(new Runnable() {
             @Override
             public void run() {
-                post_subs_JsonParser();
+                chatJSONParser();
             }
         });
     }
     @Override
     public void onRefresh() {
-        post_subs_JsonParser();
+        chatJSONParser();
     }
     private boolean isRefreshing(){
         boolean flag=false;
@@ -99,11 +109,28 @@ MyRecyclerAdapter.OnItemClickListener{
         }
         return true;
     }
-    private void post_subs_JsonParser(){
+    private void setToolbar(){
+        MainNavTabActivity chatMain=(MainNavTabActivity)v.getContext();
+        postToolbar = (Toolbar)v.findViewById(R.id.baseToolbar);
+      /*  chatMain.setSupportActionBar(postToolbar);
+        ViewCompat.setTransitionName(v.findViewById(R.id.app_bar_layout), "");*/
+
+        collapseToolbar =(CollapsingToolbarLayout)v.findViewById(R.id.collapsy_toolbar);
+        collapseToolbar.setTitleEnabled(true);
+        collapseToolbar.setExpandedTitleColor(getResources()
+                .getColor(android.R.color.transparent,null));
+        collapseToolbar.setCollapsedTitleTextColor(getResources()
+                .getColor(R.color.color_dark_red, null));
+        postToolbar.hideOverflowMenu();
+        collapseToolbar.setTitle("海域區");
+
+
+    }
+    private void chatJSONParser(){
         refreshSwiper.setRefreshing(true);
         secsList=new ArrayList<>();
-        urls=getResources().getStringArray(R.array.yamibo_api_urls);
-        JsonObjectRequest request=new JsonObjectRequest(Request.Method.GET, urls[2], null,
+        urls=getResources().getStringArray(R.array.forums_urls);
+        JsonObjectRequest request=new JsonObjectRequest(Request.Method.GET, urls[0], null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -121,20 +148,22 @@ MyRecyclerAdapter.OnItemClickListener{
 
                                 if(tid.equals("474447")||tid.equals("20425")||tid.equals("232743")
                                         ||tid.equals("240477")){
-                                    baseModels.add(postItems);
+                                    chatList.add(postItems);
 
                                 }else {
-                                    baseModels.add(postItems);
+                                    chatList.add(postItems);
                                 }
                             }
+                            secsList.add(new SectionRecycleViewAdapter.Sections(0,"海域區",
+                                    R.mipmap.bear_banner));
                             secsList.add(new SectionRecycleViewAdapter.Sections(0,"全部主題"));
-                            secsList.add(new SectionRecycleViewAdapter.Sections(4,"版塊主題"));
+                            secsList.add(new SectionRecycleViewAdapter.Sections(5,"版塊主題"));
 
-                            recycleAdp=new MyRecyclerAdapter(getContext(),baseModels);
-                            recycleAdp.setOnItemClickListener(FragmentChat.this);
+                            recycleAdp=new MyRecyclerAdapter(getContext(), chatList);
+                            recycleAdp.setOnItemClickListener(ChatFragment.this);
                             SectionRecycleViewAdapter.Sections[] secArr=new SectionRecycleViewAdapter.Sections[secsList.size()];
-                            SectionRecycleViewAdapter secAdp =new SectionRecycleViewAdapter(getContext(),R.layout.catlist_sections,
-                                    R.id.catListNames,recycleAdp);
+                            SectionRecycleViewAdapter secAdp =new SectionRecycleViewAdapter(getContext(),R.layout.sections_items,
+                                    R.id.catListSections,recycleAdp);
                             secAdp.setSections(secsList.toArray(secArr));
                             recyclerView.setAdapter(secAdp);
 
@@ -150,7 +179,6 @@ MyRecyclerAdapter.OnItemClickListener{
         });
         refreshSwiper.setRefreshing(false);
         VolleySingleton.getInstance(getContext()).addToRequestQueue(request);
-
     }
     @Override
     public void onItemClick(int position) {

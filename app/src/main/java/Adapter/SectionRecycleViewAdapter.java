@@ -6,6 +6,7 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yamibo.bbs.splashscreen.R;
@@ -14,6 +15,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 import Adapter.Base_View_Holder.BaseViewHolder;
+import Model.Image;
+
 /**Provided by Google*/
 public class SectionRecycleViewAdapter extends RecyclerView.Adapter {
         private final Context mContext;
@@ -63,10 +66,12 @@ public class SectionRecycleViewAdapter extends RecyclerView.Adapter {
         public static class SectionViewHolder extends RecyclerView.ViewHolder {
 
             public TextView title;
-
+            private ImageView chatImgView;
             public SectionViewHolder(View view, int mTextResourceid) {
                 super(view);
-                title = (TextView) view.findViewById(R.id.catListNames);
+                title = (TextView) view.findViewById(R.id.catListSections);
+                chatImgView=(ImageView)view.findViewById(R.id.postImgView);
+
             }
         }
 
@@ -85,6 +90,8 @@ public class SectionRecycleViewAdapter extends RecyclerView.Adapter {
         public void onBindViewHolder(RecyclerView.ViewHolder sectionViewHolder, int position) {
             if (isSectionHeaderPosition(position)) {
                 ((SectionViewHolder)sectionViewHolder).title.setText(mSections.get(position).title);
+                ((SectionViewHolder)sectionViewHolder).chatImgView.setImageResource
+                        (mSections.get(position).getImgId());
             }else{
                 mBaseAdapter.onBindViewHolder(sectionViewHolder,sectionedPositionToPosition(position));
             }
@@ -101,11 +108,25 @@ public class SectionRecycleViewAdapter extends RecyclerView.Adapter {
         public static class Sections {
             int firstPosition;
             int sectionedPosition;
+            int imgId;
             CharSequence title;
             public Sections(){}
             public Sections(int firstPosition, CharSequence title) {
                 this.firstPosition = firstPosition;
                 this.title = title;
+            }
+            public Sections(int firstPosition,int imgId){
+                this.imgId=imgId;
+                this.firstPosition=firstPosition;
+            }
+            public Sections(int firstPosition, String title, int imgId){
+                this.firstPosition=firstPosition;
+                this.title=title;
+                this.imgId=imgId;
+            }
+
+            public int getImgId() {
+                return imgId;
             }
 
             public CharSequence getTitle() {

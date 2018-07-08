@@ -67,5 +67,5 @@
             android:layout_gravity="fill_vertical"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
         </android.support.v4.widget.NestedScrollView>
-        <include layout="@layout/content_main_no_tabs"/>
+    <include layout="@layout/content_main_no_tabs"/>
 </android.support.design.widget.CoordinatorLayout>
