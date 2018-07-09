@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,26 +8,27 @@
     android:id="@+id/post_fragment"
     android:orientation="vertical"
     android:fitsSystemWindows="true">
+    <!--<include layout="@layout/app_bar_layout"
+        android:id="@+id/fragmentToolbar"/>-->
     <LinearLayout
         android:orientation="vertical"
         android:weightSum="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-            <android.support.v4.widget.SwipeRefreshLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/swipe_container"
-                android:layout_below="@+id/secTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+        <android.support.v4.widget.SwipeRefreshLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/swipe_container"
+            android:layout_below="@+id/secTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/post_recView"
-                    android:layout_margin="3dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </android.support.v4.widget.SwipeRefreshLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/post_recView"
+                android:layout_margin="3dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </android.support.v4.widget.SwipeRefreshLayout>
         <include layout="@layout/content_card"/>
     </LinearLayout>
-
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

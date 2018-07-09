@@ -26,35 +26,37 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yamibo.bbs.splashscreen.Fragments.AccountFragment;
-import com.yamibo.bbs.splashscreen.Fragments.AdminFragment;
-import com.yamibo.bbs.splashscreen.Fragments.ChatFragment;
-import com.yamibo.bbs.splashscreen.Fragments.MangaDiscussionFragment;
-import com.yamibo.bbs.splashscreen.Fragments.NovelsFragment;
 import com.yamibo.bbs.splashscreen.Fragments.ProfileFragment;
 import com.yamibo.bbs.splashscreen.Fragments.SpaceFragment;
 import com.yamibo.bbs.splashscreen.Fragments.TabsFragment;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import Adapter.ImgViewPagerAdapter;
 
 public class MainNavTabActivity extends AppCompatActivity implements
-        NavigationView.OnNavigationItemSelectedListener,AccountFragment.OnFragmentInteractionListener {
-    private static ViewPager imgVp;
-    private static ImgViewPagerAdapter vpAdp;
+        NavigationView.OnNavigationItemSelectedListener,AccountFragment.OnFragmentInteractionListener{
+    public static ViewPager imgVp;
+    public static ImgViewPagerAdapter vpAdp;
     protected static CollapsingToolbarLayout collapseToolbar;
     private static ImageView leftNav, rightNav,avatarBtn;
     private float preX, preY;
     private Button plsLogBtn, regBtn,logoutBtn;
     private static FragmentManager fragMg;
-    private boolean isRunning; private FragmentTransaction ft;
+    private static FragmentTransaction ft;
     private Toolbar toolbar;
     private View headerView,loginView;
     private NavigationView nav_view;
     private DrawerLayout drawer;
     private TextView usernameTv;
-    public static String[] urls; private String username;
+    public static String[] urls;
+    private String username;
     private AutoCompleteTextView userInput;
-    static  ActionBarDrawerToggle toggle;
-
+    private List<String> imgUrlList;
+    private int[] imgIds={R.drawable.bubble_kitty,R.drawable.arcer};
+    private String[] imgNames={"arcer","bubble_kitty"};
+    private String[] imgTypes={"drawable","mipmap"};
     @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,9 +72,12 @@ public class MainNavTabActivity extends AppCompatActivity implements
         usernameTv = (TextView) headerView.findViewById(R.id.usrNameTxt);
 
         drawer=(DrawerLayout)findViewById(R.id.drawer_layout);
+        imgUrlList=new ArrayList<>();
 
+        String[] imgUrls=getResources().getStringArray(R.array.img_urls);
         //ViewPager with images
-        vpAdp = new ImgViewPagerAdapter(this);
+        imgUrlList.add(imgUrls[1]);
+        vpAdp = new ImgViewPagerAdapter(this,imgUrlList);
         imgVp.setAdapter(vpAdp);
 
         imgNav();  setCollapsedBarMain();
@@ -84,6 +89,9 @@ public class MainNavTabActivity extends AppCompatActivity implements
         //ViewPager Tabs and tab fragments
         setTabsFragments(new TabsFragment());//init
         initChildFragments();
+    }
+    public void fragsCustomToolbar(String title){
+        collapseToolbar.setTitle(title);
 
     }
     private void initChildFragments(){
@@ -93,6 +101,7 @@ public class MainNavTabActivity extends AppCompatActivity implements
         activeUserFrag = getFragmentManager().findFragmentById(R.layout.tab_active_user);
         novelFrag=getFragmentManager().findFragmentById(R.layout.tab_novels);
         mangaFrag=getFragmentManager().findFragmentById(R.layout.tab_manga);
+
     }
     private void setCollapsedBarMain() {
         toolbar = (Toolbar) findViewById(R.id.baseToolbar);

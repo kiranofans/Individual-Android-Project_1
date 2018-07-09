@@ -4,6 +4,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.yamibo.bbs.splashscreen.Fragments.ActiveUsersFragment;
 import com.yamibo.bbs.splashscreen.Fragments.ForumsFragment;
@@ -11,7 +12,7 @@ import com.yamibo.bbs.splashscreen.Fragments.MangaFragment;
 import com.yamibo.bbs.splashscreen.Fragments.NovelsFragment;
 
 /**可滑動Tab的類*/
-public class SlidingTabsAdapter extends FragmentPagerAdapter {
+public class SlidingTabsAdapter extends FragmentStatePagerAdapter {
     private String[] tabTitles={"論壇","誰在線","漫畫","小說"};
     public SlidingTabsAdapter(FragmentManager fragMg){
         super(fragMg);//Default constructor

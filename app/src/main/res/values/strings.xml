@@ -51,6 +51,16 @@
         <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?version=&module=mythread&page=1]]></item><!--我的帖子-->
         <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?module=login&loginsubmit=yes]]></item><!--Login-->
     </string-array>
+    <string-array name="img_urls">
+        <item><![CDATA[http://wx2.sinaimg.cn/large/628a267ely1fswvvmfcwdj20l305gabb.jpg]]></item><!--Bear-->
+        <item><![CDATA[https://bbs.yamibo.com/data/attachment/album/201807/02/233550f5o0ko10g080xodi.jpg]]></item>
+        <!--大劍↑-->
+        <item><![CDATA[http://bbs.yamibo.com/data/attachment/album/201805/29/011953s7zkkzzwuaheen7k.png]]></item>
+        <!--Galet漫畫-->
+        <item><![CDATA[http://i.imgur.com/dGk7Tml.png]]></item><!--回帖沒積分-->
+        <item><![CDATA[https://bbs.yamibo.com/data/attachment/album/201511/07/123900ewu4fuh3v43vfhfs.jpg]]></item>
+        <!--遊戲區↑-->
+    </string-array>
     <string name="title_activity_login2">Sign in</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="error_incorrect_password">This password is incorrect</string>

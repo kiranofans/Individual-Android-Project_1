@@ -1,11 +1,13 @@
 package com.yamibo.bbs.splashscreen.Fragments;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,6 +33,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import Adapter.ImgViewPagerAdapter;
 import Adapter.MyRecyclerAdapter;
 import Adapter.SectionRecycleViewAdapter;
 import Model.Base_Items_Model;
@@ -46,19 +49,23 @@ MyRecyclerAdapter.OnItemClickListener{
     private static SwipeRefreshLayout refreshSwiper;
     private static Handler handler=new Handler();
     private SearchView searchView;
-    private CollapsingToolbarLayout collapseToolbar;
-    private Toolbar postToolbar;
     private List<SectionRecycleViewAdapter.Sections> secsList;
-    private ImageView imgView;
+    private ViewPager imgVp;
+    private ImgViewPagerAdapter vpAdp;
 
     public ChatFragment(){/*empty constructor is required*/}
-
+    private static List<String> imgUrlList;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         v=inflater.inflate(R.layout.fragment_posts,container,false);
         recyclerView = (RecyclerView)v.findViewById(R.id.post_recView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        customToolbar();
+        urls=v.getContext().getResources().getStringArray(R.array.img_urls);
+        setViewPagerImg(urls[0]);
+        vpAdp=new ImgViewPagerAdapter(getContext(),imgUrlList);
+        MainNavTabActivity.imgVp.setAdapter(vpAdp);
         return v;
     }
     @Override
@@ -109,21 +116,8 @@ MyRecyclerAdapter.OnItemClickListener{
         }
         return true;
     }
-    private void setToolbar(){
-        MainNavTabActivity chatMain=(MainNavTabActivity)v.getContext();
-        postToolbar = (Toolbar)v.findViewById(R.id.baseToolbar);
-      /*  chatMain.setSupportActionBar(postToolbar);
-        ViewCompat.setTransitionName(v.findViewById(R.id.app_bar_layout), "");*/
-
-        collapseToolbar =(CollapsingToolbarLayout)v.findViewById(R.id.collapsy_toolbar);
-        collapseToolbar.setTitleEnabled(true);
-        collapseToolbar.setExpandedTitleColor(getResources()
-                .getColor(android.R.color.transparent,null));
-        collapseToolbar.setCollapsedTitleTextColor(getResources()
-                .getColor(R.color.color_dark_red, null));
-        postToolbar.hideOverflowMenu();
-        collapseToolbar.setTitle("海域區");
-
+    private void customToolbar(){
+        ((MainNavTabActivity)getActivity()).fragsCustomToolbar("海域區");
 
     }
     private void chatJSONParser(){
@@ -154,10 +148,8 @@ MyRecyclerAdapter.OnItemClickListener{
                                     chatList.add(postItems);
                                 }
                             }
-                            secsList.add(new SectionRecycleViewAdapter.Sections(0,"海域區",
-                                    R.mipmap.bear_banner));
                             secsList.add(new SectionRecycleViewAdapter.Sections(0,"全部主題"));
-                            secsList.add(new SectionRecycleViewAdapter.Sections(5,"版塊主題"));
+                            secsList.add(new SectionRecycleViewAdapter.Sections(4,"版塊主題"));
 
                             recycleAdp=new MyRecyclerAdapter(getContext(), chatList);
                             recycleAdp.setOnItemClickListener(ChatFragment.this);
@@ -182,6 +174,11 @@ MyRecyclerAdapter.OnItemClickListener{
     }
     @Override
     public void onItemClick(int position) {
+
+    }
+    private void setViewPagerImg(String imgUrls){
+        imgUrlList =new ArrayList<>();
+        imgUrlList.add(imgUrls);
 
     }
 }

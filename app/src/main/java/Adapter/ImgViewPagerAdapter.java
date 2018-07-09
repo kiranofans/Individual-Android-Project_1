@@ -4,24 +4,35 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Picasso;
+import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 import com.yamibo.bbs.splashscreen.R;
 
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
+
 public class ImgViewPagerAdapter extends PagerAdapter {
-    private int[] imgs={R.drawable.bubble_kitty,R.drawable.arcer};
+    private List<String> imgUrlsList;
     public Context context;
+    private static ImageView imgView;
     private LayoutInflater inflater;
-    public ImgViewPagerAdapter(Context context) {
+    public ImgViewPagerAdapter(Context context,List<String> imgUrlList) {
         this.context=context;
+        this.inflater=(LayoutInflater)context.getSystemService
+                (Context.LAYOUT_INFLATER_SERVICE);
+        this.imgUrlsList=imgUrlList;
     }
 
     @Override
     public int getCount(){
-        return imgs.length;
+        return imgUrlsList.size();
     }
 
     @Override
@@ -33,19 +44,22 @@ public class ImgViewPagerAdapter extends PagerAdapter {
         inflater=(LayoutInflater)context.getSystemService
                 (Context.LAYOUT_INFLATER_SERVICE);
         View v= inflater.inflate(R.layout.viewpager_items,null);
+        imgView=(ImageView)v.findViewById(R.id.vpImgs);
 
-        ImageView imgView=(ImageView)v.findViewById(R.id.vpImgs);
-        imgView.setImageResource(imgs[pos]);
         ViewPager vp=(ViewPager)container;
-
+        try{
+            String imgUrl=imgUrlsList.get(pos);
+            Picasso.with(context).load(imgUrl)
+                    .into(imgView);
+        }catch (NumberFormatException ne){
+            Log.d("VP",ne.getMessage());
+        }
         container.addView(v,0);
 
-        imgView.setImageResource(imgs[pos]);
         return v;
     }
     @Override
     public void destroyItem(ViewGroup container,int pos,Object object){
         ((ViewPager)container).removeView((View)(object));
     }
-
 }

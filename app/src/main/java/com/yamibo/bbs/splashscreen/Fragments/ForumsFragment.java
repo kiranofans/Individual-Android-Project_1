@@ -122,9 +122,9 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
             .replace(R.id.rootViewPage,new MangaDiscussionFragment())
                     .addToBackStack(null).commit();
         }else if(pos==2){
-            getActivity().getSupportFragmentManager().beginTransaction().
-                    replace(R.id.rootViewPage,new ChatFragment()).
-                    addToBackStack(null).commit();
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.rootViewPage,new ChatFragment())
+                    .addToBackStack(null).commit();
         }
     }
 
