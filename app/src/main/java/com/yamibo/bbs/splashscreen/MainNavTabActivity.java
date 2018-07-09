@@ -6,11 +6,13 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -26,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yamibo.bbs.splashscreen.Fragments.AccountFragment;
+import com.yamibo.bbs.splashscreen.Fragments.GalleryFragment;
 import com.yamibo.bbs.splashscreen.Fragments.ProfileFragment;
 import com.yamibo.bbs.splashscreen.Fragments.SpaceFragment;
 import com.yamibo.bbs.splashscreen.Fragments.TabsFragment;
@@ -36,12 +39,12 @@ import java.util.List;
 import Adapter.ImgViewPagerAdapter;
 
 public class MainNavTabActivity extends AppCompatActivity implements
-        NavigationView.OnNavigationItemSelectedListener,AccountFragment.OnFragmentInteractionListener{
+        NavigationView.OnNavigationItemSelectedListener,AccountFragment.OnFragmentInteractionListener,
+GalleryFragment.OnFragmentInteractionListener{
     public static ViewPager imgVp;
     public static ImgViewPagerAdapter vpAdp;
     protected static CollapsingToolbarLayout collapseToolbar;
     private static ImageView leftNav, rightNav,avatarBtn;
-    private float preX, preY;
     private Button plsLogBtn, regBtn,logoutBtn;
     private static FragmentManager fragMg;
     private static FragmentTransaction ft;
@@ -50,13 +53,13 @@ public class MainNavTabActivity extends AppCompatActivity implements
     private NavigationView nav_view;
     private DrawerLayout drawer;
     private TextView usernameTv;
-    public static String[] urls;
     private String username;
     private AutoCompleteTextView userInput;
-    private List<String> imgUrlList;
-    private int[] imgIds={R.drawable.bubble_kitty,R.drawable.arcer};
-    private String[] imgNames={"arcer","bubble_kitty"};
-    private String[] imgTypes={"drawable","mipmap"};
+    private List<String> imgUrlList; private Handler handler;
+    private static final boolean AUTO_HIDE = true;
+    private static final int AUTO_HIDE_DELAY_MILLIS = 1000;
+    private static View view;
+    private static final int UI_ANIMATION_DELAY = 300;
     @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,6 +176,7 @@ public class MainNavTabActivity extends AppCompatActivity implements
         if(id==R.id.item_home){
             ft=fragMg.beginTransaction();
             ft.replace(R.id.rootViewPage,new TabsFragment()).commit();
+
         }else if (id == R.id.item_account) {
             ft=fragMg.beginTransaction();
             ft.replace(R.id.rootViewPage,new AccountFragment()).commit();
@@ -182,8 +186,7 @@ public class MainNavTabActivity extends AppCompatActivity implements
 
         } else if (id == R.id.item_gallery) {
             ft=fragMg.beginTransaction();
-            ft.replace(R.id.rootViewPage,new TabsFragment()).commit();
-
+            ft.replace(R.id.rootViewPage,new GalleryFragment()).commit();
         } else if (id == R.id.item_manage) {
             ft=fragMg.beginTransaction();
             ft.replace(R.id.rootViewPage,new TabsFragment()).commit();
@@ -194,7 +197,6 @@ public class MainNavTabActivity extends AppCompatActivity implements
             ft.replace(R.id.rootViewPage,new TabsFragment()).commit();
         }
         toolbar=(Toolbar)findViewById(R.id.baseToolbar);
-        setNavDrawerView();
         return false;
     }
     public void imgNav () {
@@ -224,6 +226,7 @@ public class MainNavTabActivity extends AppCompatActivity implements
                 imgVp.setCurrentItem(tab);
             }
         });
+
     }
     public void setLogRqstAndRegBtn () {
         plsLogBtn.setOnClickListener(new View.OnClickListener() {

@@ -14,26 +14,25 @@ import com.yamibo.bbs.splashscreen.R;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link AccountFragment.OnFragmentInteractionListener} interface
+ * {@link GalleryFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  */
-public class AccountFragment extends Fragment{
+public class GalleryFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public AccountFragment() {
+    public GalleryFragment() {
         // Required empty public constructor
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        ((MainNavTabActivity)getActivity()).fragsCustomToolbar("我的相冊");
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_my_acct, container, false);
-    }
-    @Override
-    public void onViewCreated(View v,Bundle savedInstanceState){
-        ((MainNavTabActivity)getActivity()).fragsCustomToolbar("我的賬戶");
+        return inflater.inflate(R.layout.fragment_gallery, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

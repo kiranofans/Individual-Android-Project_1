@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 import com.yamibo.bbs.splashscreen.R;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MangaDiscussionFragment extends Fragment {
+public class AnimeDiscussFragment extends Fragment {
     private static View v;
     private MyRecyclerAdapter recAdp;
     private RecyclerView mangaRecView;
@@ -35,6 +36,7 @@ public class MangaDiscussionFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         v=inflater.inflate(R.layout.fragment_posts,container,false);
+        ((MainNavTabActivity)getActivity()).fragsCustomToolbar("動漫區");
         return v;
     }
     @Override

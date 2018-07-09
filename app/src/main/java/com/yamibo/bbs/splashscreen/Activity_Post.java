@@ -12,7 +12,7 @@ import android.widget.SearchView;
 
 import com.yamibo.bbs.splashscreen.Fragments.AdminFragment;
 import com.yamibo.bbs.splashscreen.Fragments.ChatFragment;
-import com.yamibo.bbs.splashscreen.Fragments.MangaDiscussionFragment;
+import com.yamibo.bbs.splashscreen.Fragments.AnimeDiscussFragment;
 
 public class Activity_Post extends AppCompatActivity {
     private SearchView searchView;
@@ -55,7 +55,7 @@ public class Activity_Post extends AppCompatActivity {
         if (frg != null) {
             android.support.v4.app.FragmentTransaction ft =
                     getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.contentFrm_no_tabs, new MangaDiscussionFragment())
+            ft.replace(R.id.contentFrm_no_tabs, new AnimeDiscussFragment())
                     .commit();
         }
     }

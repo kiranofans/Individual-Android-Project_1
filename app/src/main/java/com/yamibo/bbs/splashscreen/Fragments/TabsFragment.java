@@ -29,6 +29,7 @@ public class TabsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.tab_sliding_tabs,container,false);
+        ((MainNavTabActivity)getActivity()).fragsCustomToolbar("百合會主頁");
         return v;
     }
     @Override

@@ -119,7 +119,7 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
         int pos=position+1;
         if (pos==1) {
             getActivity().getSupportFragmentManager().beginTransaction()
-            .replace(R.id.rootViewPage,new MangaDiscussionFragment())
+            .replace(R.id.rootViewPage,new AnimeDiscussFragment())
                     .addToBackStack(null).commit();
         }else if(pos==2){
             getActivity().getSupportFragmentManager().beginTransaction()
