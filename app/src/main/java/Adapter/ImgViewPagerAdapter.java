@@ -55,7 +55,6 @@ public class ImgViewPagerAdapter extends PagerAdapter {
             Log.d("VP",ne.getMessage());
         }
         container.addView(v,0);
-
         return v;
     }
     @Override
