@@ -50,7 +50,6 @@ MyRecyclerAdapter.OnItemClickListener{
     private static Handler handler=new Handler();
     private SearchView searchView;
     private List<SectionRecycleViewAdapter.Sections> secsList;
-    private ViewPager imgVp;
     private ImgViewPagerAdapter vpAdp;
 
     public ChatFragment(){/*empty constructor is required*/}
@@ -59,17 +58,23 @@ MyRecyclerAdapter.OnItemClickListener{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         v=inflater.inflate(R.layout.fragment_posts,container,false);
-        recyclerView = (RecyclerView)v.findViewById(R.id.post_recView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
         customToolbar();
-        urls=v.getContext().getResources().getStringArray(R.array.img_urls);
-        setViewPagerImg(urls[0]);
-        vpAdp=new ImgViewPagerAdapter(getContext(),imgUrlList);
-        MainNavTabActivity.imgVp.setAdapter(vpAdp);
+
         return v;
     }
     @Override
     public void onViewCreated(View v,Bundle savedInstanceState){
+        recyclerView = (RecyclerView)v.findViewById(R.id.post_recView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        //ViewPager items
+        vpAdp=new ImgViewPagerAdapter(getContext(),imgUrlList);
+        urls=v.getContext().getResources().getStringArray(R.array.img_urls);
+        setViewPagerImg(urls[0]);
+        MainNavTabActivity.imgVp.setAdapter(vpAdp);//直接用MainActivity的
+
+        //RecyclerView items
         chatList =new ArrayList<>();
         loadContent();
         if (isRefreshing()) {
