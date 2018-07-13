@@ -1,13 +1,31 @@
 package Model;
 
-public class Image {
-    private String imgName,extension,size,num;
+import com.google.gson.annotations.SerializedName;
 
-    public Image(String imgName, String extension, String size, String num) {
+public class Image implements Base_Items_Model {
+    private String imgName, format,size,num;
+    private String uploadDate,removeDate;
+
+    @SerializedName("webformatURL")
+    private String imgUrls;
+    private int imgIds;
+    public Image(String imgName, String format, String size, String num) {
         this.imgName = imgName;
-        this.extension = extension;
+        this.format = format;
         this.size = size;
         this.num = num;
+    }
+    public Image(){}//keep an empty constructor here
+    public Image(int imgIds){
+       this.imgIds=imgIds;
+    }
+
+    public Image(String urls){
+        this.imgUrls=urls;
+    }
+    public Image(String uploadDate,String removeDate){
+        this.uploadDate=uploadDate;
+        this.removeDate=removeDate;
     }
 
     //Getters and Setters
@@ -19,12 +37,12 @@ public class Image {
         this.imgName = imgName;
     }
 
-    public String getExtension() {
-        return extension;
+    public String getFormat() {
+        return format;
     }
 
-    public void setExtension(String extension) {
-        this.extension = extension;
+    public void setFormat(String format) {
+        this.format = format;
     }
 
     public String getSize() {
@@ -41,5 +59,42 @@ public class Image {
 
     public void setNum(String num) {
         this.num = num;
+    }
+
+    public String getUploadDate() {
+        return uploadDate;
+    }
+
+    public void setUploadDate(String uploadDate) {
+        this.uploadDate = uploadDate;
+    }
+
+    public String getRemoveDate() {
+        return removeDate;
+    }
+
+    public void setRemoveDate(String removeDate) {
+        this.removeDate = removeDate;
+    }
+
+    public String getImgUrls() {
+        return imgUrls;
+    }
+
+    public void setImgUrls(String imgUrls) {
+        this.imgUrls = imgUrls;
+    }
+
+    public int getImgIds() {
+        return imgIds;
+    }
+
+    public void setImgIds(int imgIds) {
+        this.imgIds = imgIds;
+    }
+
+    @Override
+    public int getViewType() {
+        return Constants.ViewTypes.GALLERY;
     }
 }

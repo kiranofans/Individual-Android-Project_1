@@ -95,7 +95,6 @@ GalleryFragment.OnFragmentInteractionListener{
     }
     public void fragsCustomToolbar(String title){
         collapseToolbar.setTitle(title);
-
     }
     private void initChildFragments(){
         Fragment forumsFragment, activeUserFrag, novelFrag, mangaFrag;

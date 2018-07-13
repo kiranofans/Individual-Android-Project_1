@@ -43,6 +43,7 @@
         <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?version=4&module=forumdisplay&fid=44&page=1]]></item><!--遊戲區-->
         <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?version=4&module=forumdisplay&fid=13&page=1]]></item><!--貼圖區-->
         <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?version=4&module=forumdisplay&fid=49&page=1]]></item><!--文學區-->
+        <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?module=hot]]></item><!--熱點推薦-->
 
     </string-array>
     <string-array name="yamibo_api_urls">
@@ -52,7 +53,7 @@
         <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?module=login&loginsubmit=yes]]></item><!--Login-->
     </string-array>
     <string-array name="img_urls">
-        <item><![CDATA[http://wx2.sinaimg.cn/large/628a267ely1fswvvmfcwdj20l305gabb.jpg]]></item><!--Bear-->
+        <item><![CDATA[http://wx4.sinaimg.cn/large/697901d1ly1ft48muytutj20uw0e6ajf.jpg]]></item><!--Bear-->
         <item><![CDATA[https://bbs.yamibo.com/data/attachment/album/201807/02/233550f5o0ko10g080xodi.jpg]]></item>
         <!--大劍↑-->
         <item><![CDATA[http://bbs.yamibo.com/data/attachment/album/201805/29/011953s7zkkzzwuaheen7k.png]]></item>

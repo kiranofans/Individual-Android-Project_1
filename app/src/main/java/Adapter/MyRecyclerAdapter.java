@@ -1,32 +1,37 @@
 package Adapter;
 
 import android.content.Context;
+import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
 import com.yamibo.bbs.splashscreen.R;
 
 import java.util.*;
 
 import Model.ForumsListItem;
-import Model.PostsListItems;
+import Model.Image;
+import Model.PostListItems;
 import Adapter.Base_View_Holder.BaseViewHolder;
 import Model.Base_Items_Model;
 import Model.Constants;
+import retrofit2.Retrofit;
 
 /**Using Dynamic Method Dispatch or Runtime Polymorphism*/
 public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
     private Context context;
     private List<?extends Base_Items_Model> anyTypeItems;
     private OnItemClickListener listener;
-
+    private List<? extends Base_Items_Model> items;
+    private SwipeRefreshLayout swiper;
+    private boolean flag=false;
     //An interface way to create OnItemClick events
     public interface OnItemClickListener {
         void onItemClick(int position);
@@ -41,6 +46,12 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
         anyTypeItems = listItems;
     }
 
+    public void clear(){
+        anyTypeItems.clear();
+        notifyDataSetChanged();
+    }
+
+
     @NonNull
     @Override
     public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -54,6 +65,10 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
                 v = LayoutInflater.from(parent.getContext()).inflate
                             (R.layout.list_items_posts, parent, false);
                 return new PostsHolder(v,viewType);
+            case Constants.ViewTypes.GALLERY:
+                v=LayoutInflater.from(parent.getContext()).inflate
+                        (R.layout.gallery_cardview,parent,false);
+                return new GalleryHolder(v,viewType);
         }
         return null;
     }
@@ -62,6 +77,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
 
         holder.bind(anyTypeItems.get(position));
     }
+
     @Override/**Get the view types*/
     public int getItemViewType(int position){
         return anyTypeItems.get(position).getViewType();
@@ -70,6 +86,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
     @Override
     public int getItemCount() {
         return anyTypeItems.size();
+
     }
 
     /**ForumsHolder*/
@@ -111,11 +128,11 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
     }
 
     /**PostsHolder*/
-    public class PostsHolder extends BaseViewHolder<PostsListItems>{
+    public class PostsHolder extends BaseViewHolder<PostListItems>{
         private TextView titleTv, lastposterTv, postDate,authors,lastReplyDate;
         private TextView numOfReplies,postDates;
         private ImageView imgIcons;
-
+        private Object[] postObjs;
         public PostsHolder(View itemView, int viewType) {
             super(itemView);
             //Declare Views
@@ -140,12 +157,33 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
         }
 
         @Override
-        public void bind(PostsListItems obj) {
+        public void bind(PostListItems obj) {
             String avatarUrls=obj.getAvatarUrls();
             lastposterTv.setText(obj.getLastReplies());
             titleTv.setText(obj.getPostTitles());
             postDate.setText(obj.getPost_dates());
             authors.setText(obj.getAuthors());
+
+        }
+    }
+    /**PostsHolder*/
+    public class GalleryHolder extends BaseViewHolder<Image>{
+        View v;
+        private TextView titleTv, lastposterTv, postDate,authors,lastReplyDate;
+        private TextView numOfReplies,postDates;
+        private ImageView galleryImgs;
+
+        public GalleryHolder(View itemView,int viewType) {
+            super(itemView);
+            galleryImgs=(ImageView)itemView.findViewById(R.id.galleryImgs);
+        }
+
+        @Override
+        public void bind(Image obj) {
+            //Load Image urls
+            Picasso.with(context).load(obj.getImgUrls()).fit().centerInside()
+                    .error(R.drawable.ic_menu_camera)
+                    .into(galleryImgs);
 
         }
     }

@@ -1,11 +1,23 @@
 package Model;
 
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.google.gson.reflect.TypeToken;
 
-public class PostsListItems implements Base_Items_Model {
+import java.io.Serializable;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
+public class PostListItems implements Base_Items_Model,Serializable {
+    @SerializedName("forum_threadlist")
+    private PostListItems postList;
     private String newMemberPosts,hashTags,newPosts,threads,authorities;
     @SerializedName("author")
+    @Expose
     private String authors;
 
     @SerializedName("replies")//num of replies
@@ -15,17 +27,21 @@ public class PostsListItems implements Base_Items_Model {
     private String usrReply; //people's replies
 
     @SerializedName("subject")
+    @Expose
     private String postTitles;
 
     @SerializedName("dateline")
+    @Expose
     private String post_dates;
 
     @SerializedName("lastposter")
+    @Expose
     private String lastReplies;
 
     private String authorIds,viewers;
 
     @SerializedName("lastpost")
+    @Expose
     private String lastReplyDate;
     private String bannerImgURL,admins;
 
@@ -33,33 +49,35 @@ public class PostsListItems implements Base_Items_Model {
     private String pid;
 
     @SerializedName("tid")
+    @Expose
     private String tid;
 
     @SerializedName("avatar")
     private String avatarUrls;
 
     private String postGroupId,messages;
-    public PostsListItems(){ }
-    public PostsListItems(String bannerImgURL,String admins)
+    public PostListItems(){ }
+    public PostListItems(String bannerImgURL, String admins)
     {
         this.bannerImgURL=bannerImgURL;
         this.admins=admins;
     }
 
-    public PostsListItems(String postTitles, String authors,
-                          String lastReplies,String post_dates) {
+    public PostListItems(String postTitles, String authors,
+                         String lastReplies, String post_dates) {
         this.authors = authors;
         this.postTitles = postTitles;
         this.lastReplies = lastReplies;//new replies or last poster
         this.post_dates= post_dates;
     }
 
-    public PostsListItems(String authorIds, String avatarUrls, String messages) {
+    public PostListItems(String authorIds, String avatarUrls, String messages) {
         this.authorIds = authorIds;
         this.avatarUrls = avatarUrls;
         this.messages = messages;
     }
-    public PostsListItems(String tid){
+
+    public PostListItems(String tid){
         this.tid=tid;
     }
     public String getReplies() {
@@ -148,30 +166,44 @@ public class PostsListItems implements Base_Items_Model {
         return authors;
     }
 
+    /**@param authors
+     * The authors */
     public void setAuthors(String authors) {
         this.authors = authors;
     }
 
+    /**@return
+     * The postTitles*/
     public String getPostTitles() {
         return postTitles;
     }
 
+    /** @param postTitles
+     * The postTitles*/
     public void setPostTitles(String postTitles) {
         this.postTitles = postTitles;
     }
 
+    /**@return
+     * The post_dates*/
     public String getPost_dates() {
         return post_dates;
     }
 
+    /** @param post_dates
+     * The post_dates*/
     public void setPost_dates(String post_dates) {
         this.post_dates = post_dates;
     }
 
+    /**@return
+     * The lastReplies */
     public String getLastReplies() {
         return lastReplies;
     }
 
+    /** @param lastReplies
+     * the lastReplies*/
     public void setLastReplies(String lastReplies) {
         this.lastReplies = lastReplies;
     }
@@ -184,7 +216,23 @@ public class PostsListItems implements Base_Items_Model {
         this.lastReplyDate = lastReplyDate;
     }
 
+    /** @return
+     * The tid */
     public String getTid(){
         return tid;
+    }
+
+    /** @param tid
+     * the tid*/
+    public void setTid(String tid){
+        this.tid=tid;
+    }
+
+    public PostListItems getPostList() {
+        return postList;
+    }
+
+    public void setPostList(PostListItems postList) {
+        this.postList = postList;
     }
 }
