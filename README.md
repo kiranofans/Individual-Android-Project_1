@@ -1,6 +1,6 @@
 # Individual-Android-Project_1
-Android App
-An native Android Mobile Application for A Existing Website.
+
+A native Android Mobile Application for A Existing Website.
 
 Creating on my own.
 
