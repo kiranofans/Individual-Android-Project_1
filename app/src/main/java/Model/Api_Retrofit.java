@@ -16,8 +16,5 @@ public interface Api_Retrofit {
 
     @Headers("Accept: application/json")
     @GET("/api/mobile/index.php")
-    Call<List<PostListItems>> getLists(@Query("version") String version,
-                                       @Query("module") String module,
-                                       @Query("fid")String fid,
-                                       @Query("page")String pageNum);
+    Call<List<PostListItems>> insertHits(@Query("module") String module);
 }

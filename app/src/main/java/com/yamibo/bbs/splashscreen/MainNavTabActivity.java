@@ -15,28 +15,52 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.*;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.yamibo.bbs.splashscreen.Fragments.AccountFragment;
 import com.yamibo.bbs.splashscreen.Fragments.GalleryFragment;
 import com.yamibo.bbs.splashscreen.Fragments.ProfileFragment;
 import com.yamibo.bbs.splashscreen.Fragments.SpaceFragment;
 import com.yamibo.bbs.splashscreen.Fragments.TabsFragment;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import Adapter.ImgViewPagerAdapter;
+import Adapter.MyRecyclerAdapter;
+import Model.Api_Retrofit;
+import Model.Base_Items_Model;
+import Model.Hits;
+import Model.Image;
+import Model.PostListItems;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainNavTabActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,AccountFragment.OnFragmentInteractionListener,
@@ -56,10 +80,11 @@ GalleryFragment.OnFragmentInteractionListener{
     private String username;
     private AutoCompleteTextView userInput;
     private List<String> imgUrlList; private Handler handler;
-    private static final boolean AUTO_HIDE = true;
-    private static final int AUTO_HIDE_DELAY_MILLIS = 1000;
-    private static View view;
-    private static final int UI_ANIMATION_DELAY = 300;
+    private String[] hitsUrls;
+    private RecyclerView vpRecView;
+    private MyRecyclerAdapter vpRecAdp;
+    private List<Base_Items_Model> hitsList;
+
     @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,14 +99,14 @@ GalleryFragment.OnFragmentInteractionListener{
         loginView=View.inflate(this,R.layout.activity_login,null);
         usernameTv = (TextView) headerView.findViewById(R.id.usrNameTxt);
 
-        drawer=(DrawerLayout)findViewById(R.id.drawer_layout);
-        imgUrlList=new ArrayList<>();
+        //RecView for hits
+        vpRecView=(RecyclerView)findViewById(R.id.hitsRecView);
+        vpRecView.setLayoutManager(new LinearLayoutManager(this));
 
-        String[] imgUrls=getResources().getStringArray(R.array.img_urls);
-        //ViewPager with images
-        imgUrlList.add(imgUrls[1]);
-        vpAdp = new ImgViewPagerAdapter(this,imgUrlList);
-        imgVp.setAdapter(vpAdp);
+        drawer=(DrawerLayout)findViewById(R.id.drawer_layout);
+        imgUrlList=new ArrayList<>();   hitsList=new ArrayList<>();
+
+        setHitsToImgVP();
 
         imgNav();  setCollapsedBarMain();
         setNavDrawerView();
@@ -167,6 +192,51 @@ GalleryFragment.OnFragmentInteractionListener{
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+    private void setHitsToImgVP(){
+        hitsUrls=getResources().getStringArray(R.array.forums_urls);
+        //ViewPager with images
+        JsonObjectRequest rqst=new JsonObjectRequest(Request.Method.GET, hitsUrls[6], null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try{
+                            JSONObject var=response.getJSONObject("Variables");
+                            JSONArray hitsImgArr=var.getJSONArray("data_img");
+                            JSONArray hitsTxtArr=var.getJSONArray("data_txt");
+
+                            for(int i=0;i<hitsImgArr.length();i++){
+                                JSONObject imgObj=hitsImgArr.getJSONObject(i);
+                                String htmlUrl=imgObj.getString("url");
+                                String pic=imgObj.getString("pic");
+
+                                imgUrlList.add("https://bbs.yamibo.com/data/attachment/"+pic);
+                            }
+                            for(int i=0;i<hitsTxtArr.length();i++){
+                                JSONObject txtObj=hitsTxtArr.getJSONObject(i);
+                                String title=txtObj.getString("fulltitle");
+                                String date=txtObj.getString("lastpost");
+                                Hits posts=new Hits(title,date);
+                                hitsList.add(posts);
+                            }
+                            vpRecAdp=new MyRecyclerAdapter(getApplicationContext(),hitsList);
+                            vpRecView.setAdapter(vpRecAdp);
+                            vpAdp = new ImgViewPagerAdapter(getApplicationContext(),imgUrlList);
+                            imgVp.setAdapter(vpAdp);
+                        }catch (JSONException je){
+                            Toast.makeText(MainNavTabActivity.this,je.getMessage()
+                                    ,Toast.LENGTH_LONG).show();
+                            //index 3 out of range 0 to 3
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(MainNavTabActivity.this,error.getMessage()
+                        ,Toast.LENGTH_LONG).show();
+            }
+        });
+        VolleySingleton.getInstance(this).addToRequestQueue(rqst);
     }
     @Override
     public boolean onNavigationItemSelected (MenuItem item){

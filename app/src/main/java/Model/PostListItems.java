@@ -57,10 +57,9 @@ public class PostListItems implements Base_Items_Model,Serializable {
 
     private String postGroupId,messages;
     public PostListItems(){ }
-    public PostListItems(String bannerImgURL, String admins)
+    public PostListItems(String bannerImgURL)
     {
         this.bannerImgURL=bannerImgURL;
-        this.admins=admins;
     }
 
     public PostListItems(String postTitles, String authors,
@@ -76,9 +75,9 @@ public class PostListItems implements Base_Items_Model,Serializable {
         this.avatarUrls = avatarUrls;
         this.messages = messages;
     }
-
-    public PostListItems(String tid){
-        this.tid=tid;
+    public PostListItems(String postTitles,String post_dates){
+        this.post_dates=post_dates;
+        this.postTitles=postTitles;
     }
     public String getReplies() {
         return replies;
