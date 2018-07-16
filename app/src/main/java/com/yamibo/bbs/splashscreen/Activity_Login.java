@@ -8,11 +8,13 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.NetworkOnMainThreadException;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -31,17 +33,36 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
+import Model.Api_Retrofit;
+import Model.Login;
 import Model.Users;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.POST;
 
 import static android.support.design.widget.Snackbar.make;
 
@@ -67,7 +88,7 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
     private static boolean isSignedIn = false;
     private static String pageLink = "https://bbs.yamibo.com/forum.php";
     private List<String> usernameList;
-
+    private String[] urls;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,11 +140,8 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
     /** Attempts to sign in or register the account specified by the login form.
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.*/
-    /*private void attemptLogin() {
-        if (authTask != null) {
-            //login user
-            return;
-        }
+    private void attemptLogin() {
+
         // Reset errors.
         usrnameInput.setError(null);
         pswdInput.setError(null);
@@ -167,7 +185,7 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
             userLogin();
             //authTask.execute((Void)null);
         }
-    }*/
+    }
     private boolean isUsernameValid(String username) {
         //TODO: Replace this with your own logic
         /** UTF-8 (Unicode)
@@ -281,78 +299,58 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
     @Override
     public void onLoaderReset(android.content.Loader<Cursor> loader) { }
     private void userLogin() {
-        String[] urls = getResources().getStringArray(R.array.yamibo_api_urls);
-        //If login is fine
-        usernameList = new ArrayList<>();
-        String[] CREDENTIALS = {usrnameInput.getText().toString()+":"+pswdInput.getText().toString(),
-                usrnameInput.getText().toString()+":"+pswdInput.getText().toString()};
+        username=usrnameInput.getText().toString();
+        pswd=pswdInput.getText().toString();
+        final Retrofit retro=new Retrofit.Builder()
+                .baseUrl(Api_Retrofit.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create()).build();
 
-        username = usrnameInput.getText().toString();
-        pswd = pswdInput.getText().toString();
-        StringRequest request = new StringRequest(Request.Method.POST,urls[4],
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject jObj=new JSONObject();
-                            JSONObject varObj=jObj.getJSONObject("Variables");
-                            response=varObj.getString("member_username");
+        final Api_Retrofit api=retro.create(Api_Retrofit.class);
 
-                            if (response==null) {
-                                response=username;
-                                if(isUsernameValid(username)){
-                                    Toast.makeText(Activity_Login.this, response+"",
-                                            Toast.LENGTH_SHORT).show();
+        /**JsonObject NOT JSONObject*/
+        final Call<JsonObject> loginCall=api.loginAuth(username,pswd);
+        loginCall.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, retrofit2.Response<JsonObject> response) {
+                JsonObject loginObj=response.body().getAsJsonObject();
 
-                                    //Storing the user details in shared preference
-                                    SessionManager.getInstance(getApplicationContext())
-                                            .createLoginSession(username);
-                                    usernameList.add(username);
-                                    finish();
-                                }
-
-                            } else {
-                                showProgress(false);
-                                Toast.makeText(Activity_Login.this,
-                                        "Login error!", Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (JSONException je) {
-                            je.printStackTrace();
-                            Toast.makeText(Activity_Login.this,
-                                    je.getMessage(),Toast.LENGTH_SHORT).show();
-                        }
+                JsonPrimitive responseMsg=null; JsonPrimitive responseMsgtr=null;
+                JsonPrimitive ver=loginObj.getAsJsonPrimitive("Version");
+                JsonObject var=loginObj.getAsJsonObject("Variables");
+                if(ver!=null){
+                    JsonObject msg=loginObj.getAsJsonObject("Message");
+                    responseMsg=msg.getAsJsonPrimitive("messageval");
+                    responseMsgtr=msg.getAsJsonPrimitive("messagestr");
+                    Toast.makeText(getApplicationContext(),
+                            responseMsgtr+"",Toast.LENGTH_LONG).show();
+                    if(msg!=null){
+                        Toast.makeText(getApplicationContext(),
+                                responseMsgtr+"",Toast.LENGTH_LONG).show();
+                        startActivity(new Intent
+                                (Activity_Login.this,MainNavTabActivity.class));
+                        finish();
+                    }else{
+                        Toast.makeText(getApplicationContext(),
+                                ""+responseMsgtr,Toast.LENGTH_LONG).show();
+                        finish();
                     }
-                }, new Response.ErrorListener() {
+
+                }else{
+                    Toast.makeText(getApplicationContext(),
+                            "Response Error"+loginObj.getAsJsonObject("Message"),Toast.LENGTH_LONG).show();
+                    finish();
+                }
+                Log.d("R","RETURN: "+loginObj);
+            }
             @Override
-            public void onErrorResponse(VolleyError error) {
-                showProgress(false);
-                Toast.makeText(Activity_Login.this, error.getMessage(),
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(Activity_Login.this,t.getMessage(),
                         Toast.LENGTH_LONG).show();
-                Log.d("T8", "Username: " + usernameList.size());
             }
-        }) {
-            //pass Token headers
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("module","login");
-                headers.put("loginsubmit","yes");
-                headers.put("Accept-Charset","GBK");
-                headers.put("Content-Transfer-Encoding", "charset=gbk");
-                return headers;
-            }
-            //Pass parameters
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("username", username);
-                params.put("password", pswd);
-                return params;
-            }
-        };
-        request.setRetryPolicy(new DefaultRetryPolicy(0,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        VolleySingleton.getInstance(this).addToRequestQueue(request);
+        });
+    }
+    private void OkHTTP(){
     }
 
     private interface ProfileQuery {
@@ -365,7 +363,6 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
         int IS_PRIMARY = 1;
         int DISPLAY_NAME=2;
     }
-
 }
 
 
