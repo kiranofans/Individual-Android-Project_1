@@ -211,7 +211,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
         @Override
         public void bind(Hits obj) {
             //For top hits recView
-            hitsTitle.setText(obj.getHitsPostDate());
+            hitsTitle.setText(obj.getHitsTitle());
             hitsPostDates.setText(obj.getHitsPostDate());
         }
     }

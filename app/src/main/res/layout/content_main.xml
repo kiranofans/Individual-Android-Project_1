@@ -7,7 +7,7 @@
     android:fitsSystemWindows="true"
     android:fillViewport="true"
     android:id="@+id/rootViewPage"
-    android:background="@android:color/transparent"
+    android:background="@android:color/white"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".MainNavTabActivity"
     tools:showIn="@layout/app_bar_main">

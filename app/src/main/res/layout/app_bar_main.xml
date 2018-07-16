@@ -3,18 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:id="@+id/app_bar_main"
     tools:context=".MainNavTabActivity"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/app_bar_layout"
-            android:background="@android:color/transparent"
+            android:background="@android:color/white"
             android:animateLayoutChanges="true"
             android:theme="@style/AppTheme.AppBarOverlay"
             android:fitsSystemWindows="true">
+
             <android.support.design.widget.CollapsingToolbarLayout
                 android:id="@+id/collapsy_toolbar"
                 android:layout_width="match_parent"
@@ -25,16 +27,27 @@
                 android:fitsSystemWindows="true"
                 android:theme="@style/ThemeOverlay.AppCompat.Light"
                 app:contentScrim="#fff5d7" >
+
                 <FrameLayout
                     android:id="@+id/imgViewPagerFrame"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
+                    <LinearLayout
+                        android:id="@+id/linear"
+                        android:orientation="vertical"
+                        android:background="@android:color/white"
+                        app:layout_constraintTop_toBottomOf="@+id/imgViewPager"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
                     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
                         xmlns:app="http://schemas.android.com/apk/res-auto"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@android:color/transparent">
+                        android:background="@android:color/white">
 
                         <android.support.v4.view.ViewPager
                             android:id="@+id/imgViewPager"
@@ -43,7 +56,7 @@
                             android:layout_gravity="center_vertical"
                             android:scrollIndicators="bottom"
                             app:layout_constraintVertical_chainStyle="packed"
-                            app:layout_constraintBottom_toTopOf="@+id/linear"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toRightOf="parent"
@@ -69,41 +82,30 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
-                        <LinearLayout
-                            android:id="@+id/linear"
-                            android:orientation="vertical"
-                            android:background="@android:color/white"
-                            app:layout_constraintTop_toBottomOf="@+id/imgViewPager"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="熱點推薦"
-                                android:layout_margin="4dp"
-                                android:textColor="@android:color/white"
-                                android:background="@color/color_dark_red"
-                                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-                                android:textAlignment="center"/>
 
-                            <android.support.v7.widget.RecyclerView
-                                android:id="@+id/hitsRecView"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@color/color_light_yellow" />
-                            <include layout="@layout/hits_card_view"/>
-                        </LinearLayout>
                     </android.support.constraint.ConstraintLayout>
 
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="熱點推薦"
+                        android:layout_margin="4dp"
+                        android:textColor="@color/color_light_yellow"
+                        android:background="@color/color_dark_red"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                        android:textAlignment="center"/>
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/hitsRecView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/white" />
+                </LinearLayout>
                 </FrameLayout>
-
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/baseToolbar"
                     android:layout_width="match_parent"
                     android:elevation="4dp"
+                    app:layout_scrollFlags="enterAlways|scroll"
                     android:layout_height="?attr/actionBarSize"
                     android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
