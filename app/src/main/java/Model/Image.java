@@ -2,6 +2,8 @@ package Model;
 
 import com.google.gson.annotations.SerializedName;
 
+import Utility.Constants;
+
 public class Image implements Base_Items_Model {
     private String imgName, format,size,num;
     private String uploadDate,removeDate;

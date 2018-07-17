@@ -66,9 +66,7 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
     }
 
     private int forumsJsonParser() {
-        forumsList = new ArrayList<>();
-        forumsList_1 = new ArrayList<>();
-
+        forumsList = new ArrayList<>(); forumsList_1 = new ArrayList<>();
         urls = getResources().getStringArray(R.array.yamibo_api_urls);
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, urls[0], null,
                 new Response.Listener<JSONObject>() {
@@ -127,8 +125,6 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
                     .addToBackStack(null).commit();
         }
     }
-
-
 
     @Override
     public void onAttach(Context context){

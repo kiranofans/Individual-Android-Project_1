@@ -1,6 +1,6 @@
 package Model;
 
-import android.widget.FrameLayout;
+import Utility.Constants;
 
 public class ForumsListItem implements Base_Items_Model{
     private String forumsTitles,description,subListsName;

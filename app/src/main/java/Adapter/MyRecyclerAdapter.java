@@ -21,7 +21,7 @@ import Model.Image;
 import Model.PostListItems;
 import Adapter.Base_View_Holder.BaseViewHolder;
 import Model.Base_Items_Model;
-import Model.Constants;
+import Utility.Constants;
 
 /**Using Dynamic Method Dispatch or Runtime Polymorphism*/
 public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{

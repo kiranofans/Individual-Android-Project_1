@@ -7,88 +7,86 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+
 public class Login{
     @SerializedName("Charset")
     @Expose
-    private JsonPrimitive charset;
+    private String charset;
     @SerializedName("Message")
     @Expose
-    private JsonObject message;
+    private String message;
     @SerializedName("Variables")
     @Expose
-    private JsonObject variables;
+    private String variables;
     @SerializedName("Version")
     @Expose
-    private JsonPrimitive version;
+    private String version;
 
     @SerializedName("messagestr")
     @Expose
-    private JsonPrimitive messagestr;
+    private String messagestr;
     @SerializedName("messageval")
     @Expose
-    private JsonPrimitive messageval;
-    private final static long serialVersionUID = -6019572768330337073L;
+    private String messageval;
     public Login(){}
 
     /**@param message */
-    public Login(JsonObject message){
+    public Login(String message){
         this.message=message;
     }
-    public JsonPrimitive getCharset() {
+    public String getCharset() {
         return charset;
     }
 
-    public void setCharset(JsonPrimitive charset) {
+    public void setCharset(String charset) {
         this.charset = charset;
     }
 
-    public JsonObject getMessage() {
+    public String getMessage() {
         return message;
     }
     /**@param message */
-    public void setMessage(JsonObject message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 
-    public JsonObject getVariables() {
+    public String getVariables() {
         return variables;
     }
 
-    public void setVariables(JsonObject variables) {
+    public void setVariables(String variables) {
         this.variables = variables;
     }
 
-    public JsonPrimitive getVersion() {
+    public String getVersion() {
         return version;
     }
 
-    public void setVersion(JsonPrimitive version) {
+    public void setVersion(String version) {
         this.version = version;
     }
-    public JsonPrimitive getMessagestr() {
+    public String getMessagestr() {
         return messagestr;
     }
     /**@param messagestr */
-    public void setMessagestr(JsonPrimitive messagestr) {
+    public void setMessagestr(String messagestr) {
         this.messagestr = messagestr;
     }
 
 
-    public JsonPrimitive getMessageval() {
+    public String getMessageval() {
         return messageval;
     }
 
     /**@param messageval */
-    public void setMessageval(JsonPrimitive messageval) {
+    public void setMessageval(String messageval) {
         this.messageval = messageval;
     }
-    @Override
-    public String toString() {
 
-        return "Message{" +
-                "'messagestr='"+messagestr +"'\'"+
-                ",'messageval='"+messageval+"'\'" +
-                "}";
-    }
+
+
 
 }

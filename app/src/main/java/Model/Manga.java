@@ -1,6 +1,6 @@
 package Model;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
+import Utility.Constants;
 
 public class Manga implements Base_Items_Model{
     private String mangaTitle,author,type,category,contracted;

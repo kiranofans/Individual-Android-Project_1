@@ -1,5 +1,7 @@
 package Model;
 
+import Utility.Constants;
+
 public class Users implements Base_Items_Model{
     private String username,usrPswd,usrID,credits,usrAvatarUrl;
     private Boolean usrStatus;//for active user fragment

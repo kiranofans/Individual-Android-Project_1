@@ -1,5 +1,7 @@
 package Model;
 
+import Utility.Constants;
+
 public class Hits implements Base_Items_Model {
     private String hitsTitle,hitsPostDate;
     public Hits(){}

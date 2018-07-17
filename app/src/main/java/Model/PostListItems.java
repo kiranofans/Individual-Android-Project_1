@@ -1,16 +1,11 @@
 package Model;
 
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.Serializable;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
+
+import Utility.Constants;
 
 public class PostListItems implements Base_Items_Model,Serializable {
     @SerializedName("forum_threadlist")
