@@ -4,8 +4,10 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
@@ -23,7 +25,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,38 +33,19 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.reflect.TypeToken;
-import com.squareup.picasso.Picasso;
-import com.yamibo.bbs.splashscreen.Fragments.ForumsFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import Model.Login;
-import Utility.Api_Retrofit;
 import Model.Users;
-import okhttp3.OkHttpClient;
-import okhttp3.ResponseBody;
-import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.support.design.widget.Snackbar.make;
 
@@ -70,16 +53,13 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
     /** Id to identity READ_CONTACTS permission request.*/
     //private UserLoginTask authTask=null;
     private static final int REQUEST_READ_CONTACTS = 0;
-    private SQLiteHandler dbHandler;
-    private SessionManager sessionMg;
-    private String TEST = Registration.class.getSimpleName();
     /** A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.*/
     private static String[] CREDENTIALS;
-    private AutoCompleteTextView usrnameInput;
-    private EditText pswdInput;
+    private static AutoCompleteTextView usrnameInput;
+    private static EditText pswdInput;
     private View progressView;
-    private static ImageButton avatarBtn;
+    private static ImageView avatarImgBtn;
     private static TextView usrnameTv;
     private static View loginForm;
     private static String username, avatarUrl, pswd, getUid;
@@ -89,18 +69,24 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
     private static String pageLink = "https://bbs.yamibo.com/forum.php";
     private List<String> usernameList;
     private String[] urls;
-    private boolean flag=false;
+    private static JSONObject jObj;
+    private static SessionManager sessionMg;
+    private MainNavTabActivity main;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        // Set up the login form.
+
+        // Init the login form.
         usrnameInput = (AutoCompleteTextView) findViewById(R.id.username);
         contactUs = (Button) findViewById(R.id.contactBtn);
         forgotPswd = (Button) findViewById(R.id.forgetPswdBtn);
         pswdInput = (EditText) findViewById(R.id.password);
+
         username = usrnameInput.getText().toString();
         pswd=pswdInput.getText().toString();
+
+        //Account credentials
         CREDENTIALS =new String[]{usrnameInput.getText().toString()+":"+pswdInput.getText().toString(),
                 usrnameInput.getText().toString()+":"+pswdInput.getText().toString()};
 
@@ -119,33 +105,16 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
         loginForm = findViewById(R.id.login_form);
         progressView = findViewById(R.id.login_progress);
 
-        //SQLite db handler
-        dbHandler = new SQLiteHandler(getApplicationContext());
-
-        //Session manager
+        //Session manager and login
+        sessionMg =new SessionManager(getApplicationContext());
         loginBtn = (Button) findViewById(R.id.loginBtn);
-        loginBtn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Check for empty data in the form
-                attemptLogin();
-                startActivity(new Intent(Activity_Login.this,
-                        MainNavTabActivity.class));
-                finish();
-            }
-        });
+        setBtnOnClicks();
 
-        if (SessionManager.getInstance(getApplicationContext()).isLoggedIn()) {
-            Toast.makeText(getApplicationContext(), "Logged In!", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this, MainNavTabActivity.class));
-            finish();
-        }
     }
     /** Attempts to sign in or register the account specified by the login form.
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.*/
     private void attemptLogin() {
-
         // Reset errors.
         usrnameInput.setError(null);
         pswdInput.setError(null);
@@ -200,6 +169,19 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
             Toast.makeText(this, "用戶名不對", Toast.LENGTH_SHORT).show();
         }
         return username.matches(pattern);
+    }
+    private void setBtnOnClicks(){
+        loginBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Check for empty data in the form
+                attemptLogin();
+
+                startActivity(new Intent(Activity_Login.this,
+                        MainNavTabActivity.class));
+                finish();
+            }
+        });
     }
 
     private boolean isPasswordValid(String password) {
@@ -303,38 +285,44 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
     @Override
     public void onLoaderReset(android.content.Loader<Cursor> loader) { }
 
-    public void userLogin(){
-        username=usrnameInput.getText().toString();
-        pswd=pswdInput.getText().toString();
+    public JSONObject userLogin(){
+        main=new MainNavTabActivity();
         urls=getResources().getStringArray(R.array.yamibo_api_urls);
         final StringRequest request=new StringRequest(Request.Method.POST, urls[3],
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try{
-                            JSONObject jObj=new JSONObject(response);
+                            jObj=new JSONObject(response);
                             JSONObject loginMsg=jObj.getJSONObject("Message");
                             String msgVal=loginMsg.getString("messageval");
                             String msgTr=loginMsg.getString("messagestr");
                             if(msgVal.equals("login_succeed")){
-                               Toast.makeText(Activity_Login.this,
-                                       msgTr,Toast.LENGTH_SHORT).show();
-                               Log.d("JSON","Content: "+jObj);//login succeed
-                               JSONObject varObj=jObj.getJSONObject("Variables");
-                               JSONObject notice=varObj.getJSONObject("notice");
-                               String avatarUrl=varObj.getString("member_avatar");
-                               String userName=varObj.getString("member_username");
-                               String uid=varObj.getString("member_uid");
-                               String groupId=varObj.getString("groupid");
-                               String readAuth=varObj.getString("readaccess");
-                               /* Picasso.with(getApplicationContext())
-                                        .load(avatarUrl).fit().centerInside()
-                                        .into(avatarBtn);*/
+                                Toast.makeText(Activity_Login.this,
+                                        msgTr,Toast.LENGTH_SHORT).show();
+                                JSONObject varObj = jObj.getJSONObject("Variables");
+                                JSONObject notice = varObj.getJSONObject("notice");
+                                Iterator<String> iter=notice.keys();
+
+                                //Loop through the notice JSONObjects
+                                String notices="";
+                                while(iter.hasNext()){
+                                    String key=iter.next();
+                                    notices=notice.getString(key);
+                                }
+                                String avatarUrl = varObj.getString("member_avatar");
+                                String userName = varObj.getString("member_username");
+                                String uid = varObj.getString("member_uid");
+                                String groupId = varObj.getString("groupid");
+                                String readAuth = varObj.getString("readaccess");
+
+                                sessionMg.createLoginSession(true,
+                                        notices,groupId,avatarUrl,readAuth,userName,uid);
+
                             }else{
                                 Toast.makeText(Activity_Login.this,
                                         msgTr,Toast.LENGTH_SHORT).show();
                             }
-
                         }catch (JSONException je){
                             Log.d("JSON ERROR",je.getMessage());
                         }
@@ -362,6 +350,7 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
             }
         };
         VolleySingleton.getInstance(this).addToRequestQueue(request);
+        return jObj;
     }
 
     private interface ProfileQuery {

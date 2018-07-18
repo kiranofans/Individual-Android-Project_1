@@ -1,0 +1,26 @@
+{
+  "Charset": "GBK",
+  "Message": {
+    "messagestr": "欢迎您回来，百合種子 kiranofans，现在将转入登录前页面",
+    "messageval": "login_succeed"
+  },
+  "Variables": {
+    "auth": "5033xNoC4YUA4mh2w9Ovz8kVK7Ox/rC5wRpz9dy1yPgntAIKUWXZGSXynZmNMqHEQwaCOF8eYpKI29UlhaETYKabyu8",
+    "cookiepre": "EeqY_2132_",
+    "formhash": "f4bd53dd",
+    "groupid": "15",
+    "ismoderator": null,
+    "member_avatar": "https://bbs.yamibo.com/uc_server/avatar.php?uid=330107&size=small",
+    "member_uid": "330107",
+    "member_username": "kiranofans",
+    "notice": {
+      "newmypost": "0",
+      "newpm": "0",
+      "newprompt": "1",
+      "newpush": "0"
+    },
+    "readaccess": "10",
+    "saltkey": "Y3ZQw00s"
+  },
+  "Version": "1"
+}

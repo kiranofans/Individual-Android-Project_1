@@ -8,13 +8,15 @@ public class Users implements Base_Items_Model{
     private String notices, othersReplies,usrReplies,groupID;
     private String readAccess,usrSpace;
 
-    public Users(){}
-    public Users(String notices,String imgUrl,String username, String usrId,String groupId) {
+    public Users(String keyNotices, String string, String keyAvatar, String sharePrefsString, String keyUsername, String prefsString, String keyUid, String s, String keyGroupid, String string1, String keyReadAuth, String sharePrefsString1){}
+    public Users(String notices,String imgUrl,String username, String usrId,
+                 String groupId,String readAuth) {
         this.notices=notices;
         this.usrAvatarUrl=imgUrl;
         this.username = username;
         this.usrID = usrId;
         this.groupID=groupId;
+        this.readAccess=readAuth;
     }
     public Users (String usrAvatarUrl, String username, String space, Boolean status){
         this.usrAvatarUrl=usrAvatarUrl;
@@ -29,8 +31,8 @@ public class Users implements Base_Items_Model{
         this.readAccess=readAccess;
         this.notices=notices;
     }
-    public Users (String receivedNotices,String othersReplies,String usrReplies){
-        this.notices=receivedNotices;
+    public Users(){
+        this.notices=notices;
         this.othersReplies=othersReplies;
         this.usrReplies=usrReplies;
     }

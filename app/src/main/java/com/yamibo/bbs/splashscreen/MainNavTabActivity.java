@@ -3,6 +3,7 @@ package com.yamibo.bbs.splashscreen;
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -33,6 +35,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.squareup.picasso.Picasso;
 import com.yamibo.bbs.splashscreen.Fragments.AccountFragment;
 import com.yamibo.bbs.splashscreen.Fragments.GalleryFragment;
 import com.yamibo.bbs.splashscreen.Fragments.ProfileFragment;
@@ -43,13 +46,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import Adapter.ImgViewPagerAdapter;
 import Adapter.MyRecyclerAdapter;
 import Model.Base_Items_Model;
 import Model.Hits;
+import Model.Users;
 
 public class MainNavTabActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,AccountFragment.OnFragmentInteractionListener,
@@ -57,13 +63,14 @@ GalleryFragment.OnFragmentInteractionListener{
     public static ViewPager imgVp;
     public static ImgViewPagerAdapter vpAdp;
     protected static CollapsingToolbarLayout collapseToolbar;
-    private static ImageView leftNav, rightNav,avatarBtn;
+    private static ImageView leftNav, rightNav;
+    private static ImageView avatarBtn;
     private Button plsLogBtn, regBtn,logoutBtn;
     private static FragmentManager fragMg;
     private static FragmentTransaction ft;
     private Toolbar toolbar;
-    private View headerView,loginView;
-    private NavigationView nav_view;
+    public static View headerView,loginView;
+    public static NavigationView nav_view;
     private DrawerLayout drawer;
     private TextView usernameTv;
     private String username;
@@ -73,7 +80,7 @@ GalleryFragment.OnFragmentInteractionListener{
     private RecyclerView vpRecView;
     private MyRecyclerAdapter vpRecAdp;
     private List<Base_Items_Model> hitsList;
-
+    private SessionManager session;
     @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,11 +108,14 @@ GalleryFragment.OnFragmentInteractionListener{
         setNavDrawerView();
 
         nav_view.setNavigationItemSelectedListener(this);
-        setLogRqstAndRegBtn();setBtnOnClicks();
+        setLogRqstAndRegBtn();
+
+        setBtnOnClicks();
 
         //ViewPager Tabs and tab fragments
         setTabsFragments(new TabsFragment());//init
         initChildFragments();
+        getUserInfo();
     }
     public void fragsCustomToolbar(String title){
         collapseToolbar.setTitle(title);
@@ -145,6 +155,7 @@ GalleryFragment.OnFragmentInteractionListener{
                 ft.replace(R.id.rootViewPage,new ProfileFragment()).commit();
             }
         });
+
     }
     private void setTabsFragments(android.support.v4.app.Fragment fg){
         fragMg=getSupportFragmentManager();
@@ -154,6 +165,19 @@ GalleryFragment.OnFragmentInteractionListener{
             ft.replace(R.id.rootViewPage, new TabsFragment()).commit();
         }
     }
+    private void getUserInfo(){
+        session=new SessionManager(getApplicationContext());
+        if(session.isLoggedIn()){
+            HashMap<String,String> userInfo=session.getUserDetails();
+            usernameTv.setText(userInfo.get(session.KEY_USERNAME));
+            Picasso.with(getApplicationContext()).load(userInfo.get(session.KEY_AVATAR))
+                    .fit().into(avatarBtn);
+        }else{
+            session.logoutUser();
+            finish();
+        }
+    }
+
     @Override
     public void onBackPressed () {
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -303,7 +327,6 @@ GalleryFragment.OnFragmentInteractionListener{
         plsLogBtn.setPaintFlags(plsLogBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         regBtn.setPaintFlags(regBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
     }
-
     @Override
     public void onFragmentInteraction(Uri uri) {
 
