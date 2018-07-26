@@ -65,8 +65,7 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
     private static String username, avatarUrl, pswd, getUid;
     private Button forgotPswd, contactUs, logOutBtn, loginBtn;
     private static Users users;
-    private static boolean isSignedIn = false;
-    private static String pageLink = "https://bbs.yamibo.com/forum.php";
+    private static boolean flag = false;
     private List<String> usernameList;
     private String[] urls;
     private static JSONObject jObj;
@@ -101,7 +100,6 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
             }
         });
 
-        //rqstQueue=Volley.newRequestQueue(getApplicationContext());
         loginForm = findViewById(R.id.login_form);
         progressView = findViewById(R.id.login_progress);
 
@@ -114,7 +112,7 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
     /** Attempts to sign in or register the account specified by the login form.
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.*/
-    private void attemptLogin() {
+    private boolean attemptLogin() {
         // Reset errors.
         usrnameInput.setError(null);
         pswdInput.setError(null);
@@ -130,11 +128,12 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
         if (!TextUtils.isEmpty(pswd) && !isPasswordValid(pswd)) {
             pswdInput.setError(getString(R.string.error_invalid_password));
             focusView = pswdInput;
-            cancel = true;
+            return cancel = true;
+
         } else if (TextUtils.isEmpty(pswd)) {
             pswdInput.setError("密碼不能為空");
             focusView = pswdInput;
-            cancel = true;
+            return cancel = true;
         }
 
         // Check for a valid username.
@@ -142,10 +141,12 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
             usrnameInput.setError(getString(R.string.error_field_required));
             focusView = usrnameInput;
             cancel = true;
+            return false;
         } else if (!isUsernameValid(username)) {
             usrnameInput.setError(getString(R.string.invalid_username));
             focusView = usrnameInput;
             cancel = true;
+            return false;
         }
         if (cancel) {
             // There was an error; don't attempt login and focus the first
@@ -156,11 +157,11 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
             // perform the user login attempt.
             showProgress(true);
             userLogin();
-            //authTask.execute((Void)null);
+            return cancel=false;
         }
+        return cancel;
     }
     private boolean isUsernameValid(String username) {
-        //TODO: Replace this with your own logic
         /** UTF-8 (Unicode)
          * \u4e00-\u9fa5: Chinese
          * \u0800-\u4e00: Japanese */
@@ -176,16 +177,16 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
             public void onClick(View view) {
                 //Check for empty data in the form
                 attemptLogin();
-
-                startActivity(new Intent(Activity_Login.this,
-                        MainNavTabActivity.class));
-                finish();
+                if(attemptLogin()==false){//if cancel=false
+                    startActivity(new Intent(Activity_Login.this,
+                            MainNavTabActivity.class));
+                    finish();
+                }
             }
         });
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
         String pattern = "([a-zA-Z0-9].{5,40})";
         if (password.length() < 6) {
             Toast.makeText(this, "密碼長度需在6個字節或以上",

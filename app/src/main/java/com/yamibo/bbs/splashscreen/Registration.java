@@ -30,7 +30,6 @@ public class Registration extends AppCompatActivity {
     private String usernameTxt,emailTxt,pswdTxt,pswdConfirmTxt,answerTxt;
     private ProgressDialog pDialog;
     private SessionManager session;
-    private SQLiteHandler dbHandler;
     private  String []  regElement;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,19 +42,13 @@ public class Registration extends AppCompatActivity {
         inputAnswer=(EditText)findViewById(R.id.secAnswInput);
         //btnLinkToLogin = (Button) findViewById(R.id.);
 
-        //SQLite db handler
-        dbHandler=new SQLiteHandler(getApplicationContext());
-
         if(session.isLoggedIn()){
             //take the user to main activity
             startActivity(new Intent(Registration.this,MainNavTabActivity.class));
             finish();
         }
-
-        setBtnOnClicks();
-
     }
-    public void setBtnOnClicks(){
+  /*  public void setBtnOnClicks(){
         //Register button onClick
         usernameTxt=inputUserName.getText().toString();
         emailTxt=inputEmail.getText().toString();
@@ -82,15 +75,14 @@ public class Registration extends AppCompatActivity {
                 }
                 startActivity(new Intent
                         (Registration.this,Activity_Login.class));
-               // finish();
+                finish();
             }
         });
-    }
+    }*/
 
-    /**
-     * Function to store user in MySQL database will post params(tag, name,
+    /** Function to store user in MySQL database will post params(tag, name,
      * email, password) to register url*/
-    private void registerUser(final String username,final String email,final String password){
+   /* private void registerUser(final String username,final String email,final String password){
         //Tag used to cancel the request
         String cancel_reqst="req_register";
         StringRequest strReqst=new StringRequest(Request.Method.POST, AppConfig.URL_REGISTER,
@@ -110,10 +102,6 @@ public class Registration extends AppCompatActivity {
                                 String username=user.getString("username");
                                 String email=user.getString("email");
                                 String addedDate=user.getString("created_at");
-
-                                //Inserting row in users table
-                                dbHandler.addUserDetais(username,email,
-                                        uniqId,addedDate);
 
                                 Toast.makeText(getApplicationContext(), "User added.",
                                         Toast.LENGTH_SHORT).show();
@@ -138,5 +126,5 @@ public class Registration extends AppCompatActivity {
                 error.printStackTrace();
             }
         });
-    }
+    }*/
 }

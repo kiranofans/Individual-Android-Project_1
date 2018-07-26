@@ -25,12 +25,9 @@ public class Activity_Post extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
-        //setToolbarAndFragments();
-
     }
 
-    private void setToolbarAndFragments(){
-        Fragment[] fragments={new ChatFragment()};
+    private void setToolbar(){
         postToolbar = (Toolbar) findViewById(R.id.sharedToolbar);
         setSupportActionBar(postToolbar);
         ViewCompat.setTransitionName(findViewById(R.id.app_bar_layout), "");
@@ -44,27 +41,10 @@ public class Activity_Post extends AppCompatActivity {
         postToolbar.hideOverflowMenu();
 
     }
-    public void setChatFrag(android.support.v4.app.Fragment frg){
+    public void setFragments(android.support.v4.app.Fragment frg){
         if (frg != null) {
             ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.contentFrm_no_tabs, new ChatFragment()).commit();
-        }
-
-    }
-    public void setMangaFrag(android.support.v4.app.Fragment frg){
-        if (frg != null) {
-            android.support.v4.app.FragmentTransaction ft =
-                    getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.contentFrm_no_tabs, new AnimeDiscussFragment())
-                    .commit();
-        }
-    }
-    public void setAdminFrag(Fragment frg){
-        if(frg!=null){
-            android.support.v4.app.FragmentTransaction ft =
-                    getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.contentFrm_no_tabs, new AdminFragment())
-                    .commit();
+            ft.replace(R.id.contentFrm_no_tabs, new Fragment()).commit();
         }
     }
 }

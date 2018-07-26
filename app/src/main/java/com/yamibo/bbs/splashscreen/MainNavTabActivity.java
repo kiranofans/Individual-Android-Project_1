@@ -3,7 +3,6 @@ package com.yamibo.bbs.splashscreen;
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,7 +16,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -46,7 +44,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -55,7 +52,6 @@ import Adapter.ImgViewPagerAdapter;
 import Adapter.MyRecyclerAdapter;
 import Model.Base_Items_Model;
 import Model.Hits;
-import Model.Users;
 
 public class MainNavTabActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,AccountFragment.OnFragmentInteractionListener,
@@ -113,7 +109,7 @@ GalleryFragment.OnFragmentInteractionListener{
         setBtnOnClicks();
 
         //ViewPager Tabs and tab fragments
-        setTabsFragments(new TabsFragment());//init
+        setTabsFragment(new TabsFragment());//init
         initChildFragments();
         getUserInfo();
     }
@@ -127,7 +123,6 @@ GalleryFragment.OnFragmentInteractionListener{
         activeUserFrag = getFragmentManager().findFragmentById(R.layout.tab_active_user);
         novelFrag=getFragmentManager().findFragmentById(R.layout.tab_novels);
         mangaFrag=getFragmentManager().findFragmentById(R.layout.tab_manga);
-
     }
     private void setCollapsedBarMain() {
         toolbar = (Toolbar) findViewById(R.id.baseToolbar);
@@ -155,14 +150,13 @@ GalleryFragment.OnFragmentInteractionListener{
                 ft.replace(R.id.rootViewPage,new ProfileFragment()).commit();
             }
         });
-
     }
-    private void setTabsFragments(android.support.v4.app.Fragment fg){
+    private void setTabsFragment(android.support.v4.app.Fragment fg){
         fragMg=getSupportFragmentManager();
-        if (fg != null) {/**Set ViewPager tabs fragment*/
+        if (fg != null) {/**Set fragments method*/
             //Have to use v4.app.FragmentTransaction
             ft =fragMg.beginTransaction();
-            ft.replace(R.id.rootViewPage, new TabsFragment()).commit();
+            ft.replace(R.id.rootViewPage,new TabsFragment()).commit();
         }
     }
     private void getUserInfo(){
@@ -172,10 +166,10 @@ GalleryFragment.OnFragmentInteractionListener{
             usernameTv.setText(userInfo.get(session.KEY_USERNAME));
             Picasso.with(getApplicationContext()).load(userInfo.get(session.KEY_AVATAR))
                     .fit().into(avatarBtn);
-        }else{
-            session.logoutUser();
+        }/*else{
+            //session.logoutUser();
             finish();
-        }
+        }*/
     }
 
     @Override
@@ -220,7 +214,6 @@ GalleryFragment.OnFragmentInteractionListener{
 
                             for(int i=0;i<hitsImgArr.length();i++){
                                 JSONObject imgObj=hitsImgArr.getJSONObject(i);
-                                String htmlUrl=imgObj.getString("url");
                                 String pic=imgObj.getString("pic");
 
                                 imgUrlList.add("https://bbs.yamibo.com/data/attachment/"+pic);
@@ -256,16 +249,13 @@ GalleryFragment.OnFragmentInteractionListener{
         /** Handle navigation view item clicks here.*/
         int id = item.getItemId();
         if(id==R.id.item_home){
-            ft=fragMg.beginTransaction();
-            ft.replace(R.id.rootViewPage,new TabsFragment()).commit();
-
+            setTabsFragment(new TabsFragment());
         }else if (id == R.id.item_account) {
             ft=fragMg.beginTransaction();
             ft.replace(R.id.rootViewPage,new AccountFragment()).commit();
         } else if (id == R.id.item_space) {
             ft=fragMg.beginTransaction();
             ft.replace(R.id.rootViewPage,new SpaceFragment()).commit();
-
         } else if (id == R.id.item_gallery) {
             ft=fragMg.beginTransaction();
             ft.replace(R.id.rootViewPage,new GalleryFragment()).commit();
@@ -275,8 +265,9 @@ GalleryFragment.OnFragmentInteractionListener{
         } else if (id == R.id.nav_share) {
            //display the social medias in a dialog box or something
         } else if (id == R.id.nav_send) {
-            ft=fragMg.beginTransaction();
-            ft.replace(R.id.rootViewPage,new TabsFragment()).commit();
+            setTabsFragment(new TabsFragment());//Default display
+            /*ft=fragMg.beginTransaction();
+            ft.replace(R.id.rootViewPage,new TabsFragment()).commit();*/
         }
         toolbar=(Toolbar)findViewById(R.id.baseToolbar);
         return false;
@@ -295,7 +286,6 @@ GalleryFragment.OnFragmentInteractionListener{
 
                 } else if (tab == 0) {
                     imgVp.setCurrentItem(tab);
-
                 }
             }
         });
