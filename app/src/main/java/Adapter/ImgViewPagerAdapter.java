@@ -11,11 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
-import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 import com.yamibo.bbs.splashscreen.R;
 
-import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ImgViewPagerAdapter extends PagerAdapter {
@@ -43,7 +40,7 @@ public class ImgViewPagerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container,int pos){
         inflater=(LayoutInflater)context.getSystemService
                 (Context.LAYOUT_INFLATER_SERVICE);
-        View v= inflater.inflate(R.layout.viewpager_items,null);
+        View v= inflater.inflate(R.layout.items_viewpager,null);
         imgView=(ImageView)v.findViewById(R.id.vpImgs);
 
         ViewPager vp=(ViewPager)container;

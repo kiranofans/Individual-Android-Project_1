@@ -66,10 +66,10 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
                 return new PostsHolder(v,viewType);
             case Constants.ViewTypes.GALLERY:
                 v=LayoutInflater.from(parent.getContext()).inflate
-                        (R.layout.gallery_cardview,parent,false);
+                        (R.layout.list_items_gallery,parent,false);
                 return new GalleryHolder(v,viewType);
             case Constants.ViewTypes.HITS:
-                v=LayoutInflater.from(parent.getContext()).inflate(R.layout.hits_card_view,
+                v=LayoutInflater.from(parent.getContext()).inflate(R.layout.list_items_hits,
                         parent,false);
                 return new HitsHolder(v,viewType);
         }

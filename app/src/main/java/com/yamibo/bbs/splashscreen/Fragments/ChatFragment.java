@@ -123,7 +123,7 @@ MyRecyclerAdapter.OnItemClickListener{
                                     recycleAdp=new MyRecyclerAdapter(getContext(),chatList);
                                     recycleAdp.setOnItemClickListener(ChatFragment.this);
                                     SectionRecycleViewAdapter.Sections[] secArr=new SectionRecycleViewAdapter.Sections[secsList.size()];
-                                    SectionRecycleViewAdapter secAdp =new SectionRecycleViewAdapter(getContext(),R.layout.sections_items,
+                                    SectionRecycleViewAdapter secAdp =new SectionRecycleViewAdapter(getContext(),R.layout.items_section,
                                             R.id.catListSections,recycleAdp);
                                     secAdp.setSections(secsList.toArray(secArr));
                                     recyclerView.setAdapter(secAdp);

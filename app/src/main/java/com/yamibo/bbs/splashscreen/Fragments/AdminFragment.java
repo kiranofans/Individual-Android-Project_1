@@ -79,7 +79,7 @@ public class AdminFragment extends Fragment {
                             recAdp=new MyRecyclerAdapter(getContext(),admList);
 
                             SectionRecycleViewAdapter.Sections[] secArr=new SectionRecycleViewAdapter.Sections[sections.size()];
-                            SectionRecycleViewAdapter secAdp =new SectionRecycleViewAdapter(getContext(),R.layout.sections_items,
+                            SectionRecycleViewAdapter secAdp =new SectionRecycleViewAdapter(getContext(),R.layout.items_section,
                                     R.id.catListSections,recAdp);
                             secAdp.setSections(sections.toArray(secArr));
                             recView.setAdapter(secAdp);

@@ -87,7 +87,7 @@ public class AnimeDiscussFragment extends Fragment implements MyRecyclerAdapter.
                             recAdp=new MyRecyclerAdapter(getContext(), mangaDiscussList);
                             recAdp.setOnItemClickListener(AnimeDiscussFragment.this);
                             SectionRecycleViewAdapter.Sections[] secArr=new SectionRecycleViewAdapter.Sections[animeSecs.size()];
-                            SectionRecycleViewAdapter secAdp =new SectionRecycleViewAdapter(getContext(),R.layout.sections_items,
+                            SectionRecycleViewAdapter secAdp =new SectionRecycleViewAdapter(getContext(),R.layout.items_section,
                                     R.id.catListSections,recAdp);
                             secAdp.setSections(animeSecs.toArray(secArr));
                             mangaRecView.setAdapter(secAdp);

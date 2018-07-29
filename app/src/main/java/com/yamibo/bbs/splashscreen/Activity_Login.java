@@ -46,31 +46,32 @@ import java.util.List;
 import java.util.Map;
 
 import Model.Users;
+import Utility.AppConstants;
 
 import static android.support.design.widget.Snackbar.make;
 
 public class Activity_Login extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
     /** Id to identity READ_CONTACTS permission request.*/
-    //private UserLoginTask authTask=null;
-    private static final int REQUEST_READ_CONTACTS = 0;
-    /** A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.*/
-    private static String[] CREDENTIALS;
+    private static final String LOG_TAG=Activity_Login.class.getSimpleName();
+    private static final String PREF_FILE = AppConstants.PREF_FILE_GLOBAL;
+    private static SessionManager sessionMg;
+    private MainNavTabActivity main;
+
     private static AutoCompleteTextView usrnameInput;
     private static EditText pswdInput;
+    private Button forgotPswd, contactUs, logOutBtn, loginBtn;
     private View progressView;
     private static ImageView avatarImgBtn;
     private static TextView usrnameTv;
     private static View loginForm;
+
     private static String username, avatarUrl, pswd, getUid;
-    private Button forgotPswd, contactUs, logOutBtn, loginBtn;
-    private static Users users;
-    private static boolean flag = false;
-    private List<String> usernameList;
     private String[] urls;
+
+    private static Users users;
+    private List<String> usernameList;
+
     private static JSONObject jObj;
-    private static SessionManager sessionMg;
-    private MainNavTabActivity main;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,10 +85,6 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
 
         username = usrnameInput.getText().toString();
         pswd=pswdInput.getText().toString();
-
-        //Account credentials
-        CREDENTIALS =new String[]{usrnameInput.getText().toString()+":"+pswdInput.getText().toString(),
-                usrnameInput.getText().toString()+":"+pswdInput.getText().toString()};
 
         pswdInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -285,7 +282,6 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
     }
     @Override
     public void onLoaderReset(android.content.Loader<Cursor> loader) { }
-
     public JSONObject userLogin(){
         main=new MainNavTabActivity();
         urls=getResources().getStringArray(R.array.yamibo_api_urls);

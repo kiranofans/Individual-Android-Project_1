@@ -53,6 +53,9 @@ import Adapter.MyRecyclerAdapter;
 import Model.Base_Items_Model;
 import Model.Hits;
 
+import static Utility.AppConstants.KEY_AVATAR;
+import static Utility.AppConstants.KEY_USERNAME;
+
 public class MainNavTabActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,AccountFragment.OnFragmentInteractionListener,
 GalleryFragment.OnFragmentInteractionListener{
@@ -163,8 +166,8 @@ GalleryFragment.OnFragmentInteractionListener{
         session=new SessionManager(getApplicationContext());
         if(session.isLoggedIn()){
             HashMap<String,String> userInfo=session.getUserDetails();
-            usernameTv.setText(userInfo.get(session.KEY_USERNAME));
-            Picasso.with(getApplicationContext()).load(userInfo.get(session.KEY_AVATAR))
+            usernameTv.setText(userInfo.get(KEY_USERNAME));
+            Picasso.with(getApplicationContext()).load(userInfo.get(KEY_AVATAR))
                     .fit().into(avatarBtn);
         }/*else{
             //session.logoutUser();
