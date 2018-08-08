@@ -18,7 +18,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import Utility.AlertDialogManager;
 import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 import com.yamibo.bbs.splashscreen.R;
-import com.yamibo.bbs.splashscreen.VolleySingleton;
+import Utility.VolleySingleton;
 
 import org.json.*;
 
@@ -27,8 +27,6 @@ import java.util.*;
 import Adapter.MyRecyclerAdapter;
 import Adapter.ForumsRecView1Adapter;
 import Model.*;
-import Utility.ProgressDialogManager;
-import Utility.Utility;
 
 public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItemClickListener {
     private static RecyclerView recyclerView, recyclerView1;
@@ -39,6 +37,7 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
     public static String[] urls; private static int pos=0;
     private String imgUrl = "https://bbs.yamibo.com/template/oyeeh_com_baihe/img/shdm1020/forum_new.gif";
     private static View v;
+    private Dialog dialog;
     private FragmentManager fragMg;
     private SwipeRefreshLayout swiper;
     private MainNavTabActivity main = new MainNavTabActivity();
@@ -53,7 +52,7 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
         /**This method defines the xml layout file for the fragment*/
         v = inflater.inflate(R.layout.tab_forums, container, false);
         dialogMgr=AlertDialogManager.getInstance();
-
+        dialog=new Dialog(getContext());
         return v;
     }
 
@@ -76,6 +75,8 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
     }
 
     public void forumsJsonParser() {
+        dialog.setTitle("Loading...");
+        dialog.show();
         forumsList = new ArrayList<>(); forumsList_1 = new ArrayList<>();
         urls = getResources().getStringArray(R.array.yamibo_api_urls);
         final JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, urls[0], null,
@@ -83,8 +84,6 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            AlertDialogManager.getAlertDialog(getContext(),"loading",true);
-
                             JSONObject var = response.getJSONObject("Variables");
                             JSONArray forumsArr = var.getJSONArray("forumlist");
                             for (int i = 0; i < forumsArr.length(); i++) {
@@ -107,6 +106,7 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
                             recycleAdp_1 = new MyRecyclerAdapter(getContext(), forumsList_1);
                             recycleAdp_1.setOnItemClickListener(ForumsFragment.this);
                             recyclerView1.setAdapter(recycleAdp_1);
+                            dialog.dismiss();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -119,7 +119,7 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
         });
 
         VolleySingleton.getInstance(getContext()).addToRequestQueue(request);
-        
+
     }
 
     @Override

@@ -1,9 +1,6 @@
 package Utility;
 
-import android.annotation.SuppressLint;
-import android.app.Application;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 
 import com.android.volley.Request;
@@ -11,7 +8,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.yamibo.bbs.splashscreen.R;
-import com.yamibo.bbs.splashscreen.VolleySingleton;
 
 import org.json.JSONObject;
 

@@ -16,7 +16,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 import com.yamibo.bbs.splashscreen.R;
-import com.yamibo.bbs.splashscreen.VolleySingleton;
+import Utility.VolleySingleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;

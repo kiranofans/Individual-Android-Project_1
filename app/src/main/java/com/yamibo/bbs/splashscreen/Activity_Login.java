@@ -4,10 +4,8 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.LoaderManager;
-import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
@@ -40,13 +38,13 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import Model.Users;
 import Utility.AppConstants;
+import Utility.VolleySingleton;
 
 import static android.support.design.widget.Snackbar.make;
 

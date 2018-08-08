@@ -52,6 +52,7 @@ import Adapter.ImgViewPagerAdapter;
 import Adapter.MyRecyclerAdapter;
 import Model.Base_Items_Model;
 import Model.Hits;
+import Utility.VolleySingleton;
 
 import static Utility.AppConstants.KEY_AVATAR;
 import static Utility.AppConstants.KEY_USERNAME;
