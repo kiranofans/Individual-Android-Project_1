@@ -52,6 +52,7 @@ import Adapter.ImgViewPagerAdapter;
 import Adapter.MyRecyclerAdapter;
 import Model.Base_Items_Model;
 import Model.Hits;
+import Utility.SessionManager;
 import Utility.VolleySingleton;
 
 import static Utility.AppConstants.KEY_AVATAR;
@@ -168,7 +169,7 @@ GalleryFragment.OnFragmentInteractionListener{
         if(session.isLoggedIn()){
             HashMap<String,String> userInfo=session.getUserDetails();
             usernameTv.setText(userInfo.get(KEY_USERNAME));
-            Picasso.with(getApplicationContext()).load(userInfo.get(KEY_AVATAR))
+            Picasso.with(MainNavTabActivity.this).load(userInfo.get(KEY_AVATAR))
                     .fit().into(avatarBtn);
         }/*else{
             //session.logoutUser();
