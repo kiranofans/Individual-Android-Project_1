@@ -43,10 +43,12 @@ import java.util.List;
 import java.util.Map;
 
 import Model.Users;
+import Utility.ApiConstants;
 import Utility.AppConstants;
 import Utility.SessionManager;
 import Utility.VolleySingleton;
 
+import static Utility.ApiConstants.LOGIN_REQUEST_API_URL;
 import static android.support.design.widget.Snackbar.make;
 
 public class Activity_Login extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
@@ -65,7 +67,6 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
     private static View loginForm;
 
     private static String username, avatarUrl, pswd, getUid;
-    private String[] urls;
 
     private static Users users;
     private List<String> usernameList;
@@ -283,8 +284,7 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
     public void onLoaderReset(android.content.Loader<Cursor> loader) { }
     public JSONObject userLogin(){
         main=new MainNavTabActivity();
-        urls=getResources().getStringArray(R.array.yamibo_api_urls);
-        final StringRequest request=new StringRequest(Request.Method.POST, urls[3],
+        final StringRequest request=new StringRequest(Request.Method.POST, LOGIN_REQUEST_API_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

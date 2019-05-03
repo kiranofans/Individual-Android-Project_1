@@ -52,36 +52,40 @@ import Adapter.ImgViewPagerAdapter;
 import Adapter.MyRecyclerAdapter;
 import Model.Base_Items_Model;
 import Model.Hits;
+import Utility.ApiConstants;
 import Utility.SessionManager;
 import Utility.VolleySingleton;
 
+import static Utility.ApiConstants.FORUM_DAILY_HITS_URL;
+import static Utility.ApiConstants.IMG_BASE_URL;
 import static Utility.AppConstants.KEY_AVATAR;
 import static Utility.AppConstants.KEY_USERNAME;
 
 public class MainNavTabActivity extends AppCompatActivity implements
-        NavigationView.OnNavigationItemSelectedListener,AccountFragment.OnFragmentInteractionListener,
-GalleryFragment.OnFragmentInteractionListener{
+        NavigationView.OnNavigationItemSelectedListener, AccountFragment.OnFragmentInteractionListener,
+        GalleryFragment.OnFragmentInteractionListener {
     public static ViewPager imgVp;
     public static ImgViewPagerAdapter vpAdp;
     protected static CollapsingToolbarLayout collapseToolbar;
     private static ImageView leftNav, rightNav;
     private static ImageView avatarBtn;
-    private Button plsLogBtn, regBtn,logoutBtn;
+    private Button plsLogBtn, regBtn, logoutBtn;
     private static FragmentManager fragMg;
     private static FragmentTransaction ft;
     private Toolbar toolbar;
-    public static View headerView,loginView;
+    public static View headerView, loginView;
     public static NavigationView nav_view;
     private DrawerLayout drawer;
     private TextView usernameTv;
     private String username;
     private AutoCompleteTextView userInput;
-    private List<String> imgUrlList; private Handler handler;
-    private String[] hitsUrls;
+    private List<String> imgUrlList;
+    private Handler handler;
     private RecyclerView vpRecView;
     private MyRecyclerAdapter vpRecAdp;
     private List<Base_Items_Model> hitsList;
     private SessionManager session;
+
     @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,19 +97,21 @@ GalleryFragment.OnFragmentInteractionListener{
         plsLogBtn = (Button) headerView.findViewById(R.id.loginReqstBtn);
         regBtn = (Button) headerView.findViewById(R.id.regBtn);
         avatarBtn = (ImageView) headerView.findViewById(R.id.avatarImgBtn);
-        loginView=View.inflate(this,R.layout.activity_login,null);
+        loginView = View.inflate(this, R.layout.activity_login, null);
         usernameTv = (TextView) headerView.findViewById(R.id.usrNameTxt);
 
         //RecView for hits
-        vpRecView=(RecyclerView)findViewById(R.id.hitsRecView);
+        vpRecView = (RecyclerView) findViewById(R.id.hitsRecView);
         vpRecView.setLayoutManager(new LinearLayoutManager(this));
 
-        drawer=(DrawerLayout)findViewById(R.id.drawer_layout);
-        imgUrlList=new ArrayList<>();   hitsList=new ArrayList<>();
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        imgUrlList = new ArrayList<>();
+        hitsList = new ArrayList<>();
 
         setHitsToImgVP();
 
-        imgNav();  setCollapsedBarMain();
+        imgNav();
+        setCollapsedBarMain();
         setNavDrawerView();
 
         nav_view.setNavigationItemSelectedListener(this);
@@ -118,17 +124,19 @@ GalleryFragment.OnFragmentInteractionListener{
         initChildFragments();
         getUserInfo();
     }
-    public void fragsCustomToolbar(String title){
+
+    public void fragsCustomToolbar(String title) {
         collapseToolbar.setTitle(title);
     }
-    private void initChildFragments(){
-        Fragment forumsFragment, activeUserFrag, novelFrag, mangaFrag;
-        forumsFragment = getFragmentManager()
-                .findFragmentById(R.id.forumsFrm);
-        activeUserFrag = getFragmentManager().findFragmentById(R.layout.tab_active_user);
-        novelFrag=getFragmentManager().findFragmentById(R.layout.tab_novels);
-        mangaFrag=getFragmentManager().findFragmentById(R.layout.tab_manga);
+
+    private void initChildFragments() {
+       // Fragment forumsFragment, activeUserFrag, novelFrag, mangaFrag;
+        getFragmentManager().findFragmentById(R.id.forumsFrm);
+        getFragmentManager().findFragmentById(R.layout.tab_active_user);
+        getFragmentManager().findFragmentById(R.layout.tab_novels);
+        getFragmentManager().findFragmentById(R.layout.tab_manga);
     }
+
     private void setCollapsedBarMain() {
         toolbar = (Toolbar) findViewById(R.id.baseToolbar);
         setSupportActionBar(toolbar);
@@ -146,28 +154,31 @@ GalleryFragment.OnFragmentInteractionListener{
         drawer.addDrawerListener(toggle);
         toggle.syncState();
     }
+
     private void setBtnOnClicks() {
         avatarBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Will start a new activity
-                ft=fragMg.beginTransaction();
-                ft.replace(R.id.rootViewPage,new ProfileFragment()).commit();
+                ft = fragMg.beginTransaction();
+                ft.replace(R.id.rootViewPage, new ProfileFragment()).commit();
             }
         });
     }
-    private void setTabsFragment(android.support.v4.app.Fragment fg){
-        fragMg=getSupportFragmentManager();
+
+    private void setTabsFragment(android.support.v4.app.Fragment fg) {
+        fragMg = getSupportFragmentManager();
         if (fg != null) {/**Set fragments method*/
             //Have to use v4.app.FragmentTransaction
-            ft =fragMg.beginTransaction();
-            ft.replace(R.id.rootViewPage,new TabsFragment()).commit();
+            ft = fragMg.beginTransaction();
+            ft.replace(R.id.rootViewPage, new TabsFragment()).commit();
         }
     }
-    private void getUserInfo(){
-        session=new SessionManager(getApplicationContext());
-        if(session.isLoggedIn()){
-            HashMap<String,String> userInfo=session.getUserDetails();
+
+    private void getUserInfo() {
+        session = new SessionManager(getApplicationContext());
+        if (session.isLoggedIn()) {
+            HashMap<String, String> userInfo = session.getUserDetails();
             usernameTv.setText(userInfo.get(KEY_USERNAME));
             Picasso.with(MainNavTabActivity.this).load(userInfo.get(KEY_AVATAR))
                     .fit().into(avatarBtn);
@@ -178,7 +189,7 @@ GalleryFragment.OnFragmentInteractionListener{
     }
 
     @Override
-    public void onBackPressed () {
+    public void onBackPressed() {
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -186,14 +197,16 @@ GalleryFragment.OnFragmentInteractionListener{
             super.onBackPressed();
         }
     }
+
     @Override
-    public boolean onCreateOptionsMenu (Menu menu){
+    public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.nav_and_tab, menu);
         return true;
     }
+
     @Override
-    public boolean onOptionsItemSelected (MenuItem item){
+    public boolean onOptionsItemSelected(MenuItem item) {
         /** Handle action bar item clicks here. The action bar will
          automatically handle clicks on the Home/Up button, so long
          as you specify a parent activity in AndroidManifest.xml.*/
@@ -205,79 +218,80 @@ GalleryFragment.OnFragmentInteractionListener{
         }
         return super.onOptionsItemSelected(item);
     }
-    private void setHitsToImgVP(){
-        hitsUrls=getResources().getStringArray(R.array.forums_urls);
+
+    private void setHitsToImgVP() {
         //ViewPager with images
-        JsonObjectRequest rqst=new JsonObjectRequest(Request.Method.GET, hitsUrls[6], null,
+        JsonObjectRequest rqst = new JsonObjectRequest(Request.Method.GET, FORUM_DAILY_HITS_URL, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        try{
-                            JSONObject var=response.getJSONObject("Variables");
-                            JSONArray hitsImgArr=var.getJSONArray("data_img");
-                            JSONArray hitsTxtArr=var.getJSONArray("data_txt");
+                        try {
+                            JSONObject var = response.getJSONObject("Variables");
+                            JSONArray hitsImgArr = var.getJSONArray("data_img");
+                            JSONArray hitsTxtArr = var.getJSONArray("data_txt");
 
-                            for(int i=0;i<hitsImgArr.length();i++){
-                                JSONObject imgObj=hitsImgArr.getJSONObject(i);
-                                String pic=imgObj.getString("pic");
-
-                                imgUrlList.add("https://bbs.yamibo.com/data/attachment/"+pic);
+                            for (int i = 0; i < hitsImgArr.length(); i++) {
+                                JSONObject imgObj = hitsImgArr.getJSONObject(i);
+                                String pic = imgObj.getString("pic");
+                                imgUrlList.add(IMG_BASE_URL + pic);
                             }
-                            for(int i=0;i<hitsTxtArr.length();i++){
-                                JSONObject txtObj=hitsTxtArr.getJSONObject(i);
-                                String title=txtObj.getString("fulltitle");
-                                String date=txtObj.getString("lastpost");
-                                Hits posts=new Hits(title,date);
+                            for (int i = 0; i < hitsTxtArr.length(); i++) {
+                                JSONObject txtObj = hitsTxtArr.getJSONObject(i);
+                                String title = txtObj.getString("fulltitle");
+                                String date = txtObj.getString("lastpost");
+                                Hits posts = new Hits(title, date);
                                 hitsList.add(posts);
                             }
-                            vpRecAdp=new MyRecyclerAdapter(getApplicationContext(),hitsList);
+                            vpRecAdp = new MyRecyclerAdapter(getApplicationContext(), hitsList);
                             vpRecView.setAdapter(vpRecAdp);
-                            vpAdp = new ImgViewPagerAdapter(getApplicationContext(),imgUrlList);
+                            vpAdp = new ImgViewPagerAdapter(getApplicationContext(), imgUrlList);
                             imgVp.setAdapter(vpAdp);
-                        }catch (JSONException je){
-                            Toast.makeText(MainNavTabActivity.this,je.getMessage()
-                                    ,Toast.LENGTH_LONG).show();
+                        } catch (JSONException je) {
+                            Toast.makeText(MainNavTabActivity.this, je.getMessage()
+                                    , Toast.LENGTH_LONG).show();
                             //index 3 out of range 0 to 3
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(MainNavTabActivity.this,error.getMessage()
-                        ,Toast.LENGTH_LONG).show();
+                Toast.makeText(MainNavTabActivity.this, error.getMessage()
+                        , Toast.LENGTH_LONG).show();
             }
         });
         VolleySingleton.getInstance(this).addToRequestQueue(rqst);
     }
+
     @Override
-    public boolean onNavigationItemSelected (MenuItem item){
+    public boolean onNavigationItemSelected(MenuItem item) {
         /** Handle navigation view item clicks here.*/
         int id = item.getItemId();
-        if(id==R.id.item_home){
+        if (id == R.id.item_home) {
             setTabsFragment(new TabsFragment());
-        }else if (id == R.id.item_account) {
-            ft=fragMg.beginTransaction();
-            ft.replace(R.id.rootViewPage,new AccountFragment()).commit();
+        } else if (id == R.id.item_account) {
+            ft = fragMg.beginTransaction();
+            ft.replace(R.id.rootViewPage, new AccountFragment()).commit();
         } else if (id == R.id.item_space) {
-            ft=fragMg.beginTransaction();
-            ft.replace(R.id.rootViewPage,new SpaceFragment()).commit();
+            ft = fragMg.beginTransaction();
+            ft.replace(R.id.rootViewPage, new SpaceFragment()).commit();
         } else if (id == R.id.item_gallery) {
-            ft=fragMg.beginTransaction();
-            ft.replace(R.id.rootViewPage,new GalleryFragment()).commit();
+            ft = fragMg.beginTransaction();
+            ft.replace(R.id.rootViewPage, new GalleryFragment()).commit();
         } else if (id == R.id.item_manage) {
-            ft=fragMg.beginTransaction();
-            ft.replace(R.id.rootViewPage,new TabsFragment()).commit();
+            ft = fragMg.beginTransaction();
+            ft.replace(R.id.rootViewPage, new TabsFragment()).commit();
         } else if (id == R.id.nav_share) {
-           //display the social medias in a dialog box or something
+            //display the social medias in a dialog box or something
         } else if (id == R.id.nav_send) {
             setTabsFragment(new TabsFragment());//Default display
             /*ft=fragMg.beginTransaction();
             ft.replace(R.id.rootViewPage,new TabsFragment()).commit();*/
         }
-        toolbar=(Toolbar)findViewById(R.id.baseToolbar);
+        toolbar = (Toolbar) findViewById(R.id.baseToolbar);
         return false;
     }
-    public void imgNav () {
+
+    public void imgNav() {
         leftNav = (ImageButton) findViewById(R.id.left_nav);
         rightNav = (ImageButton) findViewById(R.id.right_nav);
         leftNav.setOnClickListener(new View.OnClickListener() {
@@ -305,7 +319,8 @@ GalleryFragment.OnFragmentInteractionListener{
         });
 
     }
-    public void setLogRqstAndRegBtn () {
+
+    public void setLogRqstAndRegBtn() {
         plsLogBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -322,6 +337,7 @@ GalleryFragment.OnFragmentInteractionListener{
         plsLogBtn.setPaintFlags(plsLogBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         regBtn.setPaintFlags(regBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
     }
+
     @Override
     public void onFragmentInteraction(Uri uri) {
 

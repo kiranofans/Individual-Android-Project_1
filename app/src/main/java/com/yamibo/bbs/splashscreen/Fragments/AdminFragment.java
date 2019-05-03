@@ -14,6 +14,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 import com.yamibo.bbs.splashscreen.R;
+
+import Utility.ApiConstants;
 import Utility.VolleySingleton;
 
 import org.json.JSONArray;
@@ -28,10 +30,11 @@ import Adapter.SectionRecycleViewAdapter;
 import Model.Base_Items_Model;
 import Model.PostListItems;
 
+import static Utility.ApiConstants.FORUM_ADMIN_URL;
+
 public class AdminFragment extends Fragment {
     private RecyclerView recView;
     private MyRecyclerAdapter recAdp;
-    private static String[] urls;
     private List<Base_Items_Model> admList;
     private List<SectionRecycleViewAdapter.Sections> sections;
     public AdminFragment() {/*Required empty public constructor*/}
@@ -50,11 +53,10 @@ public class AdminFragment extends Fragment {
         recView.setLayoutManager(new LinearLayoutManager(getContext()));
         admList=new ArrayList<>();
         sections=new ArrayList<>();
-        urls=getActivity().getResources().getStringArray(R.array.forums_urls);
         getAdminPosts();
     }
     private void getAdminPosts(){
-        JsonObjectRequest request=new JsonObjectRequest(Request.Method.GET, urls[1], null,
+        JsonObjectRequest request=new JsonObjectRequest(Request.Method.GET, FORUM_ADMIN_URL, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {

@@ -27,7 +27,7 @@ import static android.support.v4.app.NotificationCompat.DEFAULT_ALL;
 
 public class AlertDialogManager extends AlertDialogBase{
     private static Context _context;
-    public AlertDialog.Builder alertDialog;
+    public static AlertDialog.Builder alertDialog;
     public static ProgressBar progressBar;
     private static AlertDialogManager alertDialogMgr;
 
@@ -59,6 +59,22 @@ public class AlertDialogManager extends AlertDialogBase{
         }else if(Utility.isApiResponseSuccess(apiResponses)){
            alertDialog.hide();
         }
+    }
+
+    public void showDialog(){
+        alertDialog=new AlertDialog.Builder(_context);
+        alertDialog.setCancelable(false);
+        alertDialog.setMessage("加載中...");
+
+        alertDialog.setView(R.id.progressBar_cyclic).show();
+    }
+    public void dismissDialog(){
+        alertDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                dialogInterface.dismiss();
+            }
+        });
     }
 
     public AlertDialogManager(Context context){

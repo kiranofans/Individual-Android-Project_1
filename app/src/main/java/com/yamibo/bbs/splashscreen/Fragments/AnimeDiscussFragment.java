@@ -16,6 +16,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 import com.yamibo.bbs.splashscreen.R;
+
+import Utility.ApiConstants;
 import Utility.VolleySingleton;
 
 import org.json.JSONArray;
@@ -30,13 +32,14 @@ import Adapter.SectionRecycleViewAdapter;
 import Model.Base_Items_Model;
 import Model.PostListItems;
 
+import static Utility.ApiConstants.FORUM_ANIME_MANGA_URL;
+
 public class AnimeDiscussFragment extends Fragment implements MyRecyclerAdapter.OnItemClickListener{
     private static View v;
     private MyRecyclerAdapter recAdp;
     private RecyclerView mangaRecView;
     private List<Base_Items_Model> mangaDiscussList;
     private PostListItems animes;
-    private String[] urls;
     private String tid;
     private List<SectionRecycleViewAdapter.Sections> animeSecs;
     @Override
@@ -52,14 +55,12 @@ public class AnimeDiscussFragment extends Fragment implements MyRecyclerAdapter.
         mangaDiscussList=new ArrayList<>();
         mangaRecView=(RecyclerView)v.findViewById(R.id.post_recView);
         mangaRecView.setLayoutManager(new LinearLayoutManager(getContext()));
-        urls=getActivity().getResources().getStringArray(R.array.forums_urls);
         animeSecs=new ArrayList<>();
 
         jsonParser();
     }
     private void jsonParser(){
-
-        JsonObjectRequest rqst=new JsonObjectRequest(Request.Method.GET, urls[2], null,
+        JsonObjectRequest rqst=new JsonObjectRequest(Request.Method.GET, FORUM_ANIME_MANGA_URL, null,
                 new com.android.volley.Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {

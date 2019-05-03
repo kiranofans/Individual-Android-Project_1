@@ -1,4 +1,5 @@
 package com.yamibo.bbs.splashscreen.Fragments;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -19,6 +20,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 import com.yamibo.bbs.splashscreen.R;
+
+import Utility.ApiConstants;
+import Utility.AppConstants;
 import Utility.VolleySingleton;
 
 import org.json.JSONArray;
@@ -34,50 +38,55 @@ import Adapter.SectionRecycleViewAdapter;
 import Model.Base_Items_Model;
 import Model.PostListItems;
 
+import static Utility.ApiConstants.FORUM_CHATTING_URL;
+
 public class ChatFragment extends Fragment implements
-MyRecyclerAdapter.OnItemClickListener{
+        MyRecyclerAdapter.OnItemClickListener {
     private static View v;
     private static RecyclerView recyclerView;
     private static MyRecyclerAdapter recycleAdp;
     private static List<Base_Items_Model> chatList;
-    private static String[] urls;
     private static SwipeRefreshLayout refreshSwiper;
-    private static Handler handler=new Handler();
+    private static Handler handler = new Handler();
     private SearchView searchView;
     private List<SectionRecycleViewAdapter.Sections> secsList;
     private ImgViewPagerAdapter vpAdp;
     private int refresh_count;
-    public ChatFragment(){/*empty constructor is required*/}
+
+    public ChatFragment() {/*empty constructor is required*/}
+
     private static List<String> imgUrlList;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        v=inflater.inflate(R.layout.fragment_posts,container,false);
+        v = inflater.inflate(R.layout.fragment_posts, container, false);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-        ((MainNavTabActivity)getActivity()).fragsCustomToolbar("海域區");
+        ((MainNavTabActivity) getActivity()).fragsCustomToolbar("海域區");
 
         return v;
     }
+
     @Override
-    public void onViewCreated(View v,Bundle savedInstanceState){
-        recyclerView = (RecyclerView)v.findViewById(R.id.post_recView);
+    public void onViewCreated(View v, Bundle savedInstanceState) {
+        recyclerView = (RecyclerView) v.findViewById(R.id.post_recView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
       /*  //ViewPager items
         vpAdp=new ImgViewPagerAdapter(getContext(),imgUrlList);
-        urls=v.getContext().getResources().getStringArray(R.array.img_urls);
         setViewPagerImg(urls[0]);
         MainNavTabActivity.imgVp.setAdapter(vpAdp);//直接用MainActivity的*/
 
         //RecyclerView items
-        chatList =new ArrayList<>();
+        chatList = new ArrayList<>();
         chatJSONParser();
         refresher();
 
     }
-    private void refresher(){
-        refreshSwiper=(SwipeRefreshLayout)v.findViewById(R.id.swipe_container);
-        refreshSwiper.setColorSchemeColors(getResources().getColor(R.color.colorAccent,null));
+
+    private void refresher() {
+        refreshSwiper = (SwipeRefreshLayout) v.findViewById(R.id.swipe_container);
+        refreshSwiper.setColorSchemeColors(getResources().getColor(R.color.colorAccent, null));
         refreshSwiper.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -86,15 +95,14 @@ MyRecyclerAdapter.OnItemClickListener{
                     public void run() {
                         refreshSwiper.setRefreshing(false);
                     }
-                },1000);
+                }, 1000);
             }
         });
     }
 
-    private void chatJSONParser(){
-        secsList=new ArrayList<>();
-        urls=getResources().getStringArray(R.array.forums_urls);
-        JsonObjectRequest request=new JsonObjectRequest(Request.Method.GET, urls[0], null,
+    private void chatJSONParser() {
+        secsList = new ArrayList<>();
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, FORUM_CHATTING_URL, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -103,31 +111,31 @@ MyRecyclerAdapter.OnItemClickListener{
                             JSONArray threadArr = var.getJSONArray("forum_threadlist");
                             for (int i = 0; i < threadArr.length(); i++) {
                                 JSONObject threadObj = threadArr.getJSONObject(i);
-                                String tid=threadObj.getString("tid");
-                                PostListItems postItems=new PostListItems
+                                String tid = threadObj.getString("tid");
+                                PostListItems postItems = new PostListItems
                                         (threadObj.getString("subject"),
                                                 threadObj.getString("author"),
                                                 threadObj.getString("lastposter"),
-                                                "發於："+threadObj.getString("dateline"));
+                                                "發於：" + threadObj.getString("dateline"));
 
-                                if(tid.equals("474447")||tid.equals("20425")||tid.equals("232743")
-                                        ||tid.equals("240477")){
+                                if (tid.equals("474447") || tid.equals("20425") || tid.equals("232743")
+                                        || tid.equals("240477")) {
                                     chatList.add(postItems);
 
-                                }else {
+                                } else {
                                     chatList.add(postItems);
                                 }
                             }
-                            secsList.add(new SectionRecycleViewAdapter.Sections(0,"全部主題"));
-                                    secsList.add(new SectionRecycleViewAdapter.Sections(4,"版塊主題"));
-                                    recycleAdp=new MyRecyclerAdapter(getContext(),chatList);
-                                    recycleAdp.setOnItemClickListener(ChatFragment.this);
-                                    SectionRecycleViewAdapter.Sections[] secArr=new SectionRecycleViewAdapter.Sections[secsList.size()];
-                                    SectionRecycleViewAdapter secAdp =new SectionRecycleViewAdapter(getContext(),R.layout.items_section,
-                                            R.id.catListSections,recycleAdp);
-                                    secAdp.setSections(secsList.toArray(secArr));
-                                    recyclerView.setAdapter(secAdp);
-                                    refreshSwiper.setRefreshing(false);
+                            secsList.add(new SectionRecycleViewAdapter.Sections(0, "全部主題"));
+                            secsList.add(new SectionRecycleViewAdapter.Sections(4, "版塊主題"));
+                            recycleAdp = new MyRecyclerAdapter(getContext(), chatList);
+                            recycleAdp.setOnItemClickListener(ChatFragment.this);
+                            SectionRecycleViewAdapter.Sections[] secArr = new SectionRecycleViewAdapter.Sections[secsList.size()];
+                            SectionRecycleViewAdapter secAdp = new SectionRecycleViewAdapter(getContext(), R.layout.items_section,
+                                    R.id.catListSections, recycleAdp);
+                            secAdp.setSections(secsList.toArray(secArr));
+                            recyclerView.setAdapter(secAdp);
+                            refreshSwiper.setRefreshing(false);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -141,12 +149,14 @@ MyRecyclerAdapter.OnItemClickListener{
         VolleySingleton.getInstance(getContext()).addToRequestQueue(request);
 
     }
+
     @Override
     public void onItemClick(int position) {
 
     }
-    private void setViewPagerImg(String imgUrls){
-        imgUrlList =new ArrayList<>();
+
+    private void setViewPagerImg(String imgUrls) {
+        imgUrlList = new ArrayList<>();
         imgUrlList.add(imgUrls);
     }
 }

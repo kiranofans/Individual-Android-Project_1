@@ -11,19 +11,21 @@ import com.yamibo.bbs.splashscreen.R;
 
 import org.json.JSONObject;
 
-public class UserInfoManager extends AppCompatActivity{
-    private String[] yamiboUrls=getResources().getStringArray(R.array.yamibo_api_urls);
+import static Utility.ApiConstants.LOGIN_REQUEST_API_URL;
+
+public class UserInfoManager extends AppCompatActivity {
     private Context context;
     public static UserInfoManager userInfo;
-    public static synchronized UserInfoManager getInstance(){
-        if (userInfo==null){
-            userInfo=new UserInfoManager();
+
+    public static synchronized UserInfoManager getInstance() {
+        if (userInfo == null) {
+            userInfo = new UserInfoManager();
         }
         return userInfo;
     }
 
-    public void userLogout(final OnUserLoginFinishListener listener){
-        JsonObjectRequest request=new JsonObjectRequest(Request.Method.GET, yamiboUrls[3], null, new
+    public void userLogout(final OnUserLoginFinishListener listener) {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, LOGIN_REQUEST_API_URL, null, new
                 Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -58,7 +60,11 @@ public class UserInfoManager extends AppCompatActivity{
                 }
             }
         }.execute();
-    }*//**Try to use volley here*/
+    }*/
+
+    /**
+     * Try to use volley here
+     */
 
     public interface OnUserLoginFinishListener {
         void OnUserLoginFinish(int RC);
