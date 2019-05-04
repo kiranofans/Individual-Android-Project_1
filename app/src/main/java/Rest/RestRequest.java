@@ -1,4 +1,4 @@
-package Utils;
+package Rest;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
@@ -27,11 +27,11 @@ public class RestRequest extends Request<JSONObject> {
     private final Map<String, String> mParams;
     private final Map<String, String> mHeaders = new HashMap<String, String>(2);
 
-    public RestRequest(int method, String url, Response.ErrorListener listener,
-                       Response.Listener<JSONObject> mVolleyListener, Map<String, String> mParams) {
-        super(method, url, listener);
+    public RestRequest(int method, String url, Map<String,String> params, Response.Listener<JSONObject> mVolleyListener,
+                       com.android.volley.Response.ErrorListener errorListener) {
+        super(method, url, errorListener);
         this.mVolleyListener = mVolleyListener;
-        this.mParams = mParams;
+        this.mParams = params;
     }
 
     public void removeAccessToken() {

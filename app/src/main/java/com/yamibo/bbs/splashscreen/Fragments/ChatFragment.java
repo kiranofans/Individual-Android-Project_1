@@ -39,7 +39,7 @@ import Model.PostListItems;
 import static Utils.ApiConstants.FORUM_CHATTING_URL;
 
 public class ChatFragment extends Fragment implements
-        MyRecyclerAdapter.OnItemClickListener {
+        MyRecyclerAdapter.OnItemClickListener{
     private static View v;
     private static RecyclerView recyclerView;
     private static MyRecyclerAdapter recycleAdp;
@@ -98,15 +98,16 @@ public class ChatFragment extends Fragment implements
         });
     }
 
-    private void chatJSONParser() {
+
+    private void chatJSONParser(JSONObject response) throws JSONException{
         secsList = new ArrayList<>();
+        JSONObject var = response.getJSONObject("Variables");
+        JSONArray threadArr = var.getJSONArray("forum_threadlist");
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, FORUM_CHATTING_URL, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            JSONObject var = response.getJSONObject("Variables");
-                            JSONArray threadArr = var.getJSONArray("forum_threadlist");
                             for (int i = 0; i < threadArr.length(); i++) {
                                 JSONObject threadObj = threadArr.getJSONObject(i);
                                 String tid = threadObj.getString("tid");
