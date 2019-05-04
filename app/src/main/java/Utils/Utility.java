@@ -1,28 +1,18 @@
-package Utility;
+package Utils;
 
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.yamibo.bbs.splashscreen.Activity_Login;
 import com.yamibo.bbs.splashscreen.R;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +20,8 @@ import java.util.List;
 import Model.ApiResponses;
 import Model.TimeZone;
 
-import static Utility.AlertDialogManager.progressBar;
-import static Utility.ApiConstants.API_RESPONSE_CODE_UNKNOWN_ERROR;
+import static com.yamibo.bbs.splashscreen.AlertDialogManager.progressBar;
+import static Utils.ApiConstants.API_RESPONSE_CODE_UNKNOWN_ERROR;
 
 public class Utility {
     private static final String LOG_TAG = Utility.class.getSimpleName();

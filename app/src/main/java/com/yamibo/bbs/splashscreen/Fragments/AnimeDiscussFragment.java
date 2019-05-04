@@ -17,8 +17,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 import com.yamibo.bbs.splashscreen.R;
 
-import Utility.ApiConstants;
-import Utility.VolleySingleton;
+import Utils.VolleySingleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,7 +31,7 @@ import Adapter.SectionRecycleViewAdapter;
 import Model.Base_Items_Model;
 import Model.PostListItems;
 
-import static Utility.ApiConstants.FORUM_ANIME_MANGA_URL;
+import static Utils.ApiConstants.FORUM_ANIME_MANGA_URL;
 
 public class AnimeDiscussFragment extends Fragment implements MyRecyclerAdapter.OnItemClickListener{
     private static View v;

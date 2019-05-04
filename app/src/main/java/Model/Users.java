@@ -1,6 +1,6 @@
 package Model;
 
-import Utility.Constants;
+import Utils.Constants;
 
 public class Users implements Base_Items_Model{
     private String username,usrPswd,usrID,credits,usrAvatarUrl;

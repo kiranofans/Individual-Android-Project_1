@@ -1,10 +1,6 @@
-package Utility;
+package Utils;
 
 import android.app.Application;
-
-import com.yamibo.bbs.splashscreen.R;
-
-import Model.ApiResponses;
 
 public class ApiConstants extends Application {
     //Base urls

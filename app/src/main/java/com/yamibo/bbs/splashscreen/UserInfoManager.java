@@ -1,4 +1,4 @@
-package Utility;
+package com.yamibo.bbs.splashscreen;
 
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
@@ -7,11 +7,13 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.yamibo.bbs.splashscreen.R;
 
 import org.json.JSONObject;
 
-import static Utility.ApiConstants.LOGIN_REQUEST_API_URL;
+import Utils.ApiConstants;
+import Utils.VolleySingleton;
+
+import static Utils.ApiConstants.LOGIN_REQUEST_API_URL;
 
 public class UserInfoManager extends AppCompatActivity {
     private Context context;

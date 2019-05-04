@@ -1,7 +1,6 @@
 package com.yamibo.bbs.splashscreen;
 
 import android.annotation.SuppressLint;
-import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.net.Uri;
@@ -52,18 +51,18 @@ import Adapter.ImgViewPagerAdapter;
 import Adapter.MyRecyclerAdapter;
 import Model.Base_Items_Model;
 import Model.Hits;
-import Utility.ApiConstants;
-import Utility.SessionManager;
-import Utility.VolleySingleton;
+import Utils.VolleySingleton;
 
-import static Utility.ApiConstants.FORUM_DAILY_HITS_URL;
-import static Utility.ApiConstants.IMG_BASE_URL;
-import static Utility.AppConstants.KEY_AVATAR;
-import static Utility.AppConstants.KEY_USERNAME;
+import static Utils.ApiConstants.FORUM_DAILY_HITS_URL;
+import static Utils.ApiConstants.IMG_BASE_URL;
+import static Utils.AppConstants.KEY_AVATAR;
+import static Utils.AppConstants.KEY_USERNAME;
 
 public class MainNavTabActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener, AccountFragment.OnFragmentInteractionListener,
         GalleryFragment.OnFragmentInteractionListener {
+    private static String LOG_TAG = MainNavTabActivity.class.getSimpleName();
+
     public static ViewPager imgVp;
     public static ImgViewPagerAdapter vpAdp;
     protected static CollapsingToolbarLayout collapseToolbar;
@@ -91,14 +90,8 @@ public class MainNavTabActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_nav);
-        imgVp = (ViewPager) findViewById(R.id.imgViewPager);
-        nav_view = (NavigationView) findViewById(R.id.nav_view);
-        headerView = nav_view.getHeaderView(0);
-        plsLogBtn = (Button) headerView.findViewById(R.id.loginReqstBtn);
-        regBtn = (Button) headerView.findViewById(R.id.regBtn);
-        avatarBtn = (ImageView) headerView.findViewById(R.id.avatarImgBtn);
-        loginView = View.inflate(this, R.layout.activity_login, null);
-        usernameTv = (TextView) headerView.findViewById(R.id.usrNameTxt);
+
+        initMainContent();
 
         //RecView for hits
         vpRecView = (RecyclerView) findViewById(R.id.hitsRecView);
@@ -124,17 +117,26 @@ public class MainNavTabActivity extends AppCompatActivity implements
         initChildFragments();
         getUserInfo();
     }
-
+    private void initMainContent(){
+        imgVp = (ViewPager) findViewById(R.id.imgViewPager);
+        nav_view = (NavigationView) findViewById(R.id.nav_view);
+        headerView = nav_view.getHeaderView(0);
+        plsLogBtn = (Button) headerView.findViewById(R.id.loginReqstBtn);
+        regBtn = (Button) headerView.findViewById(R.id.regBtn);
+        avatarBtn = (ImageView) headerView.findViewById(R.id.avatarImgBtn);
+        loginView = View.inflate(this, R.layout.activity_login, null);
+        usernameTv = (TextView) headerView.findViewById(R.id.usrNameTxt);
+    }
     public void fragsCustomToolbar(String title) {
         collapseToolbar.setTitle(title);
     }
 
     private void initChildFragments() {
        // Fragment forumsFragment, activeUserFrag, novelFrag, mangaFrag;
-        getFragmentManager().findFragmentById(R.id.forumsFrm);
-        getFragmentManager().findFragmentById(R.layout.tab_active_user);
-        getFragmentManager().findFragmentById(R.layout.tab_novels);
-        getFragmentManager().findFragmentById(R.layout.tab_manga);
+        getSupportFragmentManager().findFragmentById(R.id.forumsFrm);
+        getSupportFragmentManager().findFragmentById(R.id.frame_active_user);
+        getSupportFragmentManager().findFragmentById(R.id.frame_novel);
+        getSupportFragmentManager().findFragmentById(R.id.frame_manga);
     }
 
     private void setCollapsedBarMain() {
@@ -154,14 +156,13 @@ public class MainNavTabActivity extends AppCompatActivity implements
         drawer.addDrawerListener(toggle);
         toggle.syncState();
     }
-
     private void setBtnOnClicks() {
         avatarBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Will start a new activity
                 ft = fragMg.beginTransaction();
-                ft.replace(R.id.rootViewPage, new ProfileFragment()).commit();
+                ft.replace(R.id.rootViewPage, new ProfileFragment()).addToBackStack(LOG_TAG).commit();
             }
         });
     }
@@ -171,7 +172,7 @@ public class MainNavTabActivity extends AppCompatActivity implements
         if (fg != null) {/**Set fragments method*/
             //Have to use v4.app.FragmentTransaction
             ft = fragMg.beginTransaction();
-            ft.replace(R.id.rootViewPage, new TabsFragment()).commit();
+            ft.replace(R.id.rootViewPage, new TabsFragment()).addToBackStack(LOG_TAG).commit();
         }
     }
 
@@ -270,16 +271,16 @@ public class MainNavTabActivity extends AppCompatActivity implements
             setTabsFragment(new TabsFragment());
         } else if (id == R.id.item_account) {
             ft = fragMg.beginTransaction();
-            ft.replace(R.id.rootViewPage, new AccountFragment()).commit();
+            ft.replace(R.id.rootViewPage, new AccountFragment()).addToBackStack(LOG_TAG).commit();
         } else if (id == R.id.item_space) {
             ft = fragMg.beginTransaction();
-            ft.replace(R.id.rootViewPage, new SpaceFragment()).commit();
+            ft.replace(R.id.rootViewPage, new SpaceFragment()).addToBackStack(LOG_TAG).commit();
         } else if (id == R.id.item_gallery) {
             ft = fragMg.beginTransaction();
-            ft.replace(R.id.rootViewPage, new GalleryFragment()).commit();
+            ft.replace(R.id.rootViewPage, new GalleryFragment()).addToBackStack(LOG_TAG).commit();
         } else if (id == R.id.item_manage) {
             ft = fragMg.beginTransaction();
-            ft.replace(R.id.rootViewPage, new TabsFragment()).commit();
+            ft.replace(R.id.rootViewPage, new TabsFragment()).addToBackStack(LOG_TAG).commit();
         } else if (id == R.id.nav_share) {
             //display the social medias in a dialog box or something
         } else if (id == R.id.nav_send) {

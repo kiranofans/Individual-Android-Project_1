@@ -1,13 +1,7 @@
-package Utility;
+package Utils;
 
-import android.content.Context;
-import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.os.Parcelable.Creator;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentHostCallback;
-import android.util.Log;
 
 /** compiled from: Fragment */
 final class FragmentState implements Parcelable {

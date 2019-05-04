@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-import Utility.Constants;
+import Utils.Constants;
 
 public class PostListItems implements Base_Items_Model,Serializable {
     @SerializedName("forum_threadlist")

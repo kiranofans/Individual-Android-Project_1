@@ -1,20 +1,18 @@
-package Utility;
+package com.yamibo.bbs.splashscreen;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.app.Application;
 
-import com.yamibo.bbs.splashscreen.Activity_Login;
-
 import java.util.HashMap;
 
-import static Utility.AppConstants.KEY_AVATAR;
-import static Utility.AppConstants.KEY_GROUPID;
-import static Utility.AppConstants.KEY_NOTICES;
-import static Utility.AppConstants.KEY_READ_AUTH;
-import static Utility.AppConstants.KEY_UID;
-import static Utility.AppConstants.KEY_USERNAME;
+import static Utils.AppConstants.KEY_AVATAR;
+import static Utils.AppConstants.KEY_GROUPID;
+import static Utils.AppConstants.KEY_NOTICES;
+import static Utils.AppConstants.KEY_READ_AUTH;
+import static Utils.AppConstants.KEY_UID;
+import static Utils.AppConstants.KEY_USERNAME;
 
 public class SessionManager extends Application{
     private static String LOGCAT_TAG=SessionManager.class.getSimpleName();

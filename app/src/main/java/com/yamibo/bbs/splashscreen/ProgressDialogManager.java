@@ -1,21 +1,15 @@
-package Utility;
+package com.yamibo.bbs.splashscreen;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.yamibo.bbs.splashscreen.R;
-
-import java.util.logging.Handler;
-
 import Model.ApiResponses;
-
-import static Utility.AlertDialogManager.progressBar;
+import Utils.ApiConstants;
 
 public class ProgressDialogManager{
     private static ProgressBar progressBar;

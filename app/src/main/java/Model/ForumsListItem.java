@@ -1,6 +1,6 @@
 package Model;
 
-import Utility.Constants;
+import Utils.Constants;
 
 public class ForumsListItem implements Base_Items_Model{
     private String forumsTitles,description,subListsName;

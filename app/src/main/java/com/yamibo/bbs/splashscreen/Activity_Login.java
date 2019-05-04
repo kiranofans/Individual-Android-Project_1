@@ -43,12 +43,10 @@ import java.util.List;
 import java.util.Map;
 
 import Model.Users;
-import Utility.ApiConstants;
-import Utility.AppConstants;
-import Utility.SessionManager;
-import Utility.VolleySingleton;
+import Utils.AppConstants;
+import Utils.VolleySingleton;
 
-import static Utility.ApiConstants.LOGIN_REQUEST_API_URL;
+import static Utils.ApiConstants.LOGIN_REQUEST_API_URL;
 import static android.support.design.widget.Snackbar.make;
 
 public class Activity_Login extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{

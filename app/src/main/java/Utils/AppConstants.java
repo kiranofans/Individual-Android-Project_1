@@ -1,16 +1,6 @@
-package Utility;
+package Utils;
 
 import android.app.Application;
-import android.support.v7.app.AppCompatActivity;
-
-import com.yamibo.bbs.splashscreen.MainNavTabActivity;
-import com.yamibo.bbs.splashscreen.R;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class AppConstants extends Application{
     //Shared Preferences Keys

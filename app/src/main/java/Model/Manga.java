@@ -1,6 +1,6 @@
 package Model;
 
-import Utility.Constants;
+import Utils.Constants;
 
 public class Manga implements Base_Items_Model{
     private String mangaTitle,author,type,category,contracted;

@@ -1,4 +1,4 @@
-package Utility;
+package com.yamibo.bbs.splashscreen;
 
 import android.app.AlertDialog;
 import android.app.Notification;
@@ -10,18 +10,13 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.CountDownTimer;
 import android.support.v4.app.TaskStackBuilder;
-import android.view.View;
-import android.view.Window;
 import android.widget.ProgressBar;
-import android.widget.TextView;
-
-import com.yamibo.bbs.splashscreen.MainNavTabActivity;
-import com.yamibo.bbs.splashscreen.R;
 
 import java.util.concurrent.TimeUnit;
 
 import Model.AlertDialogBase;
 import Model.ApiResponses;
+import Utils.Utility;
 
 import static android.support.v4.app.NotificationCompat.DEFAULT_ALL;
 

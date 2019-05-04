@@ -17,13 +17,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
-import Utility.AlertDialogManager;
+import com.yamibo.bbs.splashscreen.AlertDialogManager;
 
 import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 import com.yamibo.bbs.splashscreen.R;
 
-import Utility.ApiConstants;
-import Utility.VolleySingleton;
+import Utils.VolleySingleton;
 
 import org.json.*;
 
@@ -33,7 +32,7 @@ import Adapter.MyRecyclerAdapter;
 import Adapter.ForumsRecView1Adapter;
 import Model.*;
 
-import static Utility.ApiConstants.FORUM_NAMES_API_URL;
+import static Utils.ApiConstants.FORUM_NAMES_API_URL;
 
 public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItemClickListener {
     private static RecyclerView recyclerView, recyclerView1;
@@ -93,7 +92,7 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
 
     public void forumsJsonParser() {
         //dialog.setTitle("Loading...");
-        dialogMgr.showDialog();
+      //  dialogMgr.showDialog();
         forumsList = new ArrayList<>();
         forumsList_1 = new ArrayList<>();
         final JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, FORUM_NAMES_API_URL, null,

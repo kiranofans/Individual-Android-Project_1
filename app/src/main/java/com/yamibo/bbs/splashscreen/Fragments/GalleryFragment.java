@@ -18,7 +18,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.squareup.picasso.Picasso;
 import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 import com.yamibo.bbs.splashscreen.R;
-import Utility.VolleySingleton;
+import Utils.VolleySingleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -15,8 +15,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 import com.yamibo.bbs.splashscreen.R;
 
-import Utility.ApiConstants;
-import Utility.VolleySingleton;
+import Utils.VolleySingleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,7 +29,7 @@ import Adapter.SectionRecycleViewAdapter;
 import Model.Base_Items_Model;
 import Model.PostListItems;
 
-import static Utility.ApiConstants.FORUM_ADMIN_URL;
+import static Utils.ApiConstants.FORUM_ADMIN_URL;
 
 public class AdminFragment extends Fragment {
     private RecyclerView recView;
