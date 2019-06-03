@@ -8,8 +8,9 @@
     android:id="@+id/post_fragment"
     android:orientation="vertical"
     android:fitsSystemWindows="true">
-    <!--<include layout="@layout/app_bar_layout"
-        android:id="@+id/fragmentToolbar"/>-->
+    <include layout="@layout/loading_dialog"
+        android:id="@+id/posts_loader"
+        android:visibility="gone"/>
     <LinearLayout
         android:orientation="vertical"
         android:weightSum="1"

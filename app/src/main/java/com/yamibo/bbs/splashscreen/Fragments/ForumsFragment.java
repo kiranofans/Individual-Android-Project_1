@@ -63,7 +63,7 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
         /**This method defines the xml layout file for the fragment*/
         v = inflater.inflate(R.layout.tab_forums, container, false);
 
-        progressBar = (ProgressBar)v.findViewById(R.id.spinKit_progressBar);
+        progressBar = (ProgressBar)v.findViewById(R.id.forums_loader);
         fadingCircle = new FadingCircle();
 
         return v;
@@ -89,12 +89,12 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
 
     public void forumsJsonParser() {
         forumsList = new ArrayList<>();     forumsList_1 = new ArrayList<>();
-        progressBar.setVisibility(View.VISIBLE);
-        progressBar.setIndeterminateDrawable(new FadingCircle());
         final JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, FORUM_NAMES_API_URL, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        progressBar.setVisibility(View.VISIBLE);
+                        progressBar.setIndeterminateDrawable(new FadingCircle());
                         try {
                             JSONObject var = response.getJSONObject("Variables");
                             JSONArray forumsArr = var.getJSONArray("forumlist");

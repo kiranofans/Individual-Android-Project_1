@@ -58,14 +58,8 @@
                 app:expandedTitleMarginEnd="64dp">
             </android.support.design.widget.CollapsingToolbarLayout>
         </android.support.design.widget.AppBarLayout>
-        <com.github.ybq.android.spinkit.SpinKitView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/spinKit_progressBar"
-            style="@style/SpinKitView.Large.Circle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone"
-            app:SpinKit_Color="@color/colorAccent" />
+       <include layout="@layout/loading_dialog"
+           android:id="@+id/forums_loader"
+           android:visibility="gone"/>
     </FrameLayout>
 </RelativeLayout>

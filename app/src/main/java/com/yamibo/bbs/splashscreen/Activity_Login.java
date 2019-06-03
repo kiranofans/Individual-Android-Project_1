@@ -1,7 +1,5 @@
 package com.yamibo.bbs.splashscreen;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
@@ -102,7 +100,7 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
         });
 
         loginForm = findViewById(R.id.login_form);
-        progressBar = findViewById(R.id.spinKit_login_loader);
+        progressBar = findViewById(R.id.login_loader);
 
         //Session manager and login
         sessionMg = new SessionManager(getApplicationContext());
