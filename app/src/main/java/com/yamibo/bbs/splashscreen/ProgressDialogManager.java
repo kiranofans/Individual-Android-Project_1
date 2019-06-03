@@ -8,7 +8,7 @@ import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import Model.ApiResponses;
+import Model.ApiResponsesMod;
 import Utils.ApiConstants;
 
 public class ProgressDialogManager{
@@ -28,12 +28,12 @@ public class ProgressDialogManager{
         }
         return dialogMgr;
     }
-    public void dismissDialog(ApiResponses apiResponses){
+    public void dismissDialog(ApiResponsesMod apiResponses){
         if(isApiResponseSuccess(apiResponses)){
             dialog.dismiss();
         }
     }
-    public static boolean isApiResponseSuccess(ApiResponses responseMod) {
+    public static boolean isApiResponseSuccess(ApiResponsesMod responseMod) {
         return responseMod != null && (responseMod.getRC() ==
                 ApiConstants.API_RESPONSE_CODE_SUCCESS);
     }

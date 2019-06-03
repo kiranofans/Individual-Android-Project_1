@@ -1,6 +1,6 @@
 package Model;
 
-public class TimeZone {
+public class TimeZoneMod {
     String mDSTOffset;
     String mRAWOffset;
     String mStatus;

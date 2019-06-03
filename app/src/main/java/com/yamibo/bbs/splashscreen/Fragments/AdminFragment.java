@@ -15,6 +15,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 import com.yamibo.bbs.splashscreen.R;
 
+import Utils.Utility;
 import Utils.VolleySingleton;
 
 import org.json.JSONArray;
@@ -27,7 +28,7 @@ import java.util.List;
 import Adapter.MyRecyclerAdapter;
 import Adapter.SectionRecycleViewAdapter;
 import Model.Base_Items_Model;
-import Model.PostListItems;
+import Model.PostListItemsMod;
 
 import static Utils.ApiConstants.FORUM_ADMIN_URL;
 
@@ -55,25 +56,22 @@ public class AdminFragment extends Fragment {
         getAdminPosts();
     }
     private void getAdminPosts(){
-        JsonObjectRequest request=new JsonObjectRequest(Request.Method.GET, FORUM_ADMIN_URL, null,
+        JsonObjectRequest request=new JsonObjectRequest(Request.Method.GET, FORUM_ADMIN_URL,
+                null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+
                         try {
                             JSONObject var=response.getJSONObject("Variables");
                             JSONArray threadArr=var.getJSONArray("forum_threadlist");
                             for(int i=0;i<threadArr.length();i++){
                                 JSONObject tObj=threadArr.getJSONObject(i);
-                                PostListItems admin=new PostListItems(tObj.getString
+                                PostListItemsMod admin=new PostListItemsMod(tObj.getString
                                         ("subject"),tObj.getString("author"),
-                                        tObj.getString("lastposter"),tObj.getString("dateline"));
-                                String tid=tObj.getString("tid");
-                                if(tid.equals("474447")||tid.equals("20425")||tid.equals("232743")
-                                        ||tid.equals("240477")){
-                                    admList.add(admin);
-                                }else {
-                                    admList.add(admin);
-                                }
+                                        tObj.getString("lastposter"),
+                                        tObj.getString("dateline"));
+                                Utility.getSpecialThreadIds(admList,tObj.getString("tid"),admin);
                             }
                             sections.add(new SectionRecycleViewAdapter.Sections(0,"全部主題"));
                             sections.add(new SectionRecycleViewAdapter.Sections(5,"版塊主題"));

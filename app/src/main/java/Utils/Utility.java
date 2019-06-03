@@ -6,31 +6,43 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.annotation.StringRes;
-import android.view.View;
-import android.view.Window;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.yamibo.bbs.splashscreen.R;
+import com.android.volley.RequestQueue;
+import com.github.ybq.android.spinkit.style.FadingCircle;
+
+import Model.Base_Items_Model;
+import Model.PostListItemsMod;
+import Rest.OAuthAuthenticator;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import Model.ApiResponses;
-import Model.TimeZone;
+import Model.ApiResponsesMod;
+import Model.TimeZoneMod;
 
-import static com.yamibo.bbs.splashscreen.AlertDialogManager.progressBar;
 import static Utils.ApiConstants.API_RESPONSE_CODE_UNKNOWN_ERROR;
 
 public class Utility {
     private static final String LOG_TAG = Utility.class.getSimpleName();
 
-    public static boolean isApiResponseSuccess(ApiResponses responseMod) {
+    private static Context mContext;
+    private static RequestQueue requestQueue;
+    public static RestClientUtils restClientUtils;
+    public static OAuthAuthenticator mOAuthAuthenticator;
+
+    private enum ForumTypes {
+        CHATTING, ADMIN, ANIME_DISCUSSION
+    }
+
+    ForumTypes differentForums;
+
+    public static boolean isApiResponseSuccess(ApiResponsesMod responseMod) {
         return responseMod != null && (responseMod.getRC() == ApiConstants.API_RESPONSE_CODE_SUCCESS);
     }
 
-    public static boolean isTZResponseSuccess(TimeZone responseMod) {
+    public static boolean isTZResponseSuccess(TimeZoneMod responseMod) {
         return responseMod != null && (responseMod.getStatus().equals("OK"));
     }
 
@@ -40,7 +52,7 @@ public class Utility {
         return networkInfo != null && networkInfo.isConnectedOrConnecting();
     }
 
-    public static int apiErrorHandler(ApiResponses responseMod) {
+    public static int apiErrorHandler(ApiResponsesMod responseMod) {
         if (responseMod == null) {
             return API_RESPONSE_CODE_UNKNOWN_ERROR;
         } else {
@@ -70,30 +82,12 @@ public class Utility {
         editor.apply();
     }
 
-    public static Dialog getProgressDialog(Context context,String msg) {
-        Dialog dialog = new Dialog(context);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.fragment_loading_dialog);
-
-        progressBar = (ProgressBar) dialog.findViewById(R.id.progressBar);
-        TextView progressText = (TextView) dialog.findViewById(R.id.loadingTxt);
-        progressText.setText("" + msg);
-        progressText.setVisibility(View.VISIBLE);
-        progressBar.setVisibility(View.VISIBLE);
-        progressBar.setIndeterminate(true);
-        dialog.setCancelable(false);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
-
-        return dialog;
-    }
-
     public static void showErrorMessageToast(Context context, @StringRes int id) {
-        Toast.makeText(context,"", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
     }
 
     public static void showLongMessageToast(Context context, @StringRes int id) {
-        Toast.makeText(context,"", Toast.LENGTH_LONG).show();
+        Toast.makeText(context, "", Toast.LENGTH_LONG).show();
     }
 
     public static void showErrorMessageToast(Context context, String message) {
@@ -104,19 +98,35 @@ public class Utility {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
 
-  /*  public static void showLogOutDialog(final Context context) {
-        new Dialog(context).Builder(context)
-                .content("")
-                .positiveText("OK")
-                .onPositive(new Dialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        UserInfoManager.getInstance().clearKeyPair();
-                        Intent intent = new Intent(context, Activity_Login.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        context.startActivity(intent);
-                    }
-                })
-                .show();
-    }*/
+    public static void showLoader(ProgressBar progressBar,String text, Context context) {
+        progressBar.setIndeterminateDrawable(new FadingCircle());
+    }
+
+    public void getForumTypes() {
+        switch (differentForums) {
+            case CHATTING:
+                break;
+            case ADMIN:
+
+                break;
+            case ANIME_DISCUSSION:
+                break;
+        }
+    }
+
+    public static RestClientUtils getRestClientUtils() {
+        if (restClientUtils == null) {
+            restClientUtils = new RestClientUtils(mContext, requestQueue, mOAuthAuthenticator, null);
+        }
+        return restClientUtils;
+    }
+
+    public static void getSpecialThreadIds(List<Base_Items_Model> list, String mThreadId, PostListItemsMod postItems) {
+        if (mThreadId.equals("47447") || mThreadId.equals("20425")
+                || mThreadId.equals("232743") || mThreadId.equals("240477")) {
+            list.add(postItems);
+        } else {
+            list.add(postItems);
+        }
+    }
 }

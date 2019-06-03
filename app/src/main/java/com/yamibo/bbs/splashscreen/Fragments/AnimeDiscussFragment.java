@@ -29,7 +29,7 @@ import java.util.List;
 import Adapter.MyRecyclerAdapter;
 import Adapter.SectionRecycleViewAdapter;
 import Model.Base_Items_Model;
-import Model.PostListItems;
+import Model.PostListItemsMod;
 
 import static Utils.ApiConstants.FORUM_ANIME_MANGA_URL;
 
@@ -38,7 +38,7 @@ public class AnimeDiscussFragment extends Fragment implements MyRecyclerAdapter.
     private MyRecyclerAdapter recAdp;
     private RecyclerView mangaRecView;
     private List<Base_Items_Model> mangaDiscussList;
-    private PostListItems animes;
+    private PostListItemsMod animes;
     private String tid;
     private List<SectionRecycleViewAdapter.Sections> animeSecs;
     @Override
@@ -68,7 +68,7 @@ public class AnimeDiscussFragment extends Fragment implements MyRecyclerAdapter.
                             JSONArray tArr=var.getJSONArray("forum_threadlist");
                             for (int i=0;i<tArr.length();i++){
                                 JSONObject tObj=tArr.getJSONObject(i);
-                                animes=new PostListItems(tObj.getString("subject"),
+                                animes=new PostListItemsMod(tObj.getString("subject"),
                                                 tObj.getString("author"),
                                                 tObj.getString("lastposter"),
                                                 "發於："+tObj.getString("dateline"));

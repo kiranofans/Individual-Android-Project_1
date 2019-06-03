@@ -10,7 +10,6 @@ import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.Authenticator;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,6 +18,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import Rest.Authenticator;
 import Rest.AuthenticatorRequest;
 import Rest.JsonRestRequest;
 import Rest.RestClient;
@@ -34,7 +34,7 @@ public class RestClientUtils {
     private static String sUserAgent = "WordPress Networking Android";
 
     private RestClient mRestClient;
-    private Authenticator mAuthenticator;
+    private Rest.Authenticator mAuthenticator;
     private Context mContext;
 
     /**
@@ -61,12 +61,12 @@ public class RestClientUtils {
         sUserAgent = userAgent;
     }
 
-    public RestClientUtils(Context context, RequestQueue queue, Authenticator authenticator,
+    public RestClientUtils(Context context, RequestQueue queue, Rest.Authenticator authenticator,
                            RestRequest.OnAuthFailedListener onAuthFailedListener) {
         this(context, queue, authenticator, onAuthFailedListener, RestClient.REST_CLIENT_VERSIONS.V1);
     }
 
-    public RestClientUtils(Context context, RequestQueue queue, Authenticator authenticator,
+    public RestClientUtils(Context context, RequestQueue queue, Rest.Authenticator authenticator,
                            RestRequest.OnAuthFailedListener onAuthFailedListener,
                            RestClient.REST_CLIENT_VERSIONS version) {
         // load an existing access token from prefs if we have one

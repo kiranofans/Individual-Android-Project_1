@@ -50,7 +50,7 @@ import java.util.List;
 import Adapter.ImgViewPagerAdapter;
 import Adapter.MyRecyclerAdapter;
 import Model.Base_Items_Model;
-import Model.Hits;
+import Model.HitsMod;
 import Utils.VolleySingleton;
 
 import static Utils.ApiConstants.FORUM_DAILY_HITS_URL;
@@ -240,7 +240,7 @@ public class MainNavTabActivity extends AppCompatActivity implements
                                 JSONObject txtObj = hitsTxtArr.getJSONObject(i);
                                 String title = txtObj.getString("fulltitle");
                                 String date = txtObj.getString("lastpost");
-                                Hits posts = new Hits(title, date);
+                                HitsMod posts = new HitsMod(title, date);
                                 hitsList.add(posts);
                             }
                             vpRecAdp = new MyRecyclerAdapter(getApplicationContext(), hitsList);

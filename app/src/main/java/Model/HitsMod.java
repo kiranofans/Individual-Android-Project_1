@@ -2,11 +2,11 @@ package Model;
 
 import Utils.Constants;
 
-public class Hits implements Base_Items_Model {
+public class HitsMod implements Base_Items_Model {
     private String hitsTitle,hitsPostDate;
-    public Hits(){}
+    public HitsMod(){}
 
-    public Hits(String hitsTitle,String postDate){
+    public HitsMod(String hitsTitle, String postDate){
         this.hitsPostDate=postDate;
         this.hitsTitle=hitsTitle;
     }

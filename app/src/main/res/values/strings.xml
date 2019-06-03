@@ -50,7 +50,7 @@
         <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?version=4&module=forumindex]]></item><!--版塊名稱-->
         <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?version=4&module=profile]]></item><!--個人信息-->
         <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?version=&module=mythread&page=1]]></item><!--我的帖子-->
-        <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?module=login&loginsubmit=yes]]></item><!--Login-->
+        <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?module=login&loginsubmit=yes]]></item><!--LoginMod-->
     </string-array>
     <string-array name="img_urls">
         <item><![CDATA[http://wx4.sinaimg.cn/large/697901d1ly1ft48muytutj20uw0e6ajf.jpg]]></item><!--Bear-->

@@ -15,10 +15,10 @@ import com.yamibo.bbs.splashscreen.R;
 
 import java.util.*;
 
-import Model.ForumsListItem;
-import Model.Hits;
-import Model.Image;
-import Model.PostListItems;
+import Model.ForumsListItemMod;
+import Model.HitsMod;
+import Model.ImageMod;
+import Model.PostListItemsMod;
 import Adapter.Base_View_Holder.BaseViewHolder;
 import Model.Base_Items_Model;
 import Utils.Constants;
@@ -93,7 +93,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
     }
 
     /**ForumsHolder*/
-    public class ForumsHolder extends BaseViewHolder<ForumsListItem>{
+    public class ForumsHolder extends BaseViewHolder<ForumsListItemMod>{
         private TextView titleTv, descriptTv, numOfDailyNewPosts;
         private ImageView imgIcons;
 
@@ -119,7 +119,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
         }
 
         @Override
-        public void bind(ForumsListItem obj) {
+        public void bind(ForumsListItemMod obj) {
             String forumsImgUrls=obj.getImgUrl();
             //Set TextView texts here
             descriptTv.setText(obj.getDescription());
@@ -131,7 +131,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
     }
 
     /**PostsHolder*/
-    public class PostsHolder extends BaseViewHolder<PostListItems>{
+    public class PostsHolder extends BaseViewHolder<PostListItemsMod>{
         private TextView titleTv, lastposterTv, postDate,authors,lastReplyDate;
 
         private ImageView imgIcons;
@@ -159,16 +159,16 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
         }
 
         @Override
-        public void bind(PostListItems obj) {
-            String avatarUrls=obj.getAvatarUrls();
-            lastposterTv.setText(obj.getLastReplies());
+        public void bind(PostListItemsMod obj) {
+            String avatarUrls=obj.getPostAvatarUrls();
+            lastposterTv.setText(obj.getPostLastReplies());
             titleTv.setText(obj.getPostTitles());
-            postDate.setText(obj.getPost_dates());
-            authors.setText(obj.getAuthors());
+            postDate.setText(obj.getPostDates());
+            authors.setText(obj.getPostAuthors());
         }
     }
     /**PostsHolder*/
-    public class GalleryHolder extends BaseViewHolder<Image>{
+    public class GalleryHolder extends BaseViewHolder<ImageMod>{
         View v;
         private TextView titleTv, lastposterTv, postDate,authors,lastReplyDate;
         private TextView numOfReplies,postDates;
@@ -180,15 +180,15 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
         }
 
         @Override
-        public void bind(Image obj) {
-            //Load Image urls
+        public void bind(ImageMod obj) {
+            //Load ImageMod urls
             Picasso.with(context).load(obj.getImgUrls()).fit().centerInside()
                     .error(R.drawable.ic_menu_camera)
                     .into(galleryImgs);
 
         }
     }
-    private class HitsHolder extends BaseViewHolder<Hits>{
+    private class HitsHolder extends BaseViewHolder<HitsMod>{
         View v;
         private TextView hitsTitle,hitsPostDates;
         public HitsHolder(View itemView,int viewType) {
@@ -209,7 +209,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
         }
 
         @Override
-        public void bind(Hits obj) {
+        public void bind(HitsMod obj) {
             //For top hits recView
             hitsTitle.setText(obj.getHitsTitle());
             hitsPostDates.setText(obj.getHitsPostDate());

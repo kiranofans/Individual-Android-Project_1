@@ -18,6 +18,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.squareup.picasso.Picasso;
 import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 import com.yamibo.bbs.splashscreen.R;
+
+import Model.ImageMod;
 import Utils.VolleySingleton;
 
 import org.json.JSONArray;
@@ -30,7 +32,6 @@ import java.util.List;
 import Adapter.MyRecyclerAdapter;
 import Adapter.SectionRecycleViewAdapter;
 import Model.Base_Items_Model;
-import Model.Image;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -115,7 +116,7 @@ public class GalleryFragment extends Fragment implements MyRecyclerAdapter.OnIte
                             for(int i=0;i<hitsArr.length();i++){
                                 JSONObject imgObj=hitsArr.getJSONObject(i);
                                 String urls=imgObj.getString("webformatURL");
-                                Image imgs=new Image(urls);
+                                ImageMod imgs=new ImageMod(urls);
                                 picsList.add(imgs);
                             }
                             recViewAdp=new MyRecyclerAdapter(getContext(),picsList);

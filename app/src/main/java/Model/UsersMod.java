@@ -2,15 +2,15 @@ package Model;
 
 import Utils.Constants;
 
-public class Users implements Base_Items_Model{
+public class UsersMod implements Base_Items_Model{
     private String username,usrPswd,usrID,credits,usrAvatarUrl;
     private Boolean usrStatus;//for active user fragment
     private String notices, othersReplies,usrReplies,groupID;
     private String readAccess,usrSpace;
 
-    public Users(String keyNotices, String string, String keyAvatar, String sharePrefsString, String keyUsername, String prefsString, String keyUid, String s, String keyGroupid, String string1, String keyReadAuth, String sharePrefsString1){}
-    public Users(String notices,String imgUrl,String username, String usrId,
-                 String groupId,String readAuth) {
+    public UsersMod(String keyNotices, String string, String keyAvatar, String sharePrefsString, String keyUsername, String prefsString, String keyUid, String s, String keyGroupid, String string1, String keyReadAuth, String sharePrefsString1){}
+    public UsersMod(String notices, String imgUrl, String username, String usrId,
+                    String groupId, String readAuth) {
         this.notices=notices;
         this.usrAvatarUrl=imgUrl;
         this.username = username;
@@ -18,20 +18,20 @@ public class Users implements Base_Items_Model{
         this.groupID=groupId;
         this.readAccess=readAuth;
     }
-    public Users (String usrAvatarUrl, String username, String space, Boolean status){
+    public UsersMod(String usrAvatarUrl, String username, String space, Boolean status){
         this.usrAvatarUrl=usrAvatarUrl;
         this.username = username;
         this.usrSpace=space;
         this.usrStatus = status;
     }
 
-    public Users (String usrID, String username, String readAccess, String notices){
+    public UsersMod(String usrID, String username, String readAccess, String notices){
         this.usrID=usrID;
         this.username = username;
         this.readAccess=readAccess;
         this.notices=notices;
     }
-    public Users(){
+    public UsersMod(){
         this.notices=notices;
         this.othersReplies=othersReplies;
         this.usrReplies=usrReplies;

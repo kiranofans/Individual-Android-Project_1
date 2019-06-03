@@ -1,7 +1,6 @@
 package Adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,18 +9,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.yamibo.bbs.splashscreen.Activity_Post;
 import com.yamibo.bbs.splashscreen.Fragments.AdminFragment;
 import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 import com.yamibo.bbs.splashscreen.R;
 
 import java.util.List;
 
-import Model.ForumsListItem;
+import Model.ForumsListItemMod;
 
 public class ForumsRecView1Adapter extends RecyclerView.Adapter<ForumsRecView1Adapter.SingleViewHolder> implements View.OnClickListener{
     Context context;
-    private List<ForumsListItem> itemsList;
+    private List<ForumsListItemMod> itemsList;
     private OnItemClickListener listener;
     @Override
     public void onClick(View v) {
@@ -37,7 +35,7 @@ public class ForumsRecView1Adapter extends RecyclerView.Adapter<ForumsRecView1Ad
         this.listener = listener;
     }
 
-    public ForumsRecView1Adapter(Context _context, List<ForumsListItem> forumsList){
+    public ForumsRecView1Adapter(Context _context, List<ForumsListItemMod> forumsList){
         this.context=_context;
         itemsList=forumsList;
     }
@@ -51,7 +49,7 @@ public class ForumsRecView1Adapter extends RecyclerView.Adapter<ForumsRecView1Ad
 
     @Override
     public void onBindViewHolder(@NonNull SingleViewHolder holder, int position) {
-        ForumsListItem forumsList=itemsList.get(position);
+        ForumsListItemMod forumsList=itemsList.get(position);
 
         //Calling the txtViews
         holder.descriptTv.setText(forumsList.getDescription());

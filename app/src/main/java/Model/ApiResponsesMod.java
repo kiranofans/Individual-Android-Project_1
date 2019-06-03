@@ -1,6 +1,6 @@
 package Model;
 
-public class ApiResponses {
+public class ApiResponsesMod {
     int mRC;
     Paging mPaging;
 

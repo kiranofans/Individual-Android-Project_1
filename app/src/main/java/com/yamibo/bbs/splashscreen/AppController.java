@@ -7,18 +7,20 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
+import Utils.VolleySingleton;
+
 public class AppController extends Application {
 /** This class extends from Application which should be executed on app launch.
  * In this class we initiate all the volley core objects.*/
     public static final String TAG = AppController.class.getSimpleName();
 
     private RequestQueue mRequestQueue;
-
     private static AppController mInstance;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        VolleySingleton.getInstance(this);
         mInstance = this;
     }
 
@@ -30,7 +32,6 @@ public class AppController extends Application {
         if (mRequestQueue == null) {
             mRequestQueue = Volley.newRequestQueue(getApplicationContext());
         }
-
         return mRequestQueue;
     }
 

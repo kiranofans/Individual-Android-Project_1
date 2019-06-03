@@ -3,38 +3,26 @@ package Model;
 import android.os.Message;
 import android.util.Log;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 
-public class Login{
-    @SerializedName("Charset")
-    @Expose
+public class LoginMod {
+
     private String charset;
-    @SerializedName("Message")
-    @Expose
+
     private String message;
-    @SerializedName("Variables")
-    @Expose
+
     private String variables;
-    @SerializedName("Version")
-    @Expose
+
     private String version;
 
-    @SerializedName("messagestr")
-    @Expose
     private String messagestr;
-    @SerializedName("messageval")
-    @Expose
+
     private String messageval;
-    public Login(){}
+    public LoginMod(){}
 
     /**@param message */
-    public Login(String message){
+    public LoginMod(String message){
         this.message=message;
     }
     public String getCharset() {

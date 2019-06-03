@@ -2,7 +2,6 @@ package com.yamibo.bbs.splashscreen.Fragments;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.os.*;
 import android.support.annotation.*;
@@ -17,7 +16,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
-import com.yamibo.bbs.splashscreen.AlertDialogManager;
+import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.FadingCircle;
 
 import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 import com.yamibo.bbs.splashscreen.R;
@@ -39,20 +39,19 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
     private static MyRecyclerAdapter recycleAdp_1;
     private static ForumsRecView1Adapter recAdp;
     private static List<Base_Items_Model> forumsList_1;
-    private static List<ForumsListItem> forumsList;
+    private static List<ForumsListItemMod> forumsList;
     private static int pos = 0;
-    private String imgUrl = "https://bbs.yamibo.com/template/oyeeh_com_baihe/img/shdm1020/forum_new.gif";
+    //private String imgUrl = "https://bbs.yamibo.com/template/oyeeh_com_baihe/img/shdm1020/forum_new.gif";
 
     private static View v;
-    private Dialog dialog;
     private ViewGroup.LayoutParams layoutPrams;
     private ProgressBar progressBar;
+    private Sprite fadingCircle;
 
     private FragmentManager fragMg;
     private SwipeRefreshLayout swiper;
     private MainNavTabActivity main = new MainNavTabActivity();
-    private static AlertDialogManager dialogMgr;
-    private static ApiResponses apiResponses;
+    private static ApiResponsesMod apiResponses;
 
     @TargetApi(Build.VERSION_CODES.N)
 
@@ -64,10 +63,8 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
         /**This method defines the xml layout file for the fragment*/
         v = inflater.inflate(R.layout.tab_forums, container, false);
 
-        dialogMgr = AlertDialogManager.getInstance();
-        dialog = new Dialog(getContext());
-        progressBar = (ProgressBar) v.findViewById(R.id.progressBar_cyclic);
-        // dialog.addContentView(progressBar,layoutPrams);
+        progressBar = (ProgressBar)v.findViewById(R.id.spinKit_progressBar);
+        fadingCircle = new FadingCircle();
 
         return v;
     }
@@ -91,10 +88,9 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
     }
 
     public void forumsJsonParser() {
-        //dialog.setTitle("Loading...");
-      //  dialogMgr.showDialog();
-        forumsList = new ArrayList<>();
-        forumsList_1 = new ArrayList<>();
+        forumsList = new ArrayList<>();     forumsList_1 = new ArrayList<>();
+        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setIndeterminateDrawable(new FadingCircle());
         final JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, FORUM_NAMES_API_URL, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -105,7 +101,7 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
                             for (int i = 0; i < forumsArr.length(); i++) {
                                 JSONObject forumObj = forumsArr.getJSONObject(i);
                                 String fid = forumObj.getString("fid");
-                                ForumsListItem forumsListItem = new ForumsListItem
+                                ForumsListItemMod forumsListItem = new ForumsListItemMod
                                         (forumObj.getString("name"),
                                                 (forumObj.getString("description")),
                                                 "(" + forumObj.getString("todayposts") + ")");
@@ -122,7 +118,7 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
                             recycleAdp_1 = new MyRecyclerAdapter(getContext(), forumsList_1);
                             recycleAdp_1.setOnItemClickListener(ForumsFragment.this);
                             recyclerView1.setAdapter(recycleAdp_1);
-                            dialog.dismiss();
+                            progressBar.setVisibility(View.GONE);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -133,9 +129,7 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
                 error.printStackTrace();
             }
         });
-
         VolleySingleton.getInstance(getContext()).addToRequestQueue(request);
-
     }
 
     @Override

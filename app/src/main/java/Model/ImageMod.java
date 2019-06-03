@@ -1,31 +1,29 @@
 package Model;
 
-import com.google.gson.annotations.SerializedName;
 
 import Utils.Constants;
 
-public class Image implements Base_Items_Model {
+public class ImageMod implements Base_Items_Model {
     private String imgName, format,size,num;
     private String uploadDate,removeDate;
 
-    @SerializedName("webformatURL")
     private String imgUrls;
     private int imgIds;
-    public Image(String imgName, String format, String size, String num) {
+    public ImageMod(String imgName, String format, String size, String num) {
         this.imgName = imgName;
         this.format = format;
         this.size = size;
         this.num = num;
     }
-    public Image(){}//keep an empty constructor here
-    public Image(int imgIds){
+    public ImageMod(){}//keep an empty constructor here
+    public ImageMod(int imgIds){
        this.imgIds=imgIds;
     }
 
-    public Image(String urls){
+    public ImageMod(String urls){
         this.imgUrls=urls;
     }
-    public Image(String uploadDate,String removeDate){
+    public ImageMod(String uploadDate, String removeDate){
         this.uploadDate=uploadDate;
         this.removeDate=removeDate;
     }

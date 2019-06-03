@@ -15,7 +15,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 import Adapter.Base_View_Holder.BaseViewHolder;
-import Model.Image;
 
 /**Provided by Google*/
 public class SectionRecycleViewAdapter extends RecyclerView.Adapter {

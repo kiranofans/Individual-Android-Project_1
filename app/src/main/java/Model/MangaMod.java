@@ -2,11 +2,11 @@ package Model;
 
 import Utils.Constants;
 
-public class Manga implements Base_Items_Model{
+public class MangaMod implements Base_Items_Model{
     private String mangaTitle,author,type,category,contracted;
 
-    public Manga(String mangaTitle, String author, String type,
-                 String category,String contract) {
+    public MangaMod(String mangaTitle, String author, String type,
+                    String category, String contract) {
         this.mangaTitle = mangaTitle;
         this.author = author;
         this.type = type;

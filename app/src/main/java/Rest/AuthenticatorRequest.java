@@ -1,7 +1,6 @@
 package Rest;
 
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.Authenticator;
 
 /**
  * Encapsulates the behaviour for asking the Authenticator for an access token. This
@@ -11,7 +10,7 @@ public class AuthenticatorRequest {
     private RestRequest mRequest;
     private RestRequest.ErrorListener mListener;
     private RestClient mRestClient;
-    private Authenticator mAuthenticator;
+    private Rest.Authenticator mAuthenticator;
 
     public AuthenticatorRequest(RestRequest request, RestRequest.ErrorListener listener, RestClient restClient,
                                 Authenticator authenticator) {

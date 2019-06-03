@@ -2,28 +2,28 @@ package Model;
 
 import Utils.Constants;
 
-public class ForumsListItem implements Base_Items_Model{
+public class ForumsListItemMod implements Base_Items_Model{
     private String forumsTitles,description,subListsName;
     private String catListForums,fId,imgUrl,groupId;
     private String numOftodayPosts, threads,numOfposts;
 
     /**Constructors*/
-    public ForumsListItem (){}
-    public ForumsListItem(String fid){
+    public ForumsListItemMod(){}
+    public ForumsListItemMod(String fid){
         this.fId=fid;
     }
-    public ForumsListItem(String forumsTitles, String description,
-                          String todayPosts) {
+    public ForumsListItemMod(String forumsTitles, String description,
+                             String todayPosts) {
         //inner forums
         this.forumsTitles = forumsTitles;
         this.description=description;
         this.numOftodayPosts=todayPosts;
     }
 
-    public ForumsListItem(String subListsName, String description, String todayposts, String string){
+    public ForumsListItemMod(String subListsName, String description, String todayposts, String string){
         this.subListsName=subListsName;
     }
-    public ForumsListItem(String threads, String numOfposts) {
+    public ForumsListItemMod(String threads, String numOfposts) {
 
         this.threads = threads;//threads
         this.numOfposts = numOfposts;

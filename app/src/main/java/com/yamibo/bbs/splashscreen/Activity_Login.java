@@ -24,6 +24,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +33,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.github.ybq.android.spinkit.style.FadingCircle;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,16 +44,19 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import Model.Users;
+import Model.UsersMod;
 import Utils.AppConstants;
 import Utils.VolleySingleton;
 
 import static Utils.ApiConstants.LOGIN_REQUEST_API_URL;
 import static android.support.design.widget.Snackbar.make;
 
-public class Activity_Login extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
-    /** Id to identity READ_CONTACTS permission request.*/
-    private static final String LOG_TAG=Activity_Login.class.getSimpleName();
+public class Activity_Login extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+    /**
+     * Id to identity READ_CONTACTS permission request.
+     */
+    private static final String LOG_TAG = Activity_Login.class.getSimpleName();
+
     private static final String PREF_FILE = AppConstants.PREF_FILE_GLOBAL;
     private static SessionManager sessionMg;
     private MainNavTabActivity main;
@@ -59,17 +64,18 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
     private static AutoCompleteTextView usrnameInput;
     private static EditText pswdInput;
     private Button forgotPswd, contactUs, logOutBtn, loginBtn;
-    private View progressView;
+    private ProgressBar progressBar;
     private static ImageView avatarImgBtn;
     private static TextView usrnameTv;
     private static View loginForm;
 
     private static String username, avatarUrl, pswd, getUid;
 
-    private static Users users;
+    private static UsersMod usersMod;
     private List<String> usernameList;
 
     private static JSONObject jObj;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +88,7 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
         pswdInput = (EditText) findViewById(R.id.password);
 
         username = usrnameInput.getText().toString();
-        pswd=pswdInput.getText().toString();
+        pswd = pswdInput.getText().toString();
 
         pswdInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -96,17 +102,20 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
         });
 
         loginForm = findViewById(R.id.login_form);
-        progressView = findViewById(R.id.login_progress);
+        progressBar = findViewById(R.id.spinKit_login_loader);
 
         //Session manager and login
-        sessionMg =new SessionManager(getApplicationContext());
+        sessionMg = new SessionManager(getApplicationContext());
         loginBtn = (Button) findViewById(R.id.loginBtn);
         setBtnOnClicks();
 
     }
-    /** Attempts to sign in or register the account specified by the login form.
+
+    /**
+     * Attempts to sign in or register the account specified by the login form.
      * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.*/
+     * errors are presented and no actual login attempt is made.
+     */
     private boolean attemptLogin() {
         // Reset errors.
         usrnameInput.setError(null);
@@ -152,10 +161,11 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
             // perform the user login attempt.
             showProgress(true);
             userLogin();
-            return cancel=false;
+            return cancel = false;
         }
         return cancel;
     }
+
     private boolean isUsernameValid(String username) {
         /** UTF-8 (Unicode)
          * \u4e00-\u9fa5: Chinese
@@ -166,13 +176,14 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
         }
         return username.matches(pattern);
     }
-    private void setBtnOnClicks(){
+
+    private void setBtnOnClicks() {
         loginBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Check for empty data in the form
                 attemptLogin();
-                if(attemptLogin()==false){//if cancel=false
+                if (attemptLogin() == false) {//if cancel=false
                     startActivity(new Intent(Activity_Login.this,
                             MainNavTabActivity.class));
                     finish();
@@ -193,38 +204,16 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
         return password.matches(pattern);
     }
 
-    /** Shows the progress UI and hides the login form.*/
+    /**
+     * Shows the progress UI and hides the login form.
+     */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-            loginForm.setVisibility(show ? View.GONE : View.VISIBLE);
-            loginForm.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    loginForm.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
-
-            progressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            progressView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    progressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
-        } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            progressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            loginForm.setVisibility(show ? View.GONE : View.VISIBLE);
+        if (show) {
+            progressBar.setIndeterminateDrawable(new FadingCircle());
+            progressBar.setVisibility(View.VISIBLE);
         }
+        progressBar.setVisibility(View.GONE);
     }
 
     /*Add Email and username to autocompleteTextView*/
@@ -235,6 +224,7 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
         //emailInput.setAdapter(adapter);
     }
+
     private void addUsernameToAutoComplete(List<String> usernames) {
         ArrayAdapter<String> adp = new ArrayAdapter<>
                 (Activity_Login.this, android.R.layout.simple_dropdown_item_1line, usernames);
@@ -244,7 +234,7 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("S","isNull: "+sessionMg);
+        Log.d("S", "isNull: " + sessionMg);
         if (sessionMg != null && sessionMg.isLoggedIn()) {
             Toast.makeText(getApplicationContext(),
                     "Session ok", Toast.LENGTH_SHORT).show();
@@ -259,7 +249,7 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
                         ContactsContract.Contacts.Data.CONTENT_DIRECTORY),
                 ProfileQuery.PROJECTION,
                 // Select only email addresses.
-                ContactsContract.Contacts.Data.MIMETYPE +" = ?",
+                ContactsContract.Contacts.Data.MIMETYPE + " = ?",
                 new String[]{ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE},
 
                 //Show primary usrename first. Note that there won't be
@@ -276,33 +266,36 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
             cursor.moveToNext();
         }
         addUsernameToAutoComplete(usernameList);
-        Log.d("LIST","UsernameList: "+usernameList.size());
+        Log.d("LIST", "UsernameList: " + usernameList.size());
     }
+
     @Override
-    public void onLoaderReset(android.content.Loader<Cursor> loader) { }
-    public JSONObject userLogin(){
-        main=new MainNavTabActivity();
-        final StringRequest request=new StringRequest(Request.Method.POST, LOGIN_REQUEST_API_URL,
+    public void onLoaderReset(android.content.Loader<Cursor> loader) {
+    }
+
+    public JSONObject userLogin() {
+        main = new MainNavTabActivity();
+        final StringRequest request = new StringRequest(Request.Method.POST, LOGIN_REQUEST_API_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        try{
-                            jObj=new JSONObject(response);
-                            JSONObject loginMsg=jObj.getJSONObject("Message");
-                            String msgVal=loginMsg.getString("messageval");
-                            String msgTr=loginMsg.getString("messagestr");
-                            if(msgVal.equals("login_succeed")){
+                        try {
+                            jObj = new JSONObject(response);
+                            JSONObject loginMsg = jObj.getJSONObject("Message");
+                            String msgVal = loginMsg.getString("messageval");
+                            String msgTr = loginMsg.getString("messagestr");
+                            if (msgVal.equals("login_succeed")) {
                                 Toast.makeText(Activity_Login.this,
-                                        msgTr,Toast.LENGTH_SHORT).show();
+                                        msgTr, Toast.LENGTH_SHORT).show();
                                 JSONObject varObj = jObj.getJSONObject("Variables");
                                 JSONObject notice = varObj.getJSONObject("notice");
-                                Iterator<String> iter=notice.keys();
+                                Iterator<String> iter = notice.keys();
 
                                 //Loop through the notice JSONObjects
-                                String notices="";
-                                while(iter.hasNext()){
-                                    String key=iter.next();
-                                    notices=notice.getString(key);
+                                String notices = "";
+                                while (iter.hasNext()) {
+                                    String key = iter.next();
+                                    notices = notice.getString(key);
                                 }
                                 String avatarUrl = varObj.getString("member_avatar");
                                 String userName = varObj.getString("member_username");
@@ -311,35 +304,36 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
                                 String readAuth = varObj.getString("readaccess");
 
                                 sessionMg.createLoginSession(true,
-                                        notices,groupId,avatarUrl,readAuth,userName,uid);
+                                        notices, groupId, avatarUrl, readAuth, userName, uid);
 
-                            }else{
+                            } else {
                                 Toast.makeText(Activity_Login.this,
-                                        msgTr,Toast.LENGTH_SHORT).show();
+                                        msgTr, Toast.LENGTH_SHORT).show();
                             }
-                        }catch (JSONException je){
-                            Log.d("JSON ERROR",je.getMessage());
+                        } catch (JSONException je) {
+                            Log.d("JSON ERROR", je.getMessage());
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("Volley Error",error.getMessage());
+                Log.d("Volley Error", error.getMessage());
             }
-        }){
+        }) {
             @Override
-            public Map<String,String> getHeaders() throws AuthFailureError{
-                Map<String,String> headers=new HashMap<>();
-                headers.put("Accept-Charset","gbk");
-                headers.put("Content-Transfer-Encoding","charset=gbk");
-                headers.put("Content-Type","application/x-www-form-urlencoded");
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Accept-Charset", "gbk");
+                headers.put("Content-Transfer-Encoding", "charset=gbk");
+                headers.put("Content-Type", "application/x-www-form-urlencoded");
                 return headers;
             }
+
             @Override
-            protected Map<String,String> getParams() throws AuthFailureError{
-                Map<String,String> params=new HashMap<>();
-                params.put("username",username);
-                params.put("password",pswd);
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("username", username);
+                params.put("password", pswd);
                 return params;
             }
         };
@@ -355,7 +349,7 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
         };
         int ADDRESS = 0;
         int IS_PRIMARY = 1;
-        int DISPLAY_NAME=2;
+        int DISPLAY_NAME = 2;
     }
 }
 

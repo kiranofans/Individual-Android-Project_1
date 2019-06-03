@@ -1,11 +1,11 @@
 package Model;
 
-public class Novels {
+public class NovelsMod {
     private String bookTitle,author,type,category,contracted;
     private Boolean status;//finished or in progress
 
-    public Novels(String bookTitle, String author, String type,
-                  String category, String contracted,Boolean status) {
+    public NovelsMod(String bookTitle, String author, String type,
+                     String category, String contracted, Boolean status) {
         this.bookTitle = bookTitle;
         this.author = author;
         this.type = type;
