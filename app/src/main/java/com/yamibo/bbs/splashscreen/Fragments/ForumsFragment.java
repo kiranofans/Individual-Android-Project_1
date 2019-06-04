@@ -88,9 +88,9 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
     }
 
     public void forumsJsonParser() {
-        forumsList = new ArrayList<>();     forumsList_1 = new ArrayList<>();
         progressBar.setVisibility(View.VISIBLE);
         progressBar.setIndeterminateDrawable(new FadingCircle());
+        forumsList = new ArrayList<>();     forumsList_1 = new ArrayList<>();
         final JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, FORUM_NAMES_API_URL, null,
                 new Response.Listener<JSONObject>() {
                     @Override
