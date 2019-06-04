@@ -117,7 +117,8 @@ public class MainNavTabActivity extends AppCompatActivity implements
         initChildFragments();
         getUserInfo();
     }
-    private void initMainContent(){
+
+    private void initMainContent() {
         imgVp = (ViewPager) findViewById(R.id.imgViewPager);
         nav_view = (NavigationView) findViewById(R.id.nav_view);
         headerView = nav_view.getHeaderView(0);
@@ -127,12 +128,13 @@ public class MainNavTabActivity extends AppCompatActivity implements
         loginView = View.inflate(this, R.layout.activity_login, null);
         usernameTv = (TextView) headerView.findViewById(R.id.usrNameTxt);
     }
+
     public void fragsCustomToolbar(String title) {
         collapseToolbar.setTitle(title);
     }
 
     private void initChildFragments() {
-       // Fragment forumsFragment, activeUserFrag, novelFrag, mangaFrag;
+        // Fragment forumsFragment, activeUserFrag, novelFrag, mangaFrag;
         getSupportFragmentManager().findFragmentById(R.id.forumsFrm);
         getSupportFragmentManager().findFragmentById(R.id.frame_active_user);
         getSupportFragmentManager().findFragmentById(R.id.frame_novel);
@@ -156,6 +158,7 @@ public class MainNavTabActivity extends AppCompatActivity implements
         drawer.addDrawerListener(toggle);
         toggle.syncState();
     }
+
     private void setBtnOnClicks() {
         avatarBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -193,7 +196,7 @@ public class MainNavTabActivity extends AppCompatActivity implements
     public void onBackPressed() {
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+            drawer.closeDrawers();
         } else {
             super.onBackPressed();
         }
