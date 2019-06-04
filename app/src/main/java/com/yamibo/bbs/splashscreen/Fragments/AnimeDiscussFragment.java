@@ -9,11 +9,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.github.ybq.android.spinkit.style.FadingCircle;
 import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 import com.yamibo.bbs.splashscreen.R;
 
@@ -41,6 +43,8 @@ public class AnimeDiscussFragment extends Fragment implements MyRecyclerAdapter.
     private PostListItemsMod animes;
     private String tid;
     private List<SectionRecycleViewAdapter.Sections> animeSecs;
+
+    private ProgressBar progressBar;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -56,9 +60,12 @@ public class AnimeDiscussFragment extends Fragment implements MyRecyclerAdapter.
         mangaRecView.setLayoutManager(new LinearLayoutManager(getContext()));
         animeSecs=new ArrayList<>();
 
+        progressBar = (ProgressBar)v.findViewById(R.id.posts_loader);
         jsonParser();
     }
     private void jsonParser(){
+        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setIndeterminateDrawable(new FadingCircle());
         JsonObjectRequest rqst=new JsonObjectRequest(Request.Method.GET, FORUM_ANIME_MANGA_URL, null,
                 new com.android.volley.Response.Listener<JSONObject>() {
                     @Override
@@ -94,6 +101,7 @@ public class AnimeDiscussFragment extends Fragment implements MyRecyclerAdapter.
                         }catch (JSONException je){
                             Toast.makeText(getContext(),je.getMessage(),Toast.LENGTH_LONG).show();
                         }
+                        progressBar.setVisibility(View.GONE);
                     }
                 }, new com.android.volley.Response.ErrorListener() {
             @Override

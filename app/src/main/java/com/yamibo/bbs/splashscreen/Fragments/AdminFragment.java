@@ -88,10 +88,10 @@ public class AdminFragment extends Fragment {
                                     R.id.catListSections,recAdp);
                             secAdp.setSections(sections.toArray(secArr));
                             recView.setAdapter(secAdp);
-                            progressBar.setVisibility(View.GONE);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                        progressBar.setVisibility(View.GONE);
 
                     }
                 }, new Response.ErrorListener() {

@@ -89,12 +89,12 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
 
     public void forumsJsonParser() {
         forumsList = new ArrayList<>();     forumsList_1 = new ArrayList<>();
+        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setIndeterminateDrawable(new FadingCircle());
         final JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, FORUM_NAMES_API_URL, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        progressBar.setVisibility(View.VISIBLE);
-                        progressBar.setIndeterminateDrawable(new FadingCircle());
                         try {
                             JSONObject var = response.getJSONObject("Variables");
                             JSONArray forumsArr = var.getJSONArray("forumlist");
@@ -118,10 +118,10 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
                             recycleAdp_1 = new MyRecyclerAdapter(getContext(), forumsList_1);
                             recycleAdp_1.setOnItemClickListener(ForumsFragment.this);
                             recyclerView1.setAdapter(recycleAdp_1);
-                            progressBar.setVisibility(View.GONE);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                        progressBar.setVisibility(View.GONE);
                     }
                 }, new Response.ErrorListener() {
             @Override
