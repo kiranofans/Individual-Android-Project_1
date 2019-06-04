@@ -23,6 +23,7 @@ import com.yamibo.bbs.splashscreen.R;
 import Rest.RestRequest;
 import Utils.RestClientUtils;
 import Utils.Utility;
+import Utils.VolleyHelper;
 import Utils.VolleyResultCallback;
 import Utils.VolleySingleton;
 
@@ -111,29 +112,27 @@ public class ChatFragment extends Fragment implements
     }
 
     private void getData() {
-        VolleySingleton.getInstance().volleyGETRequest(MY_POSTS_API_URL, new VolleyResultCallback<JSONObject>() {
+        VolleyHelper.volleyGETRequest(getContext(),MY_POSTS_API_URL, new VolleyResultCallback(){
             @Override
             public void jsonResponse(JSONObject response) {
-                if (response != null) {
-                    try {
+                try {
 
-                        PostListItemsMod postListItemMod = new PostListItemsMod(chatList,postItemInstance,response);
-                        //chatList.add(postListItemMod);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    secsList.add(new SectionRecycleViewAdapter.Sections(0, "全部主題"));
-                    secsList.add(new SectionRecycleViewAdapter.Sections(4, "版塊主題"));
-                    recycleAdp = new MyRecyclerAdapter(getContext(), chatList);
-                    recycleAdp.setOnItemClickListener(ChatFragment.this);
-                    SectionRecycleViewAdapter.Sections[] secArr = new SectionRecycleViewAdapter.Sections[secsList.size()];
-                    SectionRecycleViewAdapter secAdp = new SectionRecycleViewAdapter(getContext(), R.layout.items_section,
-                            R.id.catListSections, recycleAdp);
-                    secAdp.setSections(secsList.toArray(secArr));
-                    recyclerView.setAdapter(secAdp);
-                   // refreshSwiper.setRefreshing(false);
+                    PostListItemsMod postListItemMod = new PostListItemsMod(chatList,postItemInstance,response);
+                    //chatList.add(postListItemMod);
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
+
+                secsList.add(new SectionRecycleViewAdapter.Sections(0, "全部主題"));
+                secsList.add(new SectionRecycleViewAdapter.Sections(4, "版塊主題"));
+                recycleAdp = new MyRecyclerAdapter(getContext(), chatList);
+                recycleAdp.setOnItemClickListener(ChatFragment.this);
+                SectionRecycleViewAdapter.Sections[] secArr = new SectionRecycleViewAdapter.Sections[secsList.size()];
+                SectionRecycleViewAdapter secAdp = new SectionRecycleViewAdapter(getContext(), R.layout.items_section,
+                        R.id.catListSections, recycleAdp);
+                secAdp.setSections(secsList.toArray(secArr));
+                recyclerView.setAdapter(secAdp);
+                // refreshSwiper.setRefreshing(false);
             }
 
             @Override

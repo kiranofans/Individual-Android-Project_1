@@ -17,7 +17,11 @@ import com.github.ybq.android.spinkit.style.FadingCircle;
 import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 import com.yamibo.bbs.splashscreen.R;
 
+import Utils.ApiConstants;
+import Utils.AppConstants;
 import Utils.Utility;
+import Utils.VolleyHelper;
+import Utils.VolleyResultCallback;
 import Utils.VolleySingleton;
 
 import org.json.JSONArray;
@@ -58,49 +62,44 @@ public class AdminFragment extends Fragment {
         sections=new ArrayList<>();
 
         progressBar = (ProgressBar)v.findViewById(R.id.posts_loader);
-        getAdminPosts();
+        getAdminPostSimpler();
     }
-    private void getAdminPosts(){
+    private void getAdminPostSimpler(){
         progressBar.setVisibility(View.VISIBLE);
         progressBar.setIndeterminateDrawable(new FadingCircle());
-        JsonObjectRequest request=new JsonObjectRequest(Request.Method.GET, FORUM_ADMIN_URL,
-                null, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-
-                        try {
-                            JSONObject var=response.getJSONObject("Variables");
-                            JSONArray threadArr=var.getJSONArray("forum_threadlist");
-                            for(int i=0;i<threadArr.length();i++){
-                                JSONObject tObj=threadArr.getJSONObject(i);
-                                PostListItemsMod admin=new PostListItemsMod(tObj.getString
-                                        ("subject"),tObj.getString("author"),
-                                        tObj.getString("lastposter"),
-                                        tObj.getString("dateline"));
-                                Utility.getSpecialThreadIds(admList,tObj.getString("tid"),admin);
-                            }
-                            sections.add(new SectionRecycleViewAdapter.Sections(0,"全部主題"));
-                            sections.add(new SectionRecycleViewAdapter.Sections(5,"版塊主題"));
-                            recAdp=new MyRecyclerAdapter(getContext(),admList);
-
-                            SectionRecycleViewAdapter.Sections[] secArr=new SectionRecycleViewAdapter.Sections[sections.size()];
-                            SectionRecycleViewAdapter secAdp =new SectionRecycleViewAdapter(getContext(),R.layout.items_section,
-                                    R.id.catListSections,recAdp);
-                            secAdp.setSections(sections.toArray(secArr));
-                            recView.setAdapter(secAdp);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        progressBar.setVisibility(View.GONE);
-
-                    }
-                }, new Response.ErrorListener() {
+        VolleyHelper.volleyGETRequest(getContext(), FORUM_ADMIN_URL, new VolleyResultCallback() {
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void jsonResponse(JSONObject response) {
+                try {
+                    JSONObject var=response.getJSONObject("Variables");
+                    JSONArray threadArr=var.getJSONArray("forum_threadlist");
+                    for(int i=0;i<threadArr.length();i++){
+                        JSONObject tObj=threadArr.getJSONObject(i);
+                        PostListItemsMod admin=new PostListItemsMod(tObj.getString
+                                ("subject"),tObj.getString("author"),
+                                tObj.getString("lastposter"),
+                                tObj.getString("dateline"));
+                        Utility.getSpecialThreadIds(admList,tObj.getString("tid"),admin);
+                    }
+                    sections.add(new SectionRecycleViewAdapter.Sections(0,"全部主題"));
+                    sections.add(new SectionRecycleViewAdapter.Sections(5,"版塊主題"));
+                    recAdp=new MyRecyclerAdapter(getContext(),admList);
+
+                    SectionRecycleViewAdapter.Sections[] secArr=new SectionRecycleViewAdapter.Sections[sections.size()];
+                    SectionRecycleViewAdapter secAdp =new SectionRecycleViewAdapter(getContext(),R.layout.items_section,
+                            R.id.catListSections,recAdp);
+                    secAdp.setSections(sections.toArray(secArr));
+                    recView.setAdapter(secAdp);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                progressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void responseError(VolleyError error) {
                 error.getMessage();
             }
         });
-        VolleySingleton.getInstance(getContext()).addToRequestQueue(request);
     }
-
 }

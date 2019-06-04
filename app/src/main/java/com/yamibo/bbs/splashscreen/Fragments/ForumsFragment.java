@@ -22,6 +22,8 @@ import com.github.ybq.android.spinkit.style.FadingCircle;
 import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 import com.yamibo.bbs.splashscreen.R;
 
+import Utils.VolleyHelper;
+import Utils.VolleyResultCallback;
 import Utils.VolleySingleton;
 
 import org.json.*;
@@ -84,52 +86,48 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
         recyclerView1.setLayoutManager(new LinearLayoutManager(getContext()));
 
         forumsJsonParser();
-
     }
 
     public void forumsJsonParser() {
         progressBar.setVisibility(View.VISIBLE);
         progressBar.setIndeterminateDrawable(new FadingCircle());
         forumsList = new ArrayList<>();     forumsList_1 = new ArrayList<>();
-        final JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, FORUM_NAMES_API_URL, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            JSONObject var = response.getJSONObject("Variables");
-                            JSONArray forumsArr = var.getJSONArray("forumlist");
-                            for (int i = 0; i < forumsArr.length(); i++) {
-                                JSONObject forumObj = forumsArr.getJSONObject(i);
-                                String fid = forumObj.getString("fid");
-                                ForumsListItemMod forumsListItem = new ForumsListItemMod
-                                        (forumObj.getString("name"),
-                                                (forumObj.getString("description")),
-                                                "(" + forumObj.getString("todayposts") + ")");
-                                if (fid.equals("16")) {
-                                    forumsList.add(forumsListItem);
-                                } else {
-                                    forumsList_1.add(forumsListItem);
-                                }
-
-                            }
-                            recAdp = new ForumsRecView1Adapter(getContext(), forumsList);
-                            recyclerView.setAdapter(recAdp);
-
-                            recycleAdp_1 = new MyRecyclerAdapter(getContext(), forumsList_1);
-                            recycleAdp_1.setOnItemClickListener(ForumsFragment.this);
-                            recyclerView1.setAdapter(recycleAdp_1);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        progressBar.setVisibility(View.GONE);
-                    }
-                }, new Response.ErrorListener() {
+        VolleyHelper.volleyGETRequest(getContext(), FORUM_NAMES_API_URL, new VolleyResultCallback() {
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void jsonResponse(JSONObject response) {
+                try {
+                    JSONObject var = response.getJSONObject("Variables");
+                    JSONArray forumsArr = var.getJSONArray("forumlist");
+                    for (int i = 0; i < forumsArr.length(); i++) {
+                        JSONObject forumObj = forumsArr.getJSONObject(i);
+                        String fid = forumObj.getString("fid");
+                        ForumsListItemMod forumsListItem = new ForumsListItemMod
+                                (forumObj.getString("name"),
+                                        (forumObj.getString("description")),
+                                        "(" + forumObj.getString("todayposts") + ")");
+                        if (fid.equals("16")) {
+                            forumsList.add(forumsListItem);
+                        } else {
+                            forumsList_1.add(forumsListItem);
+                        }
+                    }
+                    recAdp = new ForumsRecView1Adapter(getContext(), forumsList);
+                    recyclerView.setAdapter(recAdp);
+
+                    recycleAdp_1 = new MyRecyclerAdapter(getContext(), forumsList_1);
+                    recycleAdp_1.setOnItemClickListener(ForumsFragment.this);
+                    recyclerView1.setAdapter(recycleAdp_1);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                progressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void responseError(VolleyError error) {
                 error.printStackTrace();
             }
         });
-        VolleySingleton.getInstance(getContext()).addToRequestQueue(request);
     }
 
     @Override

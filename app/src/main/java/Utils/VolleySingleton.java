@@ -60,41 +60,6 @@ public class VolleySingleton {
         return JSONUtils.getString(jsonObject, "message");
     }
 
-    public void volleyGETRequest(String requestUrl, final VolleyResultCallback mResultCallback){
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, requestUrl, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                if (response != null)
-                    mResultCallback.jsonResponse(response);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                if (error != null)
-                    mResultCallback.responseError(error);
-            }
-        });
-        requestQueue.add(jsonObjectRequest);
-    }
-
-    public void volleyPOSTRequest(String requestUrl,final VolleyResultCallback mResultCallback) throws JSONException {
-        RequestQueue queue = Volley.newRequestQueue(context);
-        JsonObjectRequest jsonObj = new JsonObjectRequest(Request.Method.GET, requestUrl, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                if (mResultCallback != null)
-                    mResultCallback.jsonResponse(response);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                if (mResultCallback != null)
-                    mResultCallback.responseError(error);
-            }
-        });
-        queue.add(jsonObj);
-    }
-
     public static JSONObject volleyErrorToJSON(VolleyError volleyError) {
         if (volleyError == null || volleyError.networkResponse == null || volleyError.networkResponse.data == null
                 || volleyError.networkResponse.headers == null) {
