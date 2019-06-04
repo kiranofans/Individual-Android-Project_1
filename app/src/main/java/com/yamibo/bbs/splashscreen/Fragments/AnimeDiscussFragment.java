@@ -12,10 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.android.volley.Request;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.github.ybq.android.spinkit.style.FadingCircle;
 import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 import com.yamibo.bbs.splashscreen.R;
@@ -23,7 +20,6 @@ import com.yamibo.bbs.splashscreen.R;
 import Utils.Utility;
 import Utils.VolleyHelper;
 import Utils.VolleyResultCallback;
-import Utils.VolleySingleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -106,7 +102,7 @@ public class AnimeDiscussFragment extends Fragment implements MyRecyclerAdapter.
 
             @Override
             public void responseError(VolleyError error) {
-                error.getMessage();
+                Utility.showErrorMessageToast(getContext(),error.getMessage());
             }
         });
     }

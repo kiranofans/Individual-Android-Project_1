@@ -17,7 +17,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.*;
@@ -32,6 +31,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
 import com.yamibo.bbs.splashscreen.Fragments.AccountFragment;
 import com.yamibo.bbs.splashscreen.Fragments.GalleryFragment;
@@ -51,6 +51,9 @@ import Adapter.ImgViewPagerAdapter;
 import Adapter.MyRecyclerAdapter;
 import Model.Base_Items_Model;
 import Model.HitsMod;
+import Utils.Utility;
+import Utils.VolleyHelper;
+import Utils.VolleyResultCallback;
 import Utils.VolleySingleton;
 
 import static Utils.ApiConstants.FORUM_DAILY_HITS_URL;
@@ -214,45 +217,42 @@ public class MainNavTabActivity extends AppCompatActivity implements
 
     private void setHitsToImgVP() {
         //ViewPager with images
-        JsonObjectRequest rqst = new JsonObjectRequest(Request.Method.GET, FORUM_DAILY_HITS_URL, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            JSONObject var = response.getJSONObject("Variables");
-                            JSONArray hitsImgArr = var.getJSONArray("data_img");
-                            JSONArray hitsTxtArr = var.getJSONArray("data_txt");
-
-                            for (int i = 0; i < hitsImgArr.length(); i++) {
-                                JSONObject imgObj = hitsImgArr.getJSONObject(i);
-                                String pic = imgObj.getString("pic");
-                                imgUrlList.add(IMG_BASE_URL + pic);
-                            }
-                            for (int i = 0; i < hitsTxtArr.length(); i++) {
-                                JSONObject txtObj = hitsTxtArr.getJSONObject(i);
-                                String title = txtObj.getString("fulltitle");
-                                String date = txtObj.getString("lastpost");
-                                HitsMod posts = new HitsMod(title, date);
-                                hitsList.add(posts);
-                            }
-                            vpRecAdp = new MyRecyclerAdapter(getApplicationContext(), hitsList);
-                            vpRecView.setAdapter(vpRecAdp);
-                            vpAdp = new ImgViewPagerAdapter(getApplicationContext(), imgUrlList);
-                            imgVp.setAdapter(vpAdp);
-                        } catch (JSONException je) {
-                            Toast.makeText(MainNavTabActivity.this, je.getMessage()
-                                    , Toast.LENGTH_LONG).show();
-                            //index 3 out of range 0 to 3
-                        }
-                    }
-                }, new Response.ErrorListener() {
+        VolleyHelper.volleyGETRequest(this, FORUM_DAILY_HITS_URL, new VolleyResultCallback() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(MainNavTabActivity.this, error.getMessage()
-                        , Toast.LENGTH_LONG).show();
+            public void jsonResponse(JSONObject response) {
+                try {
+                    JSONObject var = response.getJSONObject("Variables");
+                    JSONArray hitsImgArr = var.getJSONArray("data_img");
+                    JSONArray hitsTxtArr = var.getJSONArray("data_txt");
+
+                    for (int i = 0; i < hitsImgArr.length(); i++) {
+                        JSONObject imgObj = hitsImgArr.getJSONObject(i);
+                        String pic = imgObj.getString("pic");
+                        imgUrlList.add(IMG_BASE_URL + pic);
+                    }
+                    for (int i = 0; i < hitsTxtArr.length(); i++) {
+                        JSONObject txtObj = hitsTxtArr.getJSONObject(i);
+                        String title = txtObj.getString("fulltitle");
+                        String date = txtObj.getString("lastpost");
+                        HitsMod posts = new HitsMod(title, date);
+                        hitsList.add(posts);
+                    }
+                    vpRecAdp = new MyRecyclerAdapter(getApplicationContext(), hitsList);
+                    vpRecView.setAdapter(vpRecAdp);
+                    vpAdp = new ImgViewPagerAdapter(getApplicationContext(), imgUrlList);
+                    imgVp.setAdapter(vpAdp);
+                } catch (JSONException je) {
+                    Toast.makeText(MainNavTabActivity.this, je.getMessage()
+                            , Toast.LENGTH_LONG).show();
+                    //index 3 out of range 0 to 3
+                }
+            }
+
+            @Override
+            public void responseError(VolleyError error) {
+                Utility.showErrorMessageToast(getApplicationContext(),error.getMessage());
             }
         });
-        VolleySingleton.getInstance(this).addToRequestQueue(rqst);
     }
 
     @Override

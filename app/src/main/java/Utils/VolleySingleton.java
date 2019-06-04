@@ -4,10 +4,8 @@ import android.content.Context;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
@@ -26,17 +24,20 @@ public class VolleySingleton {
         }
         return instance;
     }
+
     public static synchronized VolleySingleton getInstance() {
         if (instance == null) {
-            throw new IllegalStateException(VolleySingleton.class.getSimpleName()+
+            throw new IllegalStateException(VolleySingleton.class.getSimpleName() +
                     " is not initialized, call getInstance(...)");
         }
         return instance;
     }
+
     private VolleySingleton(Context context) {
         this.context = context;
         requestQueue = getRequestQueue();
     }
+
     public static String errorStringFromVolleyError(VolleyError volleyError) {
         JSONObject jsonObj = volleyErrorToJSON(volleyError);
         if (jsonObj == null) {

@@ -10,26 +10,16 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.*;
 import android.view.*;
 import android.widget.ProgressBar;
-
-import com.android.volley.Request;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-
 import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.FadingCircle;
-
 import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 import com.yamibo.bbs.splashscreen.R;
-
+import Utils.Utility;
 import Utils.VolleyHelper;
 import Utils.VolleyResultCallback;
-import Utils.VolleySingleton;
-
 import org.json.*;
-
 import java.util.*;
-
 import Adapter.MyRecyclerAdapter;
 import Adapter.ForumsRecView1Adapter;
 import Model.*;
@@ -48,7 +38,6 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
     private static View v;
     private ViewGroup.LayoutParams layoutPrams;
     private ProgressBar progressBar;
-    private Sprite fadingCircle;
 
     private FragmentManager fragMg;
     private SwipeRefreshLayout swiper;
@@ -66,8 +55,6 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
         v = inflater.inflate(R.layout.tab_forums, container, false);
 
         progressBar = (ProgressBar)v.findViewById(R.id.forums_loader);
-        fadingCircle = new FadingCircle();
-
         return v;
     }
 
@@ -125,7 +112,7 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
 
             @Override
             public void responseError(VolleyError error) {
-                error.printStackTrace();
+                Utility.showErrorMessageToast(getContext(),error.getMessage());
             }
         });
     }

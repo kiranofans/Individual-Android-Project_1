@@ -9,20 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.github.ybq.android.spinkit.style.FadingCircle;
 import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 import com.yamibo.bbs.splashscreen.R;
 
-import Utils.ApiConstants;
-import Utils.AppConstants;
 import Utils.Utility;
 import Utils.VolleyHelper;
 import Utils.VolleyResultCallback;
-import Utils.VolleySingleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -62,9 +56,9 @@ public class AdminFragment extends Fragment {
         sections=new ArrayList<>();
 
         progressBar = (ProgressBar)v.findViewById(R.id.posts_loader);
-        getAdminPostSimpler();
+        getAdminPost();
     }
-    private void getAdminPostSimpler(){
+    private void getAdminPost(){
         progressBar.setVisibility(View.VISIBLE);
         progressBar.setIndeterminateDrawable(new FadingCircle());
         VolleyHelper.volleyGETRequest(getContext(), FORUM_ADMIN_URL, new VolleyResultCallback() {
@@ -98,7 +92,7 @@ public class AdminFragment extends Fragment {
 
             @Override
             public void responseError(VolleyError error) {
-                error.getMessage();
+                Utility.showErrorMessageToast(getContext(),error.getMessage());
             }
         });
     }
