@@ -3,6 +3,7 @@ package Utils;
 import android.app.Application;
 
 public class ApiConstants extends Application {
+
     //Base urls
     public static final String BASE_URL = "https://bbs.yamibo.com/api/mobile/index.php?";
     public static final String IMG_BASE_URL="https://bbs.yamibo.com/data/attachment/";

@@ -7,12 +7,12 @@ import android.app.Application;
 
 import java.util.HashMap;
 
-import static Utils.AppConstants.KEY_AVATAR;
-import static Utils.AppConstants.KEY_GROUPID;
-import static Utils.AppConstants.KEY_NOTICES;
-import static Utils.AppConstants.KEY_READ_AUTH;
-import static Utils.AppConstants.KEY_UID;
-import static Utils.AppConstants.KEY_USERNAME;
+import static Utils.AppConstants.PREF_KEY_AVATAR;
+import static Utils.AppConstants.PREF_KEY_GROUPID;
+import static Utils.AppConstants.PREF_KEY_NOTICES;
+import static Utils.AppConstants.PREF_KEY_READ_AUTH;
+import static Utils.AppConstants.PREF_KEY_UID;
+import static Utils.AppConstants.PREF_KEY_USERNAME;
 
 public class SessionManager extends Application{
     private static String LOGCAT_TAG=SessionManager.class.getSimpleName();
@@ -51,13 +51,13 @@ public class SessionManager extends Application{
         editor.putBoolean(IS_KEY_LOGGEDIN,true);
         String[] noticeArr={"newmypost","newpm","newprompt","newpush"};
         for(int i=0;i<noticeArr.length;i++){
-            editor.putString(KEY_NOTICES, sharedPrefs.getString(noticeArr[i],notice));
+            editor.putString(PREF_KEY_NOTICES, sharedPrefs.getString(noticeArr[i],notice));
         }
-        editor.putString(KEY_AVATAR,avatarUrl);
-        editor.putString(KEY_GROUPID,groupId);
-        editor.putString(KEY_READ_AUTH,readAuth);
-        editor.putString(KEY_USERNAME,usrName);
-        editor.putString(KEY_UID,uid);
+        editor.putString(PREF_KEY_AVATAR,avatarUrl);
+        editor.putString(PREF_KEY_GROUPID,groupId);
+        editor.putString(PREF_KEY_READ_AUTH,readAuth);
+        editor.putString(PREF_KEY_USERNAME,usrName);
+        editor.putString(PREF_KEY_UID,uid);
 
         editor.commit();
     }
@@ -87,13 +87,13 @@ public class SessionManager extends Application{
         String[] noticeArr={"newmypost","newpm","newprompt","newpush"};
         HashMap<String,String> userData=new HashMap<>();
         for(int i=0;i<noticeArr.length;i++){
-           userData.put(KEY_NOTICES, sharedPrefs.getString(noticeArr[i],null));
+           userData.put(PREF_KEY_NOTICES, sharedPrefs.getString(noticeArr[i],null));
         }
-        userData.put(KEY_AVATAR, sharedPrefs.getString(KEY_AVATAR,defAvatarURL));
-        userData.put(KEY_USERNAME, sharedPrefs.getString(KEY_USERNAME,null));
-        userData.put(KEY_UID, sharedPrefs.getString(KEY_UID,null));
-        userData.put(KEY_GROUPID, sharedPrefs.getString(KEY_GROUPID,null));
-        userData.put(KEY_READ_AUTH, sharedPrefs.getString(KEY_READ_AUTH,null));
+        userData.put(PREF_KEY_AVATAR, sharedPrefs.getString(PREF_KEY_AVATAR,defAvatarURL));
+        userData.put(PREF_KEY_USERNAME, sharedPrefs.getString(PREF_KEY_USERNAME,null));
+        userData.put(PREF_KEY_UID, sharedPrefs.getString(PREF_KEY_UID,null));
+        userData.put(PREF_KEY_GROUPID, sharedPrefs.getString(PREF_KEY_GROUPID,null));
+        userData.put(PREF_KEY_READ_AUTH, sharedPrefs.getString(PREF_KEY_READ_AUTH,null));
 
         return userData;
     }

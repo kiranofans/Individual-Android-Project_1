@@ -111,6 +111,11 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
             }
 
             @Override
+            public void stringResponse(String strResponse) {
+
+            }
+
+            @Override
             public void responseError(VolleyError error) {
                 Utility.showErrorMessageToast(getContext(),error.getMessage());
             }

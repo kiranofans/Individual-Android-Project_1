@@ -27,11 +27,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
 import com.yamibo.bbs.splashscreen.Fragments.AccountFragment;
 import com.yamibo.bbs.splashscreen.Fragments.GalleryFragment;
@@ -54,12 +50,11 @@ import Model.HitsMod;
 import Utils.Utility;
 import Utils.VolleyHelper;
 import Utils.VolleyResultCallback;
-import Utils.VolleySingleton;
 
 import static Utils.ApiConstants.FORUM_DAILY_HITS_URL;
 import static Utils.ApiConstants.IMG_BASE_URL;
-import static Utils.AppConstants.KEY_AVATAR;
-import static Utils.AppConstants.KEY_USERNAME;
+import static Utils.AppConstants.PREF_KEY_AVATAR;
+import static Utils.AppConstants.PREF_KEY_USERNAME;
 
 public class MainNavTabActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener, AccountFragment.OnFragmentInteractionListener,
@@ -186,8 +181,8 @@ public class MainNavTabActivity extends AppCompatActivity implements
         session = new SessionManager(getApplicationContext());
         if (session.isLoggedIn()) {
             HashMap<String, String> userInfo = session.getUserDetails();
-            usernameTv.setText(userInfo.get(KEY_USERNAME));
-            Picasso.with(MainNavTabActivity.this).load(userInfo.get(KEY_AVATAR))
+            usernameTv.setText(userInfo.get(PREF_KEY_USERNAME));
+            Picasso.with(MainNavTabActivity.this).load(userInfo.get(PREF_KEY_AVATAR))
                     .fit().into(avatarBtn);
         }/*else{
             //session.logoutUser();
@@ -246,6 +241,11 @@ public class MainNavTabActivity extends AppCompatActivity implements
                             , Toast.LENGTH_LONG).show();
                     //index 3 out of range 0 to 3
                 }
+            }
+
+            @Override
+            public void stringResponse(String strResponse) {
+
             }
 
             @Override

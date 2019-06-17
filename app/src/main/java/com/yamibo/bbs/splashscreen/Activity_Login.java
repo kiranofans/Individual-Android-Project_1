@@ -2,8 +2,10 @@ package com.yamibo.bbs.splashscreen;
 
 import android.annotation.TargetApi;
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
@@ -11,7 +13,9 @@ import android.support.v7.app.AppCompatActivity;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -44,23 +48,27 @@ import java.util.Map;
 
 import Model.UsersMod;
 import Utils.AppConstants;
+import Utils.VolleyHelper;
+import Utils.VolleyResultCallback;
 import Utils.VolleySingleton;
 
 import static Utils.ApiConstants.LOGIN_REQUEST_API_URL;
+import static Utils.AppConstants.PREF_KEY_PASSWORD;
+import static Utils.AppConstants.PREF_KEY_USERNAME;
+import static Utils.AppConstants.PREF_KEY_USERNAME_PASSWORD;
 import static android.support.design.widget.Snackbar.make;
 
 public class Activity_Login extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
-    /**
-     * Id to identity READ_CONTACTS permission request.
-     */
     private static final String LOG_TAG = Activity_Login.class.getSimpleName();
-
     private static final String PREF_FILE = AppConstants.PREF_FILE_GLOBAL;
+
     private static SessionManager sessionMg;
     private MainNavTabActivity main;
 
-    private static AutoCompleteTextView usrnameInput;
-    private static EditText pswdInput;
+    private EditText mPswdEditText;
+    private EditText mUsernameEditText;
+    private TextView usrnameInput;
+
     private Button forgotPswd, contactUs, logOutBtn, loginBtn;
     private ProgressBar progressBar;
     private static ImageView avatarImgBtn;
@@ -68,27 +76,37 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
     private static View loginForm;
 
     private static String username, avatarUrl, pswd, getUid;
-
+    private SharedPreferences mPreference;
     private static UsersMod usersMod;
     private List<String> usernameList;
 
     private static JSONObject jObj;
+    private UserInfoManager mUserMgr = UserInfoManager.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        mPreference = getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE);
+
+       initContentView();
+
+    }
+    private void initContentView(){
         // Init the login form.
         usrnameInput = (AutoCompleteTextView) findViewById(R.id.username);
         contactUs = (Button) findViewById(R.id.contactBtn);
         forgotPswd = (Button) findViewById(R.id.forgetPswdBtn);
-        pswdInput = (EditText) findViewById(R.id.password);
+        mPswdEditText = (EditText) findViewById(R.id.password);
 
         username = usrnameInput.getText().toString();
-        pswd = pswdInput.getText().toString();
+        pswd = mPswdEditText.getText().toString();
 
-        pswdInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        mPswdEditText.setHint(R.string.prompt_password);
+        mUsernameEditText.setHint(R.string.prompt_username);
+
+        mPswdEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
@@ -106,35 +124,76 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
         sessionMg = new SessionManager(getApplicationContext());
         loginBtn = (Button) findViewById(R.id.loginBtn);
         setBtnOnClicks();
+        updateContentView();
+    }
+    private void updateContentView(){
+        //Declaration and initialization the username and password sharePreferences
+        String username = mPreference.getString(PREF_KEY_USERNAME,"");
+        String password = mPreference.getString(PREF_KEY_PASSWORD,"");
+        int storedUsernamePasssword = mPreference.getInt(PREF_KEY_USERNAME_PASSWORD,-1);
+
+       //Assign the input field value from sharePreferences
+        if(!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)){
+            usrnameInput.setText(username);
+            if(storedUsernamePasssword > 0){
+                mPswdEditText.setText(password);
+            }else{
+
+            }
+        }
+        if(storedUsernamePasssword > 0){
+
+        }
+        mPswdEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                if(TextUtils.isEmpty(s)){
+                    //show password
+                }
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(TextUtils.isEmpty(s)){
+                    //hide password
+                }
+                //mPasswordClearButton.setVisibility((TextUtils.isEmpty(mPasswordInput.getText())) ? View.INVISIBLE : View.VISIBLE)
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
 
     }
 
-    /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
-     */
+
+
     private boolean attemptLogin() {
         // Reset errors.
         usrnameInput.setError(null);
-        pswdInput.setError(null);
+        mPswdEditText.setError(null);
 
         // Store values at the time of the login attempt.
         username = usrnameInput.getText().toString();
-        pswd = pswdInput.getText().toString();
+        pswd = mPswdEditText.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
+        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setIndeterminateDrawable(new FadingCircle());
+
+
+
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(pswd) && !isPasswordValid(pswd)) {
-            pswdInput.setError(getString(R.string.error_invalid_password));
-            focusView = pswdInput;
+            mPswdEditText.setError(getString(R.string.error_invalid_password));
+            focusView = mPswdEditText;
             return cancel = true;
 
         } else if (TextUtils.isEmpty(pswd)) {
-            pswdInput.setError("密碼不能為空");
-            focusView = pswdInput;
+            mPswdEditText.setError("密碼不能為空");
+            focusView = mPswdEditText;
             return cancel = true;
         }
 
@@ -170,7 +229,7 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
          * \u0800-\u4e00: Japanese */
         String pattern = "([a-zA-Z0-9_\\u4e00-\\u9fa5\\u0800-\\u4e00]+$)";
         if (!username.matches(pattern)) {
-            Toast.makeText(this, "用戶名不對", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.error_incorrect_password), Toast.LENGTH_SHORT).show();
         }
         return username.matches(pattern);
     }
@@ -223,11 +282,11 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
         //emailInput.setAdapter(adapter);
     }
 
-    private void addUsernameToAutoComplete(List<String> usernames) {
+    /*private void addUsernameToAutoComplete(List<String> usernames) {
         ArrayAdapter<String> adp = new ArrayAdapter<>
                 (Activity_Login.this, android.R.layout.simple_dropdown_item_1line, usernames);
         usrnameInput.setAdapter(adp);
-    }
+    }*/
 
     @Override
     public void onResume() {
@@ -238,6 +297,16 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
                     "Session ok", Toast.LENGTH_SHORT).show();
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        progressBar.setVisibility(View.GONE);
+        loginBtn.setOnClickListener(null);
+        forgotPswd.setOnClickListener(null);
+        contactUs.setOnClickListener(null);
+        super.onDestroy();
+    }
+
 
     @Override
     public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -263,13 +332,35 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
             usernameList.add(cursor.getString(ProfileQuery.DISPLAY_NAME));
             cursor.moveToNext();
         }
-        addUsernameToAutoComplete(usernameList);
+        //addUsernameToAutoComplete(usernameList);
         Log.d("LIST", "UsernameList: " + usernameList.size());
     }
 
     @Override
     public void onLoaderReset(android.content.Loader<Cursor> loader) {
     }
+    /*public void volleyLogin(){
+        try {
+            VolleyHelper.volleyPOSTRequest(this, LOGIN_REQUEST_API_URL,username, pswd,new VolleyResultCallback() {
+                @Override
+                public void jsonResponse(JSONObject response) {
+
+                }
+
+                @Override
+                public void stringResponse(String strResponse) {
+
+                }
+
+                @Override
+                public void responseError(VolleyError error) {
+
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }*/
 
     public JSONObject userLogin() {
         main = new MainNavTabActivity();
