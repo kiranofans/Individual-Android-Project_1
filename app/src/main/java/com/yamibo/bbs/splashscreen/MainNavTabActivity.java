@@ -232,7 +232,7 @@ public class MainNavTabActivity extends AppCompatActivity implements
                         String title = txtObj.getString("fulltitle");
                         String date = txtObj.getString("lastpost");
                         String author = txtObj.getString("author");
-                        HitsMod posts = new HitsMod(title, date, getString(R.string.hits_author) + author);
+                        HitsMod posts = new HitsMod(title, date,author);
                         hitsList.add(posts);
                     }
                     vpRecAdp = new MyRecyclerAdapter(getApplicationContext(), hitsList);
