@@ -53,7 +53,7 @@ public class PostListItemsMod implements Base_Items_Model, Serializable {
             /*postItems = new PostListItemsMod(this.mPostThreadId, this.postTitles,
                     this.postAuthors,"Post at: "+this.postDates);
             getSpecialTIds(list,postItems);*/
-            Utility.getSpecialThreadIds(list,this.mPostThreadId,postItems);
+            Utility.getFixedTopThreads(list,this.mPostThreadId,postItems);
         }
 
 

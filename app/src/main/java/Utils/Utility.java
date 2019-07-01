@@ -121,7 +121,7 @@ public class Utility {
         return restClientUtils;
     }
 
-    public static void getSpecialThreadIds(List<Base_Items_Model> list, String mThreadId, PostListItemsMod postItems) {
+    public static void getFixedTopThreads(List<Base_Items_Model> list, String mThreadId, PostListItemsMod postItems) {
         if (mThreadId.equals("47447") || mThreadId.equals("20425")
                 || mThreadId.equals("232743") || mThreadId.equals("240477")) {
             list.add(postItems);

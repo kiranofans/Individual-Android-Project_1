@@ -59,7 +59,7 @@ public class PostContentsManager {
                                 ("subject"), tObj.getString("author"),
                                 tObj.getString("lastposter"),
                                 tObj.getString("dateline"));
-                        Utility.getSpecialThreadIds(postContentList, tObj.getString("tid"), postListItems);
+                        Utility.getFixedTopThreads(postContentList, tObj.getString("tid"), postListItems);
                     }
                     sections.add(new SectionRecycleViewAdapter.Sections(0, "全部主題"));
                     sections.add(new SectionRecycleViewAdapter.Sections(5, "版塊主題"));
