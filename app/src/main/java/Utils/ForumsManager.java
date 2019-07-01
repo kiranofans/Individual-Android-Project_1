@@ -20,7 +20,7 @@ public class ForumsManager {
         this.context = context;
     }*/
     public static ForumsManager getInstance() {
-        return forumsInstance = new ForumsManager();
+        return new ForumsManager();
     }
 
    /* public void forumsJsonParser(final Fragment fragment, final ProgressBar progressBar,

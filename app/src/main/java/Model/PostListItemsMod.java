@@ -68,15 +68,14 @@ public class PostListItemsMod implements Base_Items_Model, Serializable {
         }
     }
 
-    public PostListItemsMod(String postTitles, String postAuthors,
-                            String postLastReplies, String postDates) {
+    public PostListItemsMod(String postTitles, String postAuthors,String postDates) {
         this.postAuthors = postAuthors;
         this.postTitles = postTitles;
-        this.postLastReplies = postLastReplies;//new replies or last poster
+        //this.postLastReplies = postLastReplies;//new replies or last poster
         this.postDates = postDates;
     }
 
-    public PostListItemsMod(String authorIds, String postAvatarUrls, String messages) {
+    public PostListItemsMod(String authorIds, String postAvatarUrls, String messages,String authorities) {
         this.authorIds = authorIds;
         this.postAvatarUrls = postAvatarUrls;
         this.messages = messages;

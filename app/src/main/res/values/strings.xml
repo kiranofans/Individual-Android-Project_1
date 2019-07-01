@@ -14,6 +14,9 @@
     <string name="invalid_username">用戶名錯誤</string>
     <string name="error_invalid_email">郵箱格式不正確</string>
     <string name="error_invalid_password">密碼格式不正確</string>
+    <string name ="error_empty_password">密碼不能為空</string>
+    <string name="required_password_length">密碼長度需在6個字節或以上</string>
+    <string name="does_not_contain_symbol_for_password">密碼不包含數字或字母以外的符號</string>
     <string name="error_field_required">此區域必填</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."</string>
@@ -27,6 +30,8 @@
     <string name="sign_up_legend">新注册用户做完百合种子的萌发上传头像任务后可以获得几分？<u>答案是9和11之间的那个数字</u>。都这样了你要是还回答不上来我就真没办法救你了...</string>
 
     <string name="chat_sec_title">全部主题</string>
+    <string name="forums_threads">版塊主題</string>
+    <string name="all_threads">全部主題</string>
 
     <string name="tab_forums">論壇</string>
     <string name="tab_space">我的空間</string>
@@ -34,35 +39,9 @@
     <string name="tab_novel">小說</string>
     <string name="tab_active">誰在線</string>
 
-    <!--API Urls-->
-    <string name="users_posts"></string>
+    <!--Hits-->
+    <string name="hits_author">樓主：</string>
 
-    <string-array name="forums_urls">
-        <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?version=4&module=forumdisplay&fid=33&page=1]]></item><!--海域區-->
-        <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?version=4&module=forumdisplay&fid=16&page=1]]></item><!--管理版-->
-        <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?version=4&module=forumdisplay&fid=5&page=1]]></item><!--動漫區-->
-        <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?version=4&module=forumdisplay&fid=44&page=1]]></item><!--遊戲區-->
-        <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?version=4&module=forumdisplay&fid=13&page=1]]></item><!--貼圖區-->
-        <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?version=4&module=forumdisplay&fid=49&page=1]]></item><!--文學區-->
-        <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?module=hot]]></item><!--熱點推薦-->
-
-    </string-array>
-    <string-array name="yamibo_api_urls">
-        <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?version=4&module=forumindex]]></item><!--版塊名稱-->
-        <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?version=4&module=profile]]></item><!--個人信息-->
-        <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?version=&module=mythread&page=1]]></item><!--我的帖子-->
-        <item><![CDATA[https://bbs.yamibo.com/api/mobile/index.php?module=login&loginsubmit=yes]]></item><!--LoginMod-->
-    </string-array>
-    <string-array name="img_urls">
-        <item><![CDATA[http://wx4.sinaimg.cn/large/697901d1ly1ft48muytutj20uw0e6ajf.jpg]]></item><!--Bear-->
-        <item><![CDATA[https://bbs.yamibo.com/data/attachment/album/201807/02/233550f5o0ko10g080xodi.jpg]]></item>
-        <!--大劍↑-->
-        <item><![CDATA[http://bbs.yamibo.com/data/attachment/album/201805/29/011953s7zkkzzwuaheen7k.png]]></item>
-        <!--Galet漫畫-->
-        <item><![CDATA[http://i.imgur.com/dGk7Tml.png]]></item><!--回帖沒積分-->
-        <item><![CDATA[https://bbs.yamibo.com/data/attachment/album/201511/07/123900ewu4fuh3v43vfhfs.jpg]]></item>
-        <!--遊戲區↑-->
-    </string-array>
     <string name="title_activity_login2">Sign in</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="error_incorrect_password">This password is incorrect</string>

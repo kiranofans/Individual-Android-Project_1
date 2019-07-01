@@ -4,11 +4,13 @@ import Utils.Constants;
 
 public class HitsMod implements Base_Items_Model {
     private String hitsTitle,hitsPostDate;
+    private String hitsAuthor;
     public HitsMod(){}
 
-    public HitsMod(String hitsTitle, String postDate){
+    public HitsMod(String hitsTitle, String postDate,String author){
         this.hitsPostDate=postDate;
         this.hitsTitle=hitsTitle;
+        this.hitsAuthor = author;
     }
 
     public String getHitsTitle() {
@@ -21,6 +23,10 @@ public class HitsMod implements Base_Items_Model {
 
     public String getHitsPostDate() {
         return hitsPostDate;
+    }
+
+    public String getHitsAuthor(){
+       return hitsAuthor;
     }
 
     public void setHitsPostDate(String hitsPostDate) {

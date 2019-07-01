@@ -7,6 +7,7 @@ import android.widget.ProgressBar;
 
 import com.android.volley.VolleyError;
 import com.github.ybq.android.spinkit.style.FadingCircle;
+import com.yamibo.bbs.splashscreen.LanguageManager;
 import com.yamibo.bbs.splashscreen.R;
 
 import org.json.JSONArray;
@@ -21,24 +22,17 @@ import Adapter.SectionRecycleViewAdapter;
 import Model.Base_Items_Model;
 import Model.PostListItemsMod;
 
-import static Utils.ApiConstants.FORUM_ADMIN_URL;
-import static Utils.ApiConstants.FORUM_CHATTING_URL;
-
 public class PostContentsManager {
     private MyRecyclerAdapter recAdp;
     private List<Base_Items_Model> postContentList;
     private List<SectionRecycleViewAdapter.Sections> sections;
 
-    private PostURLs postUrls;
+    //private PostURLs postUrls;
     private String postURLs;
-
-    private static PostContentsManager postContentInstance;
+    private LanguageManager lanMgr = LanguageManager.getInstance();
 
     public static PostContentsManager getInstance() {
-        if (postContentInstance == null) {
-            postContentInstance = new PostContentsManager();
-        }
-        return postContentInstance;
+        return new PostContentsManager();
     }
 
     public void volleyGetPostContent(final Context context, String url, final ProgressBar progressBar, final RecyclerView recView) {
@@ -56,13 +50,11 @@ public class PostContentsManager {
                     for (int i = 0; i < threadArr.length(); i++) {
                         JSONObject tObj = threadArr.getJSONObject(i);
                         PostListItemsMod postListItems = new PostListItemsMod(tObj.getString
-                                ("subject"), tObj.getString("author"),
-                                tObj.getString("lastposter"),
-                                tObj.getString("dateline"));
+                                ("subject"), tObj.getString("author"),tObj.getString("dateline"));
                         Utility.getFixedTopThreads(postContentList, tObj.getString("tid"), postListItems);
                     }
-                    sections.add(new SectionRecycleViewAdapter.Sections(0, "全部主題"));
-                    sections.add(new SectionRecycleViewAdapter.Sections(5, "版塊主題"));
+                    sections.add(new SectionRecycleViewAdapter.Sections(0, context.getString(R.string.forums_threads)));
+                    sections.add(new SectionRecycleViewAdapter.Sections(5, context.getString(R.string.all_threads)));
                     recAdp = new MyRecyclerAdapter(context, postContentList);
 
                     SectionRecycleViewAdapter.Sections[] secArr = new SectionRecycleViewAdapter.Sections[sections.size()];
@@ -87,7 +79,7 @@ public class PostContentsManager {
         });
     }
 
-    //enum
+   /* //enum
     enum PostURLs {
         ADMIN_URL, CHAT_URL, ANIME_URL
     }
@@ -105,5 +97,8 @@ public class PostContentsManager {
                 break;
         }
         return postURLs;
-    }
+    }*/
+  /* private String getString(int resID){
+       return getString(resID);
+   }*/
 }

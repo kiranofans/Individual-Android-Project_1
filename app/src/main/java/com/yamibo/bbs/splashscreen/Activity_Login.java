@@ -162,7 +162,6 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
 
     }
 
-
     private boolean attemptLogin() {
         // Reset errors.
         usrnameInput.setError(null);
@@ -186,7 +185,7 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
             return cancel = true;
 
         } else if (TextUtils.isEmpty(pswd)) {
-            mPswdEditText.setError("密碼不能為空");
+            mPswdEditText.setError(getString(R.string.error_empty_password));
             focusView = mPswdEditText;
             return cancel = true;
         }
@@ -246,10 +245,10 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
     private boolean isPasswordValid(String password) {
         String pattern = "([a-zA-Z0-9].{5,40})";
         if (password.length() < 6) {
-            Toast.makeText(this, "密碼長度需在6個字節或以上",
+            Toast.makeText(this, getString(R.string.required_password_length),
                     Toast.LENGTH_LONG).show();
         } else if (!password.matches(pattern)) {
-            Toast.makeText(this, "密碼不包含數字或字母以外的符號",
+            Toast.makeText(this, getString(R.string.does_not_contain_symbol_for_password),
                     Toast.LENGTH_LONG).show();
         }
         return password.matches(pattern);
@@ -273,14 +272,7 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
         ArrayAdapter<String> adapter =
                 new ArrayAdapter<>(Activity_Login.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
-        //emailInput.setAdapter(adapter);
     }
-
-    /*private void addUsernameToAutoComplete(List<String> usernames) {
-        ArrayAdapter<String> adp = new ArrayAdapter<>
-                (Activity_Login.this, android.R.layout.simple_dropdown_item_1line, usernames);
-        usrnameInput.setAdapter(adp);
-    }*/
 
     @Override
     public void onResume() {
