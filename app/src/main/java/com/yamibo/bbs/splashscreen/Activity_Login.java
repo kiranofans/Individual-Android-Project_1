@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -35,6 +36,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.github.ybq.android.spinkit.style.FadingCircle;
+import com.yamibo.bbs.splashscreen.Fragments.ForumsFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,12 +47,22 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import Model.OAuthMod;
 import Model.UsersMod;
 import Utils.AppConstants;
+import Utils.PostContentsManager;
 import Utils.VolleySingleton;
 
 import static Utils.ApiConstants.LOGIN_REQUEST_API_URL;
+import static Utils.AppConstants.PREF_KEY_AVATAR;
+import static Utils.AppConstants.PREF_KEY_COOKIEPRE;
+import static Utils.AppConstants.PREF_KEY_CREDITS;
+import static Utils.AppConstants.PREF_KEY_GROUPID;
+import static Utils.AppConstants.PREF_KEY_LOGIN_TOKEN;
+import static Utils.AppConstants.PREF_KEY_NOTICES;
 import static Utils.AppConstants.PREF_KEY_PASSWORD;
+import static Utils.AppConstants.PREF_KEY_READ_AUTH;
+import static Utils.AppConstants.PREF_KEY_UID;
 import static Utils.AppConstants.PREF_KEY_USERNAME;
 import static Utils.AppConstants.PREF_KEY_USERNAME_PASSWORD;
 
@@ -79,12 +91,18 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
     private static JSONObject jObj;
     private UserInfoManager mUserMgr = UserInfoManager.getInstance();
 
+    private String authTotken;
+    private static OAuthMod.OAuth auth;
+
+    private int RC_GET_AUTH_CODE = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         mPreference = getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE);
+        auth = new OAuthMod.OAuth();
 
         initContentView();
 
@@ -325,31 +343,18 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
     @Override
     public void onLoaderReset(android.content.Loader<Cursor> loader) {
     }
-    /*public void volleyLogin(){
-        try {
-            VolleyHelper.volleyPOSTRequest(this, LOGIN_REQUEST_API_URL,username, pswd,new VolleyResultCallback() {
-                @Override
-                public void jsonResponse(JSONObject response) {
 
-                }
+   /* @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-                @Override
-                public void stringResponse(String strResponse) {
-
-                }
-
-                @Override
-                public void responseError(VolleyError error) {
-
-                }
-            });
-        } catch (JSONException e) {
-            e.printStackTrace();
+        if (requestCode == RC_GET_AUTH_CODE && sessionMg.isLoggedIn()) {
         }
     }*/
 
-    public JSONObject userLogin() {
+    public void userLogin() {
         main = new MainNavTabActivity();
+        auth = new OAuthMod.OAuth();
         final StringRequest request = new StringRequest(Request.Method.POST, LOGIN_REQUEST_API_URL,
                 new Response.Listener<String>() {
                     @Override
@@ -360,11 +365,15 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
                             String msgVal = loginMsg.getString("messageval");
                             String msgTr = loginMsg.getString("messagestr");
                             if (msgVal.equals("login_succeed")) {
-                                Toast.makeText(Activity_Login.this,
-                                        msgTr, Toast.LENGTH_SHORT).show();
                                 JSONObject varObj = jObj.getJSONObject("Variables");
                                 JSONObject notice = varObj.getJSONObject("notice");
                                 Iterator<String> iter = notice.keys();
+
+                                String avatarUrl = varObj.getString("member_avatar");
+                                String userName = varObj.getString("member_username");
+                                String uid = varObj.getString("member_uid");
+                                String groupId = varObj.getString("groupid");
+                                String readAuth = varObj.getString("readaccess");
 
                                 //Loop through the notice JSONObjects
                                 String notices = "";
@@ -372,15 +381,25 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
                                     String key = iter.next();
                                     notices = notice.getString(key);
                                 }
-                                String avatarUrl = varObj.getString("member_avatar");
-                                String userName = varObj.getString("member_username");
-                                String uid = varObj.getString("member_uid");
-                                String groupId = varObj.getString("groupid");
-                                String readAuth = varObj.getString("readaccess");
+                                auth.setAccessToken(varObj.getString("auth"));
+                                if (varObj.getString("auth") != null) {
+                                    authTotken = auth.getAccessToken();
+                                    Toast.makeText(Activity_Login.this,
+                                            msgTr, Toast.LENGTH_SHORT).show();
+                                    Intent signInIntent = new Intent(Activity_Login.this, ForumsFragment.class);
+                                    Bundle mBundle = new Bundle();
+                                    mBundle.putString(PREF_KEY_LOGIN_TOKEN, authTotken);
+                                    mBundle.putString(PREF_KEY_READ_AUTH,readAuth);
+                                    mBundle.putString(PREF_KEY_AVATAR,avatarUrl);
+                                    mBundle.putString(PREF_KEY_USERNAME,userName);
+                                    mBundle.putString(PREF_KEY_GROUPID,groupId);
+                                    mBundle.putString(PREF_KEY_UID,uid);
+                                    mBundle.putString(PREF_KEY_NOTICES,notices);
+                                    signInIntent.putExtras(mBundle);
 
-                                sessionMg.createLoginSession(true,
-                                        notices, groupId, avatarUrl, readAuth, userName, uid);
-
+                                    sessionMg.createLoginSession(true, authTotken,
+                                            notices, groupId, avatarUrl, readAuth, userName, uid);
+                                }
                             } else {
                                 Toast.makeText(Activity_Login.this,
                                         msgTr, Toast.LENGTH_SHORT).show();
@@ -396,12 +415,8 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
             }
         }) {
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("Accept-Charset", "gbk");
-                headers.put("Content-Transfer-Encoding", "charset=gbk");
-                headers.put("Content-Type", "application/x-www-form-urlencoded");
-                return headers;
+            public String getBodyContentType() {
+                return "application/x-www-form-urlencoded; charset=gbk";
             }
 
             @Override
@@ -413,7 +428,6 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
             }
         };
         VolleySingleton.getInstance(this).addToRequestQueue(request);
-        return jObj;
     }
 
     private interface ProfileQuery {

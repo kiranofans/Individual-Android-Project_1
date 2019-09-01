@@ -18,7 +18,7 @@ public class AppConstants extends Application{
     public static final String PREF_KEY_READ_AUTH ="readaccess";
     public static final String PREF_KEY_GROUPID ="groupid";
     public static final String PREF_KEY_CREDITS ="credits";
-    public static final String PREF_KEY_LOGIN_TOKEN = "authtoken";
+    public static final String PREF_KEY_LOGIN_TOKEN = "auth";
 
     public static final String MIME_HTML_UTF8 = "text/html; charset=utf-8";
     public static final String ENCODING_UTF8 = "UTF-8";

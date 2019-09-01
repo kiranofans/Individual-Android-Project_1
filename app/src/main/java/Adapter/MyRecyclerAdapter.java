@@ -29,7 +29,6 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
 
     private List<?extends Base_Items_Model> anyTypeItems;
     private OnItemClickListener listener;
-    private List<? extends Base_Items_Model> items;
 
     private SwipeRefreshLayout swiper;
     private boolean flag=false;

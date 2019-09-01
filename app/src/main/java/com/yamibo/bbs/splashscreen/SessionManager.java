@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 import static Utils.AppConstants.PREF_KEY_AVATAR;
 import static Utils.AppConstants.PREF_KEY_GROUPID;
+import static Utils.AppConstants.PREF_KEY_LOGIN_TOKEN;
 import static Utils.AppConstants.PREF_KEY_NOTICES;
 import static Utils.AppConstants.PREF_KEY_READ_AUTH;
 import static Utils.AppConstants.PREF_KEY_UID;
@@ -41,7 +42,7 @@ public class SessionManager extends Application{
         }
         return instance;
     }
-    public void createLoginSession(boolean isLoggedIn,String notice,String groupId,
+    public void createLoginSession(boolean isLoggedIn,String authToken,String notice,String groupId,
                                    String avatarUrl,String readAuth,String usrName,String uid){
         sharedPrefs =_context.getSharedPreferences(SHARED_NAME,Context.MODE_PRIVATE);
 
@@ -58,6 +59,7 @@ public class SessionManager extends Application{
         editor.putString(PREF_KEY_READ_AUTH,readAuth);
         editor.putString(PREF_KEY_USERNAME,usrName);
         editor.putString(PREF_KEY_UID,uid);
+        editor.putString(PREF_KEY_LOGIN_TOKEN,authToken);
 
         editor.commit();
     }

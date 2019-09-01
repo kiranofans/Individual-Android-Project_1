@@ -80,6 +80,7 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
         recyclerView1.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
         recyclerView1.setLayoutManager(new LinearLayoutManager(getContext()));
 
+
         forumsJsonParser();
     }
 
