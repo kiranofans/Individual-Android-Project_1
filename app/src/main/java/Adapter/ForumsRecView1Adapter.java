@@ -18,9 +18,11 @@ import java.util.List;
 import Model.ForumsListItemMod;
 
 public class ForumsRecView1Adapter extends RecyclerView.Adapter<ForumsRecView1Adapter.SingleViewHolder> implements View.OnClickListener{
-    Context context;
+    private Context context;
+
     private List<ForumsListItemMod> itemsList;
     private OnItemClickListener listener;
+
     @Override
     public void onClick(View v) {
 

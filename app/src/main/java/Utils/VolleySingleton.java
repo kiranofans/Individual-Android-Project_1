@@ -4,10 +4,8 @@ import android.content.Context;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
@@ -16,27 +14,43 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 
 public class VolleySingleton {
-    private static VolleySingleton instance;
+
+    //Add volatile to the instance variable for thread-safe
+    private static volatile VolleySingleton instance;
+
     private RequestQueue requestQueue;
     private static Context context;
 
-    public static synchronized VolleySingleton getInstance(Context context) {
+    public static VolleySingleton getInstance(Context context) {
+        //Double check locking method for getInstance to get thread-safe
         if (instance == null) {
-            instance = new VolleySingleton(context);
+            synchronized (VolleySingleton.class) {
+                if (instance == null) instance = new VolleySingleton(context);
+            }
         }
         return instance;
     }
-    public static synchronized VolleySingleton getInstance() {
+
+    public static VolleySingleton getInstance() {
         if (instance == null) {
-            throw new IllegalStateException(VolleySingleton.class.getSimpleName()+
+            throw new IllegalStateException(VolleySingleton.class.getSimpleName() +
                     " is not initialized, call getInstance(...)");
         }
         return instance;
     }
+
     private VolleySingleton(Context context) {
         this.context = context;
         requestQueue = getRequestQueue();
+
+        /** Adding reflection proof by throwing RuntimeException
+         if the user doesn't get single instance */
+        if (instance != null) {
+            throw new RuntimeException("Call getInstance() method to get the single" +
+                    " instance of VolleySingleton class");
+        }
     }
+
     public static String errorStringFromVolleyError(VolleyError volleyError) {
         JSONObject jsonObj = volleyErrorToJSON(volleyError);
         if (jsonObj == null) {
@@ -58,41 +72,6 @@ public class VolleySingleton {
             return "";
         }
         return JSONUtils.getString(jsonObject, "message");
-    }
-
-    public void volleyGETRequest(String requestUrl, final VolleyResultCallback mResultCallback){
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, requestUrl, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                if (response != null)
-                    mResultCallback.jsonResponse(response);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                if (error != null)
-                    mResultCallback.responseError(error);
-            }
-        });
-        requestQueue.add(jsonObjectRequest);
-    }
-
-    public void volleyPOSTRequest(String requestUrl,final VolleyResultCallback mResultCallback) throws JSONException {
-        RequestQueue queue = Volley.newRequestQueue(context);
-        JsonObjectRequest jsonObj = new JsonObjectRequest(Request.Method.GET, requestUrl, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                if (mResultCallback != null)
-                    mResultCallback.jsonResponse(response);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                if (mResultCallback != null)
-                    mResultCallback.responseError(error);
-            }
-        });
-        queue.add(jsonObj);
     }
 
     public static JSONObject volleyErrorToJSON(VolleyError volleyError) {
