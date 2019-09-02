@@ -1,4 +1,4 @@
-package Utils;
+package Managers;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -7,7 +7,6 @@ import android.widget.ProgressBar;
 
 import com.android.volley.VolleyError;
 import com.github.ybq.android.spinkit.style.FadingCircle;
-import com.yamibo.bbs.splashscreen.LanguageManager;
 import com.yamibo.bbs.splashscreen.R;
 
 import org.json.JSONArray;
@@ -21,6 +20,9 @@ import Adapter.MyRecyclerAdapter;
 import Adapter.SectionRecycleViewAdapter;
 import Model.Base_Items_Model;
 import Model.PostListItemsMod;
+import Utils.Utility;
+import VolleyService.VolleyHelper;
+import VolleyService.VolleyResultCallback;
 
 public class PostContentsManager {
     private MyRecyclerAdapter recAdp;
@@ -78,27 +80,4 @@ public class PostContentsManager {
             }
         });
     }
-
-   /* //enum
-    enum PostURLs {
-        ADMIN_URL, CHAT_URL, ANIME_URL
-    }
-
-    public String getPostUrls() {
-        switch (postUrls) {
-            case ADMIN_URL:
-                postURLs = FORUM_ADMIN_URL;
-                break;
-            case CHAT_URL:
-                postURLs = FORUM_CHATTING_URL;
-                break;
-            case ANIME_URL:
-                postURLs = FORUM_ADMIN_URL;
-                break;
-        }
-        return postURLs;
-    }*/
-  /* private String getString(int resID){
-       return getString(resID);
-   }*/
 }

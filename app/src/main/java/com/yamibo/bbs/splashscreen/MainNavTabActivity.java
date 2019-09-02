@@ -48,8 +48,8 @@ import Adapter.MyRecyclerAdapter;
 import Model.Base_Items_Model;
 import Model.HitsMod;
 import Utils.Utility;
-import Utils.VolleyHelper;
-import Utils.VolleyResultCallback;
+import VolleyService.VolleyHelper;
+import VolleyService.VolleyResultCallback;
 
 import static Utils.ApiConstants.FORUM_DAILY_HITS_URL;
 import static Utils.ApiConstants.IMG_BASE_URL;

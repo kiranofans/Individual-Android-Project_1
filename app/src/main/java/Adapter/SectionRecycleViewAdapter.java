@@ -14,8 +14,6 @@ import com.yamibo.bbs.splashscreen.R;
 import java.util.Arrays;
 import java.util.Comparator;
 
-import Adapter.Base_View_Holder.BaseViewHolder;
-
 /**Provided by Google*/
 public class SectionRecycleViewAdapter extends RecyclerView.Adapter {
         private final Context mContext;

@@ -1,28 +1,18 @@
-package com.yamibo.bbs.splashscreen;
+package Managers;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
-import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import Model.UsersMod;
 import Utils.ApiConstants;
-import Utils.AppConstants;
-import Utils.VolleyHelper;
-import Utils.VolleyResultCallback;
-import Utils.VolleySingleton;
+import VolleyService.VolleySingleton;
 
 import static Utils.ApiConstants.LOGIN_REQUEST_API_URL;
 

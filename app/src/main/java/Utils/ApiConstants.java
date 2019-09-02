@@ -10,8 +10,8 @@ public class ApiConstants extends Application {
 
     //Forum contents
     public static final String FORUM_CHATTING_URL = BASE_URL + "version=4&module=forumdisplay&fid=33&page=%s";
-    public static final String FORUM_ADMIN_URL = BASE_URL + "version=4&module=forumdisplay&fid=16&page=%s";
-    public static final String FORUM_ANIME_MANGA_URL = BASE_URL + "version=4&module=forumdisplay&fid=5&page=$s";
+    public static final String FORUM_ADMIN_URL = BASE_URL + "version=4&module=forumdisplay&fid=16&page=1";
+    public static final String FORUM_ANIME_MANGA_URL = BASE_URL + "version=4&module=forumdisplay&fid=5&page=1";
     public static final String FORUM_VIDEO_GAME_URL = BASE_URL + "version=4&module=forumdisplay&fid=44&page=%s";//game
     public static final String FORUM_PICTURES_URL = BASE_URL + "version=4&module=forumdisplay&fid=13&page=%s";
     public static final String FORUM_LITERATURE_URL = BASE_URL + "version=4&module=forumdisplay&fid=49&page=%s";

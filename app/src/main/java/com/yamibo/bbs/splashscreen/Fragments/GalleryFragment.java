@@ -20,7 +20,7 @@ import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 import com.yamibo.bbs.splashscreen.R;
 
 import Model.ImageMod;
-import Utils.VolleySingleton;
+import VolleyService.VolleySingleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
