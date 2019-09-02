@@ -132,4 +132,8 @@ public class Utility {
             list.add(postItems);
         }
     }
+
+    public static void apiURLStrFormat(String str){
+
+    }
 }
