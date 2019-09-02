@@ -26,9 +26,10 @@ import Utils.Constants;
 /**Using Dynamic Method Dispatch or Runtime Polymorphism*/
 public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
     private Context context;
+
     private List<?extends Base_Items_Model> anyTypeItems;
     private OnItemClickListener listener;
-    private List<? extends Base_Items_Model> items;
+
     private SwipeRefreshLayout swiper;
     private boolean flag=false;
     //An interface way to create OnItemClick events
@@ -132,13 +133,13 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
 
     /**PostsHolder*/
     public class PostsHolder extends BaseViewHolder<PostListItemsMod>{
-        private TextView titleTv, lastposterTv, postDate,authors,lastReplyDate;
+        private TextView titleTv,lastposterTv, postDate,authors,lastReplyDate;
 
         private ImageView imgIcons;
         public PostsHolder(View itemView, int viewType) {
             super(itemView);
             //Declare Views
-            lastposterTv = (TextView) itemView.findViewById(R.id.lastRepliedPosters);
+           // lastposterTv = (TextView) itemView.findViewById(R.id.lastRepliedPosters);
             titleTv = (TextView) itemView.findViewById(R.id.postTitle);
             postDate = (TextView) itemView.findViewById(R.id.hitsDateTV);
             authors=(TextView)itemView.findViewById(R.id.author);
@@ -161,7 +162,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
         @Override
         public void bind(PostListItemsMod obj) {
             String avatarUrls=obj.getPostAvatarUrls();
-            lastposterTv.setText(obj.getPostLastReplies());
+            //lastposterTv.setText(obj.getPostLastReplies());
             titleTv.setText(obj.getPostTitles());
             postDate.setText(obj.getPostDates());
             authors.setText(obj.getPostAuthors());
@@ -190,11 +191,13 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
     }
     private class HitsHolder extends BaseViewHolder<HitsMod>{
         View v;
-        private TextView hitsTitle,hitsPostDates;
+        private TextView hitsTitle,hitsPostDates,hitsAuthor;
         public HitsHolder(View itemView,int viewType) {
             super(itemView);
             hitsPostDates=(TextView)itemView.findViewById(R.id.hitsDateTV);
             hitsTitle=(TextView)itemView.findViewById(R.id.hitTitleTV);
+            hitsAuthor = (TextView)itemView.findViewById(R.id.hits_author);
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -213,6 +216,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
             //For top hits recView
             hitsTitle.setText(obj.getHitsTitle());
             hitsPostDates.setText(obj.getHitsPostDate());
+            hitsAuthor.setText(obj.getHitsAuthor());
         }
     }
 }

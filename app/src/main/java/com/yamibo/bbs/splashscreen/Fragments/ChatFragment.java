@@ -136,6 +136,11 @@ public class ChatFragment extends Fragment implements
             }
 
             @Override
+            public void stringResponse(String strResponse) {
+
+            }
+
+            @Override
             public void responseError(VolleyError error) {
 
             }

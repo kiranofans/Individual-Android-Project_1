@@ -14,18 +14,24 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 
 public class VolleySingleton {
-    private static VolleySingleton instance;
+
+    //Add volatile to the instance variable for thread-safe
+    private static volatile VolleySingleton instance;
+
     private RequestQueue requestQueue;
     private static Context context;
 
-    public static synchronized VolleySingleton getInstance(Context context) {
+    public static VolleySingleton getInstance(Context context) {
+        //Double check locking method for getInstance to get thread-safe
         if (instance == null) {
-            instance = new VolleySingleton(context);
+            synchronized (VolleySingleton.class) {
+                if (instance == null) instance = new VolleySingleton(context);
+            }
         }
         return instance;
     }
 
-    public static synchronized VolleySingleton getInstance() {
+    public static VolleySingleton getInstance() {
         if (instance == null) {
             throw new IllegalStateException(VolleySingleton.class.getSimpleName() +
                     " is not initialized, call getInstance(...)");
@@ -36,6 +42,13 @@ public class VolleySingleton {
     private VolleySingleton(Context context) {
         this.context = context;
         requestQueue = getRequestQueue();
+
+        /** Adding reflection proof by throwing RuntimeException
+         if the user doesn't get single instance */
+        if (instance != null) {
+            throw new RuntimeException("Call getInstance() method to get the single" +
+                    " instance of VolleySingleton class");
+        }
     }
 
     public static String errorStringFromVolleyError(VolleyError volleyError) {

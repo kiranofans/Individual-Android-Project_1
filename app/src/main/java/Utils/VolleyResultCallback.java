@@ -6,6 +6,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public interface VolleyResultCallback{
-    void jsonResponse(JSONObject response);
-    void responseError(VolleyError error);
+
+    public void jsonResponse(JSONObject response);
+    public void stringResponse(String strResponse);
+    public void responseError(VolleyError error);
 }

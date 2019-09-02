@@ -2,46 +2,48 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_bar_main"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/app_bar_main"
-    tools:context=".MainNavTabActivity"
     android:fitsSystemWindows="true"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
-        <android.support.design.widget.AppBarLayout
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".MainNavTabActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:background="@android:color/white"
+        android:fitsSystemWindows="true"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsy_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/app_bar_layout"
-            android:background="@android:color/white"
-            android:animateLayoutChanges="true"
-            android:theme="@style/AppTheme.AppBarOverlay"
-            android:fitsSystemWindows="true">
+            android:fitsSystemWindows="true"
+            android:theme="@style/ThemeOverlay.AppCompat.Light"
+            app:contentScrim="#fff5d7"
+            app:expandedTitleMarginEnd="64dp"
+            app:expandedTitleMarginStart="48dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <android.support.design.widget.CollapsingToolbarLayout
-                android:id="@+id/collapsy_toolbar"
+            <FrameLayout
+                android:id="@+id/imgViewPagerFrame"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                app:expandedTitleMarginStart="48dp"
-                app:expandedTitleMarginEnd="64dp"
-                android:fitsSystemWindows="true"
-                android:theme="@style/ThemeOverlay.AppCompat.Light"
-                app:contentScrim="#fff5d7" >
+                android:layout_height="match_parent">
 
-                <FrameLayout
-                    android:id="@+id/imgViewPagerFrame"
+                <LinearLayout
+                    android:id="@+id/linear"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                    <LinearLayout
-                        android:id="@+id/linear"
-                        android:orientation="vertical"
-                        android:background="@android:color/white"
-                        app:layout_constraintTop_toBottomOf="@+id/imgViewPager"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imgViewPager">
 
                     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
                         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -55,78 +57,62 @@
                             android:layout_height="127dp"
                             android:layout_gravity="center_vertical"
                             android:scrollIndicators="bottom"
-                            app:layout_constraintVertical_chainStyle="packed"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.0" />
-
-                        <ImageButton
-                            android:id="@+id/left_nav"
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:layout_gravity="center_vertical|left"
-                            android:background="@drawable/back_arrow_white"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <ImageButton
-                            android:id="@+id/right_nav"
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:layout_gravity="center_vertical|right"
-                            android:background="@drawable/right_arrow_white"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
+                            app:layout_constraintVertical_bias="0.0"
+                            app:layout_constraintVertical_chainStyle="packed" />
                     </android.support.constraint.ConstraintLayout>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="熱點推薦"
                         android:layout_margin="4dp"
-                        android:textColor="@color/color_light_yellow"
                         android:background="@color/color_dark_red"
+                        android:text="熱點推薦"
+                        android:textAlignment="center"
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-                        android:textAlignment="center"/>
+                        android:textColor="@color/color_light_yellow" />
+
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/hitsRecView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@android:color/white" />
                 </LinearLayout>
-                </FrameLayout>
-                <android.support.v7.widget.Toolbar
-                    android:id="@+id/baseToolbar"
-                    android:layout_width="match_parent"
-                    android:elevation="4dp"
-                    app:layout_scrollFlags="enterAlways|scroll"
-                    android:layout_height="?attr/actionBarSize"
-                    android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                    app:layout_collapseMode="pin"/>
-            </android.support.design.widget.CollapsingToolbarLayout>
-        </android.support.design.widget.AppBarLayout>
-        <android.support.v4.widget.NestedScrollView
-            android:id="@+id/nestedScroll"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            </FrameLayout>
 
-        </android.support.v4.widget.NestedScrollView>
-        <include layout="@layout/content_main"/>
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right|end"
-            android:layout_margin="@dimen/fab_margin"
-            android:background="@android:color/transparent"
-            app:srcCompat="@android:drawable/ic_dialog_email" />
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/baseToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:elevation="4dp"
+                android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+                app:layout_collapseMode="pin"
+                app:layout_scrollFlags="enterAlways|scroll"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/nestedScroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    </android.support.v4.widget.NestedScrollView>
+
+    <include layout="@layout/content_main" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:background="@android:color/transparent"
+        app:srcCompat="@android:drawable/ic_dialog_email" />
 </android.support.design.widget.CoordinatorLayout>

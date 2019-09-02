@@ -37,96 +37,105 @@ public class UsersMod implements Base_Items_Model{
         this.usrReplies=usrReplies;
     }
 
-    public String getCredits() {
-        return credits;
-    }
+    
 
-    public void setCredits(String credits) {
-        this.credits = credits;
-    }
+    public static class UserProfile{
+        private String username,usrPswd,usrID,credits,usrAvatarUrl;
+        private Boolean usrStatus;//for active user fragment
+        private String notices, othersReplies,usrReplies,groupID;
+        private String readAccess,usrSpace;
 
-    public String getUsrAvatarUrl() {
-        return usrAvatarUrl;
-    }
+        public String getCredits() {
+            return credits;
+        }
 
-    public void setUsrAvatarUrl(String usrAvatarUrl) {
-        this.usrAvatarUrl = usrAvatarUrl;
-    }
+        public void setCredits(String credits) {
+            this.credits = credits;
+        }
 
-    public String getNotices() {
-        return notices;
-    }
+        public String getUsrAvatarUrl() {
+            return usrAvatarUrl;
+        }
 
-    public void setNotices(String notices) {
-        this.notices = notices;
-    }
+        public void setUsrAvatarUrl(String usrAvatarUrl) {
+            this.usrAvatarUrl = usrAvatarUrl;
+        }
 
-    public String getOthersReplies() {
-        return othersReplies;
-    }
+        public String getNotices() {
+            return notices;
+        }
 
-    public void setOthersReplies(String othersReplies) {
-        this.othersReplies = othersReplies;
-    }
+        public void setNotices(String notices) {
+            this.notices = notices;
+        }
 
-    public String getUsrReplies() {
-        return usrReplies;
-    }
+        public String getOthersReplies() {
+            return othersReplies;
+        }
 
-    public void setUsrReplies(String usrReplies) {
-        this.usrReplies = usrReplies;
-    }
+        public void setOthersReplies(String othersReplies) {
+            this.othersReplies = othersReplies;
+        }
 
-    public String getReadAccess() {
-        return readAccess;
-    }
+        public String getUsrReplies() {
+            return usrReplies;
+        }
 
-    public void setReadAccess(String readAccess) {
-        this.readAccess = readAccess;
-    }
+        public void setUsrReplies(String usrReplies) {
+            this.usrReplies = usrReplies;
+        }
 
-    public String getUsrSpace() {
-        return usrSpace;
-    }
+        public String getReadAccess() {
+            return readAccess;
+        }
 
-    public void setUsrSpace(String usrSpace) {
-        this.usrSpace = usrSpace;
-    }
+        public void setReadAccess(String readAccess) {
+            this.readAccess = readAccess;
+        }
 
-    public String getGroupID(){
-        return groupID;
-    }
-    public void setGroupID(String groupID){
-        this.groupID=groupID;
-    }
-    public String getUsrID(){
-        return usrID;
-    }
-    public void setUsrID(String usrID){
-        this.usrID=usrID;
-    }
-    public String getUsername() {
-        return username;
-    }
+        public String getUsrSpace() {
+            return usrSpace;
+        }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+        public void setUsrSpace(String usrSpace) {
+            this.usrSpace = usrSpace;
+        }
 
-    public String getUsrPswd() {
-        return usrPswd;
-    }
+        public String getGroupID(){
+            return groupID;
+        }
+        public void setGroupID(String groupID){
+            this.groupID=groupID;
+        }
+        public String getUsrID(){
+            return usrID;
+        }
+        public void setUsrID(String usrID){
+            this.usrID=usrID;
+        }
+        public String getUsername() {
+            return username;
+        }
 
-    public void setUsrPswd(String usrPswd) {
-        this.usrPswd = usrPswd;
-    }
+        public void setUsername(String username) {
+            this.username = username;
+        }
 
-    public Boolean getUsrStatus() {
-        return usrStatus;
-    }
+        public String getUsrPswd() {
+            return usrPswd;
+        }
 
-    public void setUsrStatus(Boolean usrStatus) {
-        this.usrStatus = usrStatus;
+        public void setUsrPswd(String usrPswd) {
+            this.usrPswd = usrPswd;
+        }
+
+        public Boolean getUsrStatus() {
+            return usrStatus;
+        }
+
+        public void setUsrStatus(Boolean usrStatus) {
+            this.usrStatus = usrStatus;
+        }
     }
 
     @Override
