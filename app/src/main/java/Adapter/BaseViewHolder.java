@@ -1,4 +1,4 @@
-package Adapter.Base_View_Holder;
+package Adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;

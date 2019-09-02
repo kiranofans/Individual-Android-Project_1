@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -47,16 +46,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import Managers.UserInfoManager;
 import Model.OAuthMod;
 import Model.UsersMod;
 import Utils.AppConstants;
-import Utils.PostContentsManager;
-import Utils.VolleySingleton;
+import VolleyService.VolleySingleton;
 
 import static Utils.ApiConstants.LOGIN_REQUEST_API_URL;
 import static Utils.AppConstants.PREF_KEY_AVATAR;
-import static Utils.AppConstants.PREF_KEY_COOKIEPRE;
-import static Utils.AppConstants.PREF_KEY_CREDITS;
 import static Utils.AppConstants.PREF_KEY_GROUPID;
 import static Utils.AppConstants.PREF_KEY_LOGIN_TOKEN;
 import static Utils.AppConstants.PREF_KEY_NOTICES;

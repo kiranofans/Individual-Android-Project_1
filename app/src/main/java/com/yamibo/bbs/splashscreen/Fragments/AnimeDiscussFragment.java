@@ -13,7 +13,7 @@ import android.widget.ProgressBar;
 
 import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 import com.yamibo.bbs.splashscreen.R;
-import Utils.PostContentsManager;
+import Managers.PostContentsManager;
 import Adapter.MyRecyclerAdapter;
 import static Utils.ApiConstants.FORUM_ANIME_MANGA_URL;
 

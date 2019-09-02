@@ -12,15 +12,14 @@ import android.view.*;
 import android.widget.ProgressBar;
 
 import com.android.volley.VolleyError;
-import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.github.ybq.android.spinkit.style.FadingCircle;
 import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 import com.yamibo.bbs.splashscreen.R;
 
-import Utils.ForumsManager;
+import Managers.ForumsManager;
 import Utils.Utility;
-import Utils.VolleyHelper;
-import Utils.VolleyResultCallback;
+import VolleyService.VolleyHelper;
+import VolleyService.VolleyResultCallback;
 
 import org.json.*;
 

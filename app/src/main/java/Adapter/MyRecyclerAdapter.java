@@ -19,7 +19,6 @@ import Model.ForumsListItemMod;
 import Model.HitsMod;
 import Model.ImageMod;
 import Model.PostListItemsMod;
-import Adapter.Base_View_Holder.BaseViewHolder;
 import Model.Base_Items_Model;
 import Utils.Constants;
 

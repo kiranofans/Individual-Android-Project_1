@@ -12,7 +12,9 @@ import android.widget.Toast;
 import com.android.volley.RequestQueue;
 import com.github.ybq.android.spinkit.style.FadingCircle;
 
+import Adapter.ForumsRecView1Adapter;
 import Model.Base_Items_Model;
+import Model.ForumsListItemMod;
 import Model.PostListItemsMod;
 import Rest.OAuthAuthenticator;
 
@@ -121,7 +123,8 @@ public class Utility {
         return restClientUtils;
     }
 
-    public static void getFixedTopThreads(List<Base_Items_Model> list, String mThreadId, PostListItemsMod postItems) {
+    public static void getFixedTopThreads(List<Base_Items_Model> list,
+                                          String mThreadId, PostListItemsMod postItems) {
         if (mThreadId.equals("47447") || mThreadId.equals("20425")
                 || mThreadId.equals("232743") || mThreadId.equals("240477")) {
             list.add(postItems);

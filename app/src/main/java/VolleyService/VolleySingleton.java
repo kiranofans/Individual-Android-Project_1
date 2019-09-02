@@ -1,4 +1,4 @@
-package Utils;
+package VolleyService;
 
 import android.content.Context;
 
@@ -12,6 +12,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+
+import Utils.JSONUtils;
 
 public class VolleySingleton {
 

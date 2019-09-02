@@ -1,4 +1,4 @@
-package com.yamibo.bbs.splashscreen;
+package Managers;
 
 import java.util.Observable;
 

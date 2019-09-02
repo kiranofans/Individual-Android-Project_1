@@ -23,9 +23,8 @@ import com.yamibo.bbs.splashscreen.R;
 import Rest.RestRequest;
 import Utils.RestClientUtils;
 import Utils.Utility;
-import Utils.VolleyHelper;
-import Utils.VolleyResultCallback;
-import Utils.VolleySingleton;
+import VolleyService.VolleyHelper;
+import VolleyService.VolleyResultCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;

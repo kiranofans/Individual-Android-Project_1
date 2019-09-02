@@ -11,7 +11,7 @@ import android.widget.ProgressBar;
 
 import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 import com.yamibo.bbs.splashscreen.R;
-import Utils.PostContentsManager;
+import Managers.PostContentsManager;
 
 import java.util.ArrayList;
 import java.util.List;
