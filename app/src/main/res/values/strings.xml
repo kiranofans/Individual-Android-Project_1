@@ -14,7 +14,7 @@
     <string name="invalid_username">用戶名錯誤</string>
     <string name="error_invalid_email">郵箱格式不正確</string>
     <string name="error_invalid_password">密碼格式不正確</string>
-    <string name ="error_empty_password">密碼不能為空</string>
+    <string name="error_empty_password">密碼不能為空</string>
     <string name="required_password_length">密碼長度需在6個字節或以上</string>
     <string name="does_not_contain_symbol_for_password">密碼不包含數字或字母以外的符號</string>
     <string name="error_field_required">此區域必填</string>

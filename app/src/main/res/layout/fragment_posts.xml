@@ -21,12 +21,27 @@
             android:layout_below="@+id/secTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/post_recView"
-                android:layout_margin="3dp"
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content">
+
+                <!--<include layout="@layout/items_section"
+                    android:id="@+id/section_top_threads"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recView_top_thread"
+                    android:layout_margin="3dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>-->
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recView_post"
+                    android:layout_margin="3dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
         </android.support.v4.widget.SwipeRefreshLayout>
         <include layout="@layout/content_card"/>
     </LinearLayout>

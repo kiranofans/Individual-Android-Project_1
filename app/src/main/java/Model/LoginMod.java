@@ -9,12 +9,12 @@ public class LoginMod extends ApiResponsesMod{
 
     public static class Login{
         UsersMod.UserProfile mUserProfile;
-        OAuthMod.OAuth mOauth;
+        AuthMod.Auth mOauth;
 
         public UsersMod.UserProfile getUserProfile(){
             return mUserProfile;
         }
-        public OAuthMod.OAuth getOAuth(){
+        public AuthMod.Auth getOAuth(){
             return mOauth;
         }
     }

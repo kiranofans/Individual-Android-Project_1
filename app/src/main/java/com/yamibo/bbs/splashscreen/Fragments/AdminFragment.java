@@ -48,7 +48,7 @@ public class AdminFragment extends Fragment {
         super.onViewCreated(v, savedInstanceState);
         postMgr = PostContentsManager.getInstance();
 
-        recView = (RecyclerView) v.findViewById(R.id.post_recView);
+        recView = (RecyclerView) v.findViewById(R.id.recView_post);
         recView.setLayoutManager(new LinearLayoutManager(getContext()));
         admList = new ArrayList<>();
         sections = new ArrayList<>();

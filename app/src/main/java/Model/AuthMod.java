@@ -1,7 +1,7 @@
 package Model;
 
-public class OAuthMod {
-    public static class OAuth{
+public class AuthMod {
+    public static class Auth {
         String mAccessToken;
         String mAccessSecrete;
 

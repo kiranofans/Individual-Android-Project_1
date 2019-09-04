@@ -20,6 +20,7 @@ import Rest.OAuthAuthenticator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import Model.ApiResponsesMod;
 import Model.TimeZoneMod;
@@ -133,7 +134,8 @@ public class Utility {
         }
     }
 
-    public static void apiURLStrFormat(String str){
-
+    public static void apiURLStrFormat(String apiUrl, int page){
+        String.format(Locale.US,"%s",apiUrl,page);
     }
+
 }

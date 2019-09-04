@@ -28,10 +28,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 import com.yamibo.bbs.splashscreen.Fragments.AccountFragment;
 import com.yamibo.bbs.splashscreen.Fragments.GalleryFragment;
 import com.yamibo.bbs.splashscreen.Fragments.ProfileFragment;
+import com.yamibo.bbs.splashscreen.Fragments.SettingsFragment;
 import com.yamibo.bbs.splashscreen.Fragments.SpaceFragment;
 import com.yamibo.bbs.splashscreen.Fragments.TabsFragment;
 
@@ -45,6 +46,7 @@ import java.util.List;
 
 import Adapter.ImgViewPagerAdapter;
 import Adapter.MyRecyclerAdapter;
+import Model.AuthMod;
 import Model.Base_Items_Model;
 import Model.HitsMod;
 import Utils.Utility;
@@ -69,7 +71,7 @@ public class MainNavTabActivity extends AppCompatActivity implements
     private Button plsLogBtn, regBtn, logoutBtn;
     public static View headerView, loginView;
     public static NavigationView nav_view;
-    private TextView usernameTv;
+    private TextView usernameTv, tvOr;
 
     private static FragmentManager fragMg;
     private static FragmentTransaction ft;
@@ -86,6 +88,8 @@ public class MainNavTabActivity extends AppCompatActivity implements
 
     private List<Base_Items_Model> hitsList;
     private SessionManager session;
+
+    private AuthMod.Auth authMod;
 
     @SuppressLint("ResourceType")
     @Override
@@ -115,18 +119,33 @@ public class MainNavTabActivity extends AppCompatActivity implements
         //ViewPager Tabs and tab fragments
         setTabsFragment(new TabsFragment());//init
         initChildFragments();
-        getUserInfo();
+        getBasicUserInfo();
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getBasicUserInfo();
     }
 
     private void initMainContent() {
+
         imgVp = (ViewPager) findViewById(R.id.imgViewPager);
+
+        loginView = View.inflate(this, R.layout.activity_login, null);
+        navHeaderViewInit();
+    }
+
+    private void navHeaderViewInit() {
         nav_view = (NavigationView) findViewById(R.id.nav_view);
         headerView = nav_view.getHeaderView(0);
-        plsLogBtn = (Button) headerView.findViewById(R.id.loginReqstBtn);
-        regBtn = (Button) headerView.findViewById(R.id.regBtn);
-        avatarBtn = (ImageView) headerView.findViewById(R.id.avatarImgBtn);
-        loginView = View.inflate(this, R.layout.activity_login, null);
-        usernameTv = (TextView) headerView.findViewById(R.id.usrNameTxt);
+        plsLogBtn = (Button) headerView.findViewById(R.id.btn_request_login);
+        regBtn = (Button) headerView.findViewById(R.id.btn_request_register);
+        avatarBtn = (ImageView) headerView.findViewById(R.id.btn_avatar);
+        usernameTv = (TextView) headerView.findViewById(R.id.tv_usernname);
+
+        tvOr = headerView.findViewById(R.id.tv_or);
     }
 
     public void fragsCustomToolbar(String title) {
@@ -139,6 +158,7 @@ public class MainNavTabActivity extends AppCompatActivity implements
         getSupportFragmentManager().findFragmentById(R.id.frame_active_user);
         getSupportFragmentManager().findFragmentById(R.id.frame_novel);
         getSupportFragmentManager().findFragmentById(R.id.frame_manga);
+        getSupportFragmentManager().findFragmentById(R.id.frame_setting);
     }
 
     private void setCollapsedBarMain() {
@@ -168,6 +188,15 @@ public class MainNavTabActivity extends AppCompatActivity implements
                 ft.replace(R.id.rootViewPage, new ProfileFragment()).addToBackStack(LOG_TAG).commit();
             }
         });
+
+       /* logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //log out
+                session.logoutUser();
+                finish();
+            }
+        });*/
     }
 
     private void setTabsFragment(android.support.v4.app.Fragment fg) {
@@ -179,17 +208,23 @@ public class MainNavTabActivity extends AppCompatActivity implements
         }
     }
 
-    private void getUserInfo() {
+    private void getBasicUserInfo() {
         session = new SessionManager(getApplicationContext());
         if (session.isLoggedIn()) {
+            plsLogBtn.setVisibility(View.GONE);
+            regBtn.setVisibility(View.GONE);
+            tvOr.setVisibility(View.GONE);
+
             HashMap<String, String> userInfo = session.getUserDetails();
             usernameTv.setText(userInfo.get(PREF_KEY_USERNAME));
-            Picasso.with(MainNavTabActivity.this).load(userInfo.get(PREF_KEY_AVATAR))
-                    .fit().into(avatarBtn);
-        }/*else{
-            //session.logoutUser();
-            finish();
-        }*/
+            Glide.with(MainNavTabActivity.this).load(userInfo.get(PREF_KEY_AVATAR))
+                    .override(270,270).into(avatarBtn);
+        }else{
+            plsLogBtn.setVisibility(View.VISIBLE);
+            regBtn.setVisibility(View.VISIBLE);
+            tvOr.setVisibility(View.VISIBLE);
+        }
+
     }
 
     @Override
@@ -232,7 +267,7 @@ public class MainNavTabActivity extends AppCompatActivity implements
                         String title = txtObj.getString("fulltitle");
                         String date = txtObj.getString("lastpost");
                         String author = txtObj.getString("author");
-                        HitsMod posts = new HitsMod(title, date,author);
+                        HitsMod posts = new HitsMod(title, date, author);
                         hitsList.add(posts);
                     }
                     vpRecAdp = new MyRecyclerAdapter(getApplicationContext(), hitsList);
@@ -273,9 +308,9 @@ public class MainNavTabActivity extends AppCompatActivity implements
         } else if (id == R.id.item_gallery) {
             ft = fragMg.beginTransaction();
             ft.replace(R.id.rootViewPage, new GalleryFragment()).addToBackStack(LOG_TAG).commit();
-        } else if (id == R.id.item_manage) {
+        } else if (id == R.id.item_setting) {
             ft = fragMg.beginTransaction();
-            ft.replace(R.id.rootViewPage, new TabsFragment()).addToBackStack(LOG_TAG).commit();
+            ft.replace(R.id.rootViewPage, new SettingsFragment()).addToBackStack(LOG_TAG).commit();
         } else if (id == R.id.nav_share) {
             //display the social medias in a dialog box or something
         } else if (id == R.id.nav_send) {
@@ -283,7 +318,7 @@ public class MainNavTabActivity extends AppCompatActivity implements
             /*ft=fragMg.beginTransaction();
             ft.replace(R.id.rootViewPage,new TabsFragment()).commit();*/
         }
-        toolbar = (Toolbar) findViewById(R.id.baseToolbar);
+        toolbar = findViewById(R.id.baseToolbar);
         drawer.closeDrawers();
         return false;
     }

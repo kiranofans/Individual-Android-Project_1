@@ -47,7 +47,7 @@ import java.util.List;
 import java.util.Map;
 
 import Managers.UserInfoManager;
-import Model.OAuthMod;
+import Model.AuthMod;
 import Model.UsersMod;
 import Utils.AppConstants;
 import VolleyService.VolleySingleton;
@@ -89,7 +89,7 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
     private UserInfoManager mUserMgr = UserInfoManager.getInstance();
 
     private String authTotken;
-    private static OAuthMod.OAuth auth;
+    private static AuthMod.Auth auth;
 
     private int RC_GET_AUTH_CODE = 1;
 
@@ -99,7 +99,7 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
         setContentView(R.layout.activity_login);
 
         mPreference = getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE);
-        auth = new OAuthMod.OAuth();
+        auth = new AuthMod.Auth();
 
         initContentView();
 
@@ -294,6 +294,7 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
         super.onResume();
         Log.d("S", "isNull: " + sessionMg);
         if (sessionMg != null && sessionMg.isLoggedIn()) {
+
             Toast.makeText(getApplicationContext(),
                     "Session ok", Toast.LENGTH_SHORT).show();
         }
@@ -351,7 +352,7 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
 
     public void userLogin() {
         main = new MainNavTabActivity();
-        auth = new OAuthMod.OAuth();
+        auth = new AuthMod.Auth();
         final StringRequest request = new StringRequest(Request.Method.POST, LOGIN_REQUEST_API_URL,
                 new Response.Listener<String>() {
                     @Override
@@ -408,7 +409,8 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("Volley Error", error.getMessage());
+                Log.d("Volley Error: ", error.getMessage()
+                        + "\nCause: "+error.getCause());
             }
         }) {
             @Override

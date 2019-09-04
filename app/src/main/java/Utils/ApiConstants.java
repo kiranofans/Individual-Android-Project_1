@@ -9,7 +9,7 @@ public class ApiConstants extends Application {
     public static final String IMG_BASE_URL="https://bbs.yamibo.com/data/attachment/";
 
     //Forum contents
-    public static final String FORUM_CHATTING_URL = BASE_URL + "version=4&module=forumdisplay&fid=33&page=%s";
+    public static final String FORUM_CHATTING_URL = BASE_URL + "version=4&module=forumdisplay&fid=33&page=1";
     public static final String FORUM_ADMIN_URL = BASE_URL + "version=4&module=forumdisplay&fid=16&page=1";
     public static final String FORUM_ANIME_MANGA_URL = BASE_URL + "version=4&module=forumdisplay&fid=5&page=1";
     public static final String FORUM_VIDEO_GAME_URL = BASE_URL + "version=4&module=forumdisplay&fid=44&page=%s";//game

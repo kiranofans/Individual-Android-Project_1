@@ -36,7 +36,7 @@ public class AnimeDiscussFragment extends Fragment implements MyRecyclerAdapter.
     public void onViewCreated(View v, Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
         postMgr = PostContentsManager.getInstance();
-        mangaRecView = (RecyclerView) v.findViewById(R.id.post_recView);
+        mangaRecView = (RecyclerView) v.findViewById(R.id.recView_post);
         mangaRecView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         progressBar = (ProgressBar) v.findViewById(R.id.posts_loader);
