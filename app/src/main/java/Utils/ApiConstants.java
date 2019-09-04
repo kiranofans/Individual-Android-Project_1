@@ -18,7 +18,7 @@ public class ApiConstants extends Application {
     public static final String FORUM_DAILY_HITS_URL = BASE_URL + "module=hot";
 
     //Forum names
-    public static final String FORUM_NAMES_API_URL = BASE_URL + "version=4&module=forumindex";
+    public static final String FORUMS_API_URL = BASE_URL + "version=4&module=forumindex";
     public static final String USER_PROFILE_API_URL = BASE_URL + "version=4&module=profile";
     public static final String LOGIN_REQUEST_API_URL = BASE_URL + "module=login&loginsubmit=yes";
     public static final String MY_POSTS_API_URL = BASE_URL + "version=4&module=mythread&page=1";//my posts

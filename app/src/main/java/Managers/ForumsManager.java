@@ -51,7 +51,7 @@ public class ForumsManager {
         forumsList = new ArrayList<>();
         forumsList_1 = new ArrayList<>();
 
-        VolleyHelper.volleyGETRequest(context, ApiConstants.FORUM_NAMES_API_URL, new VolleyResultCallback() {
+        VolleyHelper.volleyGETRequest(context, ApiConstants.FORUMS_API_URL, new VolleyResultCallback() {
             @Override
             public void jsonResponse(JSONObject response) {
                 try{

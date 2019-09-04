@@ -8,6 +8,7 @@ import android.support.annotation.*;
 import android.support.v4.app.*;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.*;
+import android.util.Log;
 import android.view.*;
 import android.widget.ProgressBar;
 
@@ -15,6 +16,7 @@ import com.android.volley.VolleyError;
 import com.github.ybq.android.spinkit.style.FadingCircle;
 import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 import com.yamibo.bbs.splashscreen.R;
+import com.yamibo.bbs.splashscreen.SessionManager;
 
 import Managers.ForumsManager;
 import Utils.Utility;
@@ -29,7 +31,7 @@ import Adapter.MyRecyclerAdapter;
 import Adapter.ForumsRecView1Adapter;
 import Model.*;
 
-import static Utils.ApiConstants.FORUM_NAMES_API_URL;
+import static Utils.ApiConstants.FORUMS_API_URL;
 
 public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItemClickListener {
     private static RecyclerView recyclerView, recyclerView1;
@@ -50,6 +52,8 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
 
     private ForumsManager forumsMgr;
 
+    private SessionManager sessionManager;
+
     @TargetApi(Build.VERSION_CODES.N)
 
     public ForumsFragment() {
@@ -69,6 +73,7 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
         super.onViewCreated(view, savedInstanceState);
         /**The onViewCreated method is called after onCreateView method
          * to avoid null rootView exception*/
+        sessionManager = new SessionManager(view.getContext());
 
         forumsMgr = ForumsManager.getInstance();
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
@@ -81,6 +86,7 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
 
 
         forumsJsonParser();
+
     }
 
     public void forumsJsonParser() {
@@ -88,15 +94,17 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
         progressBar.setIndeterminateDrawable(new FadingCircle());
         forumsList = new ArrayList<>();
         forumsList_1 = new ArrayList<>();
-        VolleyHelper.volleyGETRequest(getContext(), FORUM_NAMES_API_URL, new VolleyResultCallback() {
+        VolleyHelper.volleyGETRequest(getContext(), FORUMS_API_URL, new VolleyResultCallback() {
             @Override
             public void jsonResponse(JSONObject response) {
                 try {
                     JSONObject var = response.getJSONObject("Variables");
+                    Log.d("Response Check: ", response.toString());
                     JSONArray forumsArr = var.getJSONArray("forumlist");
                     for (int i = 0; i < forumsArr.length(); i++) {
                         JSONObject forumObj = forumsArr.getJSONObject(i);
                         String fid = forumObj.getString("fid");
+
                         ForumsListItemMod forumsListItem = new ForumsListItemMod
                                 (forumObj.getString("name"),
                                         (forumObj.getString("description")),
