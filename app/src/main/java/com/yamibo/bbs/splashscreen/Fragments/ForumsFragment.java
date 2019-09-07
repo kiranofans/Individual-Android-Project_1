@@ -32,6 +32,7 @@ import Adapter.ForumsRecView1Adapter;
 import Model.*;
 
 import static Utils.ApiConstants.FORUMS_API_URL;
+import static Utils.AppConstants.PREF_FILE_GLOBAL;
 
 public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItemClickListener {
     private static RecyclerView recyclerView, recyclerView1;
@@ -73,7 +74,7 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
         super.onViewCreated(view, savedInstanceState);
         /**The onViewCreated method is called after onCreateView method
          * to avoid null rootView exception*/
-        sessionManager = new SessionManager(view.getContext());
+        sessionManager = new SessionManager(view.getContext(),PREF_FILE_GLOBAL);
 
         forumsMgr = ForumsManager.getInstance();
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);

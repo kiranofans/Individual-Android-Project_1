@@ -13,6 +13,9 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 
+import javax.inject.Inject;
+
+import Annotations.ApplicationContext;
 import Utils.JSONUtils;
 
 public class VolleySingleton {
@@ -23,7 +26,7 @@ public class VolleySingleton {
     private RequestQueue requestQueue;
     private static Context context;
 
-    public static VolleySingleton getInstance(Context context) {
+    public static VolleySingleton getInstance(@ApplicationContext Context context) {
         //Double check locking method for getInstance to get thread-safe
         if (instance == null) {
             synchronized (VolleySingleton.class) {
@@ -33,13 +36,13 @@ public class VolleySingleton {
         return instance;
     }
 
-    public static VolleySingleton getInstance() {
+   /* public static VolleySingleton getInstance() {
         if (instance == null) {
             throw new IllegalStateException(VolleySingleton.class.getSimpleName() +
                     " is not initialized, call getInstance(...)");
         }
         return instance;
-    }
+    }*/
 
     private VolleySingleton(Context context) {
         this.context = context;

@@ -15,7 +15,11 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 
+import javax.inject.Inject;
+
 public class VolleyHelper {
+
+
     public static void volleyGETRequest(Context context, String requestUrl, final VolleyResultCallback mResultCallback) {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, requestUrl, null, new Response.Listener<JSONObject>() {
             @Override

@@ -54,6 +54,7 @@ import Utils.AppConstants;
 import VolleyService.VolleySingleton;
 
 import static Utils.ApiConstants.LOGIN_REQUEST_API_URL;
+import static Utils.AppConstants.PREF_FILE_GLOBAL;
 import static Utils.AppConstants.PREF_KEY_AVATAR;
 import static Utils.AppConstants.PREF_KEY_GROUPID;
 import static Utils.AppConstants.PREF_KEY_LOGIN_TOKEN;
@@ -131,7 +132,7 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
         progressBar = findViewById(R.id.login_loader);
 
         //Session manager and login
-        sessionMg = new SessionManager(getApplicationContext());
+        sessionMg = new SessionManager(getApplicationContext(),PREF_FILE_GLOBAL);
         loginBtn = (Button) findViewById(R.id.loginBtn);
         setBtnOnClicks();
         updateContentView();

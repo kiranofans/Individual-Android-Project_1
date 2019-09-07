@@ -13,6 +13,8 @@ import android.widget.Button;
 import com.yamibo.bbs.splashscreen.R;
 import Managers.SessionManager;
 
+import static Utils.AppConstants.PREF_FILE_GLOBAL;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -36,7 +38,7 @@ public class SettingsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        sessionManager = new SessionManager(view.getContext());
+        sessionManager = new SessionManager(view.getContext(),PREF_FILE_GLOBAL);
         logoutBtn = view.findViewById(R.id.btn_logout);
         setBtnTabs();
     }

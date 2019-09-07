@@ -1,4 +1,4 @@
-package Utils;
+package data.prefs;
 
 import Utils.Login.LoggedInMode;
 

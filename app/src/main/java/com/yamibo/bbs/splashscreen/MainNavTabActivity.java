@@ -36,6 +36,8 @@ import java.util.HashMap;
 
 import Managers.HitsManager;
 import Managers.SessionManager;
+import Utils.AppConstants;
+import Utils.Login.LoggedInMode;
 
 import static Utils.AppConstants.PREF_KEY_AVATAR;
 import static Utils.AppConstants.PREF_KEY_USERNAME;
@@ -174,8 +176,10 @@ public class MainNavTabActivity extends AppCompatActivity implements
     }
 
     private void getBasicUserInfo() {
-        session = new SessionManager(getApplicationContext());
-        if (session.checkIfLoggedIn()) {
+        session = new SessionManager(MainNavTabActivity.this,
+                AppConstants.PREF_FILE_GLOBAL);
+        if (session.isLoggedIn()) {
+            session.setUserLoggedIn(LoggedInMode.LOGGED_IN_MODE_SERVER);
             plsLogBtn.setVisibility(View.GONE);
             regBtn.setVisibility(View.GONE);
             tvOr.setVisibility(View.GONE);

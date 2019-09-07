@@ -9,25 +9,30 @@ import Annotations.ApplicationContext;
 import Annotations.PreferenceInfo;
 import Managers.SessionManager;
 import Utils.AppConstants;
-import Utils.PrefsHelper;
+import dagger.Module;
 import dagger.Provides;
+import data.BaseDataManager;
+import data.DataManager;
+import data.prefs.PrefsHelper;
 
-public class AppModule {
-    private Application application;
+@Module
+public class ApplicationModule {
 
-    public AppModule(Application application){
-        this.application = application;
+    private Application mApplication;
+
+    public ApplicationModule(Application application) {
+        this.mApplication = application;
     }
 
     @Provides
     @ApplicationContext
-    Context provideContext(){
-        return application;
+    Context provideContext() {
+        return mApplication;
     }
 
     @Provides
     Application provideApplication() {
-        return application;
+        return mApplication;
     }
 
     @Provides
@@ -38,8 +43,14 @@ public class AppModule {
 
     @Provides
     @Singleton
+    DataManager provideDataManager(BaseDataManager mDataManager) {
+        return mDataManager;
+    }
+
+
+    @Provides
+    @Singleton
     PrefsHelper providePreferencesHelper(SessionManager preferencesManager) {
         return preferencesManager;
     }
-
 }

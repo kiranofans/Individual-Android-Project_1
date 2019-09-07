@@ -5,15 +5,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-import com.yamibo.bbs.splashscreen.Activity_Login;
+import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 
 import java.util.HashMap;
+
+import javax.inject.Inject;
 
 import Annotations.ApplicationContext;
 import Annotations.PreferenceInfo;
 import Utils.AppConstants;
 import Utils.Login.LoggedInMode;
-import Utils.PrefsHelper;
+import data.prefs.PrefsHelper;
 
 import static Utils.AppConstants.PREF_KEY_AVATAR;
 import static Utils.AppConstants.PREF_KEY_FIRST_TIME;
@@ -36,30 +38,19 @@ public class SessionManager extends Application implements PrefsHelper {
     private static final String IS_KEY_LOGGED_IN = "login_succeed";
     private String defAvatarURL = "https://bbs.yamibo.com/uc_server/avatar.php?uid=330107&size=small";
 
-    private SessionManager() {
-        //Empty constructor needed
-    }
-
-    // Constructor
+    @Inject
     public SessionManager(@ApplicationContext Context context, @PreferenceInfo String prefFileName) {
-        sharedPrefs = context.getSharedPreferences(prefFileName,Context.MODE_PRIVATE);
+        sharedPrefs = context.getSharedPreferences(prefFileName, Context.MODE_PRIVATE);
         this._context = context;
 
     }
-
-   /* public static SessionManager getInstance(Context context) {
-        if (instance == null) {
-            instance = new SessionManager(context);
-        }
-        return instance;
-    }*/
 
     public void createLoginSession(boolean isLoggedIn, String authToken, String notice, String groupId,
                                    String avatarUrl, String readAuth, String usrName, String uid) {
         sharedPrefs = _context.getSharedPreferences(SHARED_NAME, Context.MODE_PRIVATE);
 
         editor = sharedPrefs.edit();
-        String[] notices = {"newmypost", "newpm", "newprompt", "newpush"};
+
         //Storing login (state) value as TRUE
         editor.putBoolean(IS_KEY_LOGGED_IN, true);
         String[] noticeArr = {"newmypost", "newpm", "newprompt", "newpush"};
@@ -72,7 +63,7 @@ public class SessionManager extends Application implements PrefsHelper {
         editor.putString(PREF_KEY_USERNAME, usrName);
         editor.putString(PREF_KEY_UID, uid);
         editor.putString(PREF_KEY_LOGIN_TOKEN, authToken);
-        editor.putString(PREF_KEY_NOTICES,notice);
+        editor.putString(PREF_KEY_NOTICES, notice);
 
         editor.commit();
     }
@@ -81,8 +72,8 @@ public class SessionManager extends Application implements PrefsHelper {
     public boolean checkIfLoggedIn() {
         sharedPrefs = _context.getSharedPreferences(SHARED_NAME, Context.MODE_PRIVATE);
         if (!this.isLoggedIn()) {
-            //user is not logged in redirect the user to login page
-            Intent intent = new Intent(_context, Activity_Login.class);
+            //user is not logged in redirect the user to Main
+            Intent intent = new Intent(_context, MainNavTabActivity.class);
 
             //Closing all the activities
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -93,7 +84,7 @@ public class SessionManager extends Application implements PrefsHelper {
             //Starting login activity
             _context.startActivity(intent);
         }
-        return sharedPrefs.getBoolean(IS_KEY_LOGGED_IN, false);
+        return sharedPrefs.getBoolean(IS_KEY_LOGGED_IN, true);
     }
 
     /**
@@ -126,27 +117,27 @@ public class SessionManager extends Application implements PrefsHelper {
 
     @Override
     public void setUserLoggedIn(LoggedInMode mode) {
-        sharedPrefs.edit().putInt(PREF_KEY_LOGGED_IN_MODE,mode.getType()).apply();
+        sharedPrefs.edit().putInt(PREF_KEY_LOGGED_IN_MODE, mode.getType()).apply();
     }
 
     @Override
     public String getUserId() {
-        return sharedPrefs.getString(PREF_KEY_UID,"");
+        return sharedPrefs.getString(PREF_KEY_UID, "");
     }
 
     @Override
     public void setUserId(String userId) {
-        sharedPrefs.edit().putString(PREF_KEY_UID,userId).apply();
+        sharedPrefs.edit().putString(PREF_KEY_UID, userId).apply();
     }
 
     @Override
     public String getUserName() {
-        return sharedPrefs.getString(PREF_KEY_USERNAME,"");
+        return sharedPrefs.getString(PREF_KEY_USERNAME, "");
     }
 
     @Override
     public void setUserName(String userName) {
-        sharedPrefs.edit().putString(PREF_KEY_USERNAME,userName).apply();
+        sharedPrefs.edit().putString(PREF_KEY_USERNAME, userName).apply();
     }
 
     @Override
@@ -161,7 +152,7 @@ public class SessionManager extends Application implements PrefsHelper {
 
     @Override
     public String getUserProfilePicUrl() {
-        return sharedPrefs.getString(PREF_KEY_AVATAR,defAvatarURL);
+        return sharedPrefs.getString(PREF_KEY_AVATAR, defAvatarURL);
     }
 
     @Override
@@ -171,12 +162,12 @@ public class SessionManager extends Application implements PrefsHelper {
 
     @Override
     public String getAccessToken() {
-        return sharedPrefs.getString(PREF_KEY_LOGIN_TOKEN,null);
+        return sharedPrefs.getString(PREF_KEY_LOGIN_TOKEN, null);
     }
 
     @Override
     public void setAccessToken(String accessToken) {
-        sharedPrefs.edit().putString(PREF_KEY_LOGIN_TOKEN,null);
+        sharedPrefs.edit().putString(PREF_KEY_LOGIN_TOKEN, null);
     }
 
     @Override
@@ -202,16 +193,16 @@ public class SessionManager extends Application implements PrefsHelper {
     @Override
     public boolean isFirstTime() {
         SharedPreferences pref = _context.getSharedPreferences
-                (AppConstants.PREF_KEY_SHARED_PREF,MODE_PRIVATE);
-        return pref.getBoolean(PREF_KEY_FIRST_TIME,true);
+                (AppConstants.PREF_KEY_SHARED_PREF, MODE_PRIVATE);
+        return pref.getBoolean(PREF_KEY_FIRST_TIME, true);
     }
 
     @Override
     public void setFirstTime(boolean firstTime) {
         SharedPreferences pref = _context.getSharedPreferences
-                (AppConstants.PREF_KEY_SHARED_PREF,MODE_PRIVATE);
+                (AppConstants.PREF_KEY_SHARED_PREF, MODE_PRIVATE);
         SharedPreferences.Editor firstTimeEditor = pref.edit();
-        firstTimeEditor.putBoolean(PREF_KEY_FIRST_TIME,firstTime);
+        firstTimeEditor.putBoolean(PREF_KEY_FIRST_TIME, firstTime);
         firstTimeEditor.apply();
     }
 
@@ -220,10 +211,9 @@ public class SessionManager extends Application implements PrefsHelper {
         sharedPrefs = _context.getSharedPreferences(SHARED_NAME, Context.MODE_PRIVATE);
 
         sharedPrefs.edit().clear().apply();
-        //editor.commit();
 
         //After logout redirect user to login activity
-        Intent intent = new Intent(_context, Activity_Login.class);
+        Intent intent = new Intent(_context, MainNavTabActivity.class);
 
         //closing all the activities
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
