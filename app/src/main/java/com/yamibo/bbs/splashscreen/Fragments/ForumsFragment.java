@@ -16,7 +16,7 @@ import com.android.volley.VolleyError;
 import com.github.ybq.android.spinkit.style.FadingCircle;
 import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 import com.yamibo.bbs.splashscreen.R;
-import com.yamibo.bbs.splashscreen.SessionManager;
+import Managers.SessionManager;
 
 import Managers.ForumsManager;
 import Utils.Utility;

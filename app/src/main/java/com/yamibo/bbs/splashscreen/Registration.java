@@ -9,6 +9,8 @@ import android.widget.EditText;
 
 import java.lang.String;
 
+import Managers.SessionManager;
+
 public class Registration extends AppCompatActivity {
     private static final String TAG = Registration.class.getSimpleName();
     private Button regSubmitBtn;

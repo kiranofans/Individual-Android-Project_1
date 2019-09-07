@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -21,13 +20,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.yamibo.bbs.splashscreen.Fragments.AccountFragment;
 import com.yamibo.bbs.splashscreen.Fragments.GalleryFragment;
@@ -36,25 +32,11 @@ import com.yamibo.bbs.splashscreen.Fragments.SettingsFragment;
 import com.yamibo.bbs.splashscreen.Fragments.SpaceFragment;
 import com.yamibo.bbs.splashscreen.Fragments.TabsFragment;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
-import Adapter.ImgViewPagerAdapter;
-import Adapter.MyRecyclerAdapter;
-import Model.AuthMod;
-import Model.Base_Items_Model;
-import Model.HitsMod;
-import Utils.Utility;
-import VolleyService.VolleyHelper;
-import VolleyService.VolleyResultCallback;
+import Managers.HitsManager;
+import Managers.SessionManager;
 
-import static Utils.ApiConstants.FORUM_DAILY_HITS_URL;
-import static Utils.ApiConstants.IMG_BASE_URL;
 import static Utils.AppConstants.PREF_KEY_AVATAR;
 import static Utils.AppConstants.PREF_KEY_USERNAME;
 
@@ -64,11 +46,10 @@ public class MainNavTabActivity extends AppCompatActivity implements
     private static String LOG_TAG = MainNavTabActivity.class.getSimpleName();
 
     public static ViewPager imgVp;
-    public static ImgViewPagerAdapter vpAdp;
     protected static CollapsingToolbarLayout collapseToolbar;
 
     private static ImageView avatarBtn;
-    private Button plsLogBtn, regBtn, logoutBtn;
+    private Button plsLogBtn, regBtn;
     public static View headerView, loginView;
     public static NavigationView nav_view;
     private TextView usernameTv, tvOr;
@@ -78,18 +59,10 @@ public class MainNavTabActivity extends AppCompatActivity implements
 
     private Toolbar toolbar;
     private DrawerLayout drawer;
-    private String username;
-    private AutoCompleteTextView userInput;
-    private List<String> imgUrlList;
-    private Handler handler;
 
     private RecyclerView vpRecView;
-    private MyRecyclerAdapter vpRecAdp;
-
-    private List<Base_Items_Model> hitsList;
     private SessionManager session;
-
-    private AuthMod.Auth authMod;
+    private HitsManager hitsMgr;
 
     @SuppressLint("ResourceType")
     @Override
@@ -98,28 +71,6 @@ public class MainNavTabActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_main_nav);
 
         initMainContent();
-
-        //RecView for hits
-        vpRecView = (RecyclerView) findViewById(R.id.hitsRecView);
-        vpRecView.setLayoutManager(new LinearLayoutManager(this));
-
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        imgUrlList = new ArrayList<>();
-        hitsList = new ArrayList<>();
-
-        setHitsToImgVP();
-        setCollapsedBarMain();
-        setNavDrawerView();
-
-        nav_view.setNavigationItemSelectedListener(this);
-        setLogRqstAndRegBtn();
-
-        setBtnOnClicks();
-
-        //ViewPager Tabs and tab fragments
-        setTabsFragment(new TabsFragment());//init
-        initChildFragments();
-        getBasicUserInfo();
     }
 
 
@@ -130,11 +81,33 @@ public class MainNavTabActivity extends AppCompatActivity implements
     }
 
     private void initMainContent() {
+        hitsMgr = HitsManager.getInstance();
 
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        //hits
+        vpRecView = (RecyclerView) findViewById(R.id.hitsRecView);
+        vpRecView.setLayoutManager(new LinearLayoutManager(this));
         imgVp = (ViewPager) findViewById(R.id.imgViewPager);
+
+        hitsMgr.getHitsData(MainNavTabActivity.this, vpRecView, imgVp);
+
+        //Drawer and collapsable toolbar
+        setCollapsedBarMain();
+        setNavDrawerView();
 
         loginView = View.inflate(this, R.layout.activity_login, null);
         navHeaderViewInit();
+        nav_view.setNavigationItemSelectedListener(this);
+        setLogRqstAndRegBtn();
+
+        setBtnOnClicks();
+
+        //Fragments
+        setTabsFragment(new TabsFragment());//init
+        initChildFragments();
+        getBasicUserInfo();
+
     }
 
     private void navHeaderViewInit() {
@@ -189,14 +162,6 @@ public class MainNavTabActivity extends AppCompatActivity implements
             }
         });
 
-       /* logoutBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //log out
-                session.logoutUser();
-                finish();
-            }
-        });*/
     }
 
     private void setTabsFragment(android.support.v4.app.Fragment fg) {
@@ -210,7 +175,7 @@ public class MainNavTabActivity extends AppCompatActivity implements
 
     private void getBasicUserInfo() {
         session = new SessionManager(getApplicationContext());
-        if (session.isLoggedIn()) {
+        if (session.checkIfLoggedIn()) {
             plsLogBtn.setVisibility(View.GONE);
             regBtn.setVisibility(View.GONE);
             tvOr.setVisibility(View.GONE);
@@ -218,8 +183,8 @@ public class MainNavTabActivity extends AppCompatActivity implements
             HashMap<String, String> userInfo = session.getUserDetails();
             usernameTv.setText(userInfo.get(PREF_KEY_USERNAME));
             Glide.with(MainNavTabActivity.this).load(userInfo.get(PREF_KEY_AVATAR))
-                    .override(270,270).into(avatarBtn);
-        }else{
+                    .override(270, 270).into(avatarBtn);
+        } else {
             plsLogBtn.setVisibility(View.VISIBLE);
             regBtn.setVisibility(View.VISIBLE);
             tvOr.setVisibility(View.VISIBLE);
@@ -245,52 +210,6 @@ public class MainNavTabActivity extends AppCompatActivity implements
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void setHitsToImgVP() {
-        //ViewPager with images
-        VolleyHelper.volleyGETRequest(this, FORUM_DAILY_HITS_URL, new VolleyResultCallback() {
-            @Override
-            public void jsonResponse(JSONObject response) {
-                try {
-                    JSONObject var = response.getJSONObject("Variables");
-                    JSONArray hitsImgArr = var.getJSONArray("data_img");
-                    JSONArray hitsTxtArr = var.getJSONArray("data_txt");
-
-                    for (int i = 0; i < hitsImgArr.length(); i++) {
-                        JSONObject imgObj = hitsImgArr.getJSONObject(i);
-                        String pic = imgObj.getString("pic");
-                        imgUrlList.add(IMG_BASE_URL + pic);
-                    }
-                    for (int i = 0; i < hitsTxtArr.length(); i++) {
-                        JSONObject txtObj = hitsTxtArr.getJSONObject(i);
-                        String title = txtObj.getString("fulltitle");
-                        String date = txtObj.getString("lastpost");
-                        String author = txtObj.getString("author");
-                        HitsMod posts = new HitsMod(title, date, author);
-                        hitsList.add(posts);
-                    }
-                    vpRecAdp = new MyRecyclerAdapter(getApplicationContext(), hitsList);
-                    vpRecView.setAdapter(vpRecAdp);
-                    vpAdp = new ImgViewPagerAdapter(getApplicationContext(), imgUrlList);
-                    imgVp.setAdapter(vpAdp);
-                } catch (JSONException je) {
-                    Toast.makeText(MainNavTabActivity.this, je.getMessage()
-                            , Toast.LENGTH_LONG).show();
-                    //index 3 out of range 0 to 3
-                }
-            }
-
-            @Override
-            public void stringResponse(String strResponse) {
-
-            }
-
-            @Override
-            public void responseError(VolleyError error) {
-                Utility.showErrorMessageToast(getApplicationContext(), error.getMessage());
-            }
-        });
     }
 
     @Override
