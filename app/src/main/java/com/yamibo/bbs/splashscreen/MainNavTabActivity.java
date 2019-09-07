@@ -108,7 +108,7 @@ public class MainNavTabActivity extends AppCompatActivity implements
         //Fragments
         setTabsFragment(new TabsFragment());//init
         initChildFragments();
-        getBasicUserInfo();
+       // getBasicUserInfo();
 
     }
 

@@ -26,24 +26,6 @@ public class VolleySingleton {
     private RequestQueue requestQueue;
     private static Context context;
 
-    public static VolleySingleton getInstance(@ApplicationContext Context context) {
-        //Double check locking method for getInstance to get thread-safe
-        if (instance == null) {
-            synchronized (VolleySingleton.class) {
-                if (instance == null) instance = new VolleySingleton(context);
-            }
-        }
-        return instance;
-    }
-
-   /* public static VolleySingleton getInstance() {
-        if (instance == null) {
-            throw new IllegalStateException(VolleySingleton.class.getSimpleName() +
-                    " is not initialized, call getInstance(...)");
-        }
-        return instance;
-    }*/
-
     private VolleySingleton(Context context) {
         this.context = context;
         requestQueue = getRequestQueue();
@@ -54,6 +36,16 @@ public class VolleySingleton {
             throw new RuntimeException("Call getInstance() method to get the single" +
                     " instance of VolleySingleton class");
         }
+    }
+
+    public static VolleySingleton getInstance(@ApplicationContext Context context) {
+        //Double check locking method for getInstance to get thread-safe
+        if (instance == null) {
+            synchronized (VolleySingleton.class) {
+                if (instance == null) instance = new VolleySingleton(context);
+            }
+        }
+        return instance;
     }
 
     public static String errorStringFromVolleyError(VolleyError volleyError) {

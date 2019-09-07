@@ -29,6 +29,7 @@ import static Utils.AppConstants.PREF_KEY_USERNAME;
 
 public class SessionManager extends Application implements PrefsHelper {
     private static String LOGCAT_TAG = SessionManager.class.getSimpleName();
+
     private static SharedPreferences sharedPrefs;
     private static SharedPreferences.Editor editor;
     private Context _context;

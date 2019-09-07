@@ -73,27 +73,20 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
     private MainNavTabActivity main;
 
     private EditText mPswdEditText;
-    private EditText mUsernameEditText;
     private TextView usrnameInput;
 
-    private Button forgotPswd, contactUs, logOutBtn, loginBtn;
+    private Button forgotPswd, contactUs, loginBtn;
     private ProgressBar progressBar;
-    private static ImageView avatarImgBtn;
-    private static TextView usrnameTv;
     private static View loginForm;
 
-    private static String username, avatarUrl, pswd, getUid;
+    private static String username, pswd;
     private SharedPreferences mPreference;
-    private static UsersMod usersMod;
     private List<String> usernameList;
 
     private static JSONObject jObj;
-    private UserInfoManager mUserMgr = UserInfoManager.getInstance();
 
     private String authTotken;
     private static AuthMod.Auth auth;
-
-    private int RC_GET_AUTH_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +98,11 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
 
         initContentView();
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 
     private void initContentView() {
@@ -191,10 +189,6 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
         boolean cancel = false;
         View focusView = null;
 
-        progressBar.setVisibility(View.VISIBLE);
-        progressBar.setIndeterminateDrawable(new FadingCircle());
-
-
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(pswd) && !isPasswordValid(pswd)) {
             mPswdEditText.setError(getString(R.string.error_invalid_password));
@@ -250,11 +244,13 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
             public void onClick(View view) {
                 //Check for empty data in the form
                 attemptLogin();
-                if (attemptLogin() == false) {//if cancel=false
+                if (!attemptLogin()) {//if cancel=false
                     startActivity(new Intent(Activity_Login.this,
                             MainNavTabActivity.class));
                     finish();
                 }
+                /*progressBar.setVisibility(View.VISIBLE);
+                progressBar.setIndeterminateDrawable(new FadingCircle());*/
             }
         });
     }
@@ -298,7 +294,7 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
         if (sessionMg != null && sessionMg.isLoggedIn()) {
 
             Toast.makeText(getApplicationContext(),
-                    "Session ok", Toast.LENGTH_SHORT).show();
+                    "You're logged in", Toast.LENGTH_SHORT).show();
         }
     }
 

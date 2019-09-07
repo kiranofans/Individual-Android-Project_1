@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 import com.yamibo.bbs.splashscreen.R;
 import Managers.SessionManager;
 
@@ -37,6 +38,7 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ((MainNavTabActivity) getActivity()).fragsCustomToolbar("Settings");
 
         sessionManager = new SessionManager(view.getContext(),PREF_FILE_GLOBAL);
         logoutBtn = view.findViewById(R.id.btn_logout);
