@@ -3,7 +3,8 @@ package Utils;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.support.constraint.BuildConfig;
+
+import com.yamibo.bbs.splashscreen.BuildConfig;
 
 public class PackageUtils {
     /**
