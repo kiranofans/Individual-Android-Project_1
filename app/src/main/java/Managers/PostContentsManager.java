@@ -52,7 +52,7 @@ public class PostContentsManager {
                     for (int i = 0; i < threadArr.length(); i++) {
                         JSONObject tObj = threadArr.getJSONObject(i);
                         PostListItemsMod postListItems = new PostListItemsMod(tObj.getString
-                                ("subject"), tObj.getString("author"),tObj.getString("dateline"));
+                                ("subject"), tObj.getString("author"), tObj.getString("dateline"));
                         Utility.getFixedTopThreads(postContentList, tObj.getString("tid"), postListItems);
                     }
                     sections.add(new SectionRecycleViewAdapter.Sections(0, context.getString(R.string.forums_threads)));

@@ -1,5 +1,6 @@
 package Model;
 
+import Managers.HitsManager;
 import Utils.Constants;
 
 public class HitsMod implements Base_Items_Model {
@@ -7,7 +8,7 @@ public class HitsMod implements Base_Items_Model {
     private String hitsAuthor;
     public HitsMod(){}
 
-    public HitsMod(String hitsTitle, String postDate,String author){
+    public HitsMod(String hitsTitle, String postDate, String author){
         this.hitsPostDate=postDate;
         this.hitsTitle=hitsTitle;
         this.hitsAuthor = author;
