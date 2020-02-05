@@ -1,4 +1,4 @@
-package com.yamibo.bbs.splashscreen;
+package com.yamibo.bbs.Activities;
 
 import android.app.Application;
 import android.text.TextUtils;

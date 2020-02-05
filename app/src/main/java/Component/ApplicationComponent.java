@@ -5,10 +5,10 @@ import android.content.Context;
 
 import javax.inject.Singleton;
 
-import Annotations.ApplicationContext;
+import com.yamibo.bbs.Annotations.ApplicationContext;
 import Module.ApplicationModule;
 import dagger.Component;
-import data.DataManager;
+import com.yamibo.bbs.data.DataManager;
 import root.YamiboApp;
 
 @Singleton

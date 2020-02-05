@@ -13,9 +13,7 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 
-import javax.inject.Inject;
-
-import Annotations.ApplicationContext;
+import com.yamibo.bbs.Annotations.ApplicationContext;
 import Utils.JSONUtils;
 
 public class VolleySingleton {

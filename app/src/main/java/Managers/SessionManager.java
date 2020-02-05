@@ -5,17 +5,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-import com.yamibo.bbs.splashscreen.MainNavTabActivity;
+import com.yamibo.bbs.Activities.MainNavTabActivity;
 
 import java.util.HashMap;
 
 import javax.inject.Inject;
 
-import Annotations.ApplicationContext;
-import Annotations.PreferenceInfo;
+import com.yamibo.bbs.Annotations.ApplicationContext;
+import com.yamibo.bbs.Annotations.PreferenceInfo;
 import Utils.AppConstants;
 import Utils.Login.LoggedInMode;
-import data.prefs.PrefsHelper;
+import com.yamibo.bbs.data.prefs.PrefsHelper;
 
 import static Utils.AppConstants.PREF_KEY_AVATAR;
 import static Utils.AppConstants.PREF_KEY_FIRST_TIME;
@@ -46,7 +46,8 @@ public class SessionManager extends Application implements PrefsHelper {
 
     }
 
-    public void createLoginSession(boolean isLoggedIn, String authToken, String notice, String groupId,
+    public void createLoginSession(boolean isLoggedIn,
+                                   String authToken, String notice, String groupId,
                                    String avatarUrl, String readAuth, String usrName, String uid) {
         sharedPrefs = _context.getSharedPreferences(SHARED_NAME, Context.MODE_PRIVATE);
 

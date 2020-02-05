@@ -1,32 +1,11 @@
 package Managers;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.View;
-import android.widget.ProgressBar;
 
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.Volley;
-import com.fasterxml.jackson.databind.ser.Serializers;
-import com.github.ybq.android.spinkit.style.FadingCircle;
-import com.yamibo.bbs.splashscreen.Fragments.ForumsFragment;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.List;
 
-import Adapter.ForumsRecView1Adapter;
-import Adapter.MyRecyclerAdapter;
-import Model.Base_Items_Model;
-import Model.ForumsListItemMod;
-import Utils.ApiConstants;
-import Utils.Utility;
-import VolleyService.VolleyHelper;
-import VolleyService.VolleyResultCallback;
+import com.yamibo.bbs.Adapter.MyRecyclerAdapter;
+import com.yamibo.bbs.data.Model.ForumsListItemMod;
 
 public class ForumsManager {
     private static ForumsManager forumsInstance;

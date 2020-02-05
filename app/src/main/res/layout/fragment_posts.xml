@@ -1,48 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/post_fragment"
-    android:orientation="vertical"
-    android:fitsSystemWindows="true">
-    <include layout="@layout/loading_dialog"
-        android:id="@+id/posts_loader"
-        android:visibility="gone"/>
-    <LinearLayout
-        android:orientation="vertical"
-        android:weightSum="1"
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <android.support.v4.widget.SwipeRefreshLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/swipe_container"
-            android:layout_below="@+id/secTitle"
+        android:layout_height="match_parent"
+        android:id="@+id/post_fragment"
+        android:orientation="vertical"
+        android:fitsSystemWindows="true">
+        <include layout="@layout/loading_dialog"
+            android:id="@+id/posts_loader"
+            android:visibility="gone"/>
+        <LinearLayout
+            android:orientation="vertical"
+            android:weightSum="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <LinearLayout
-                android:orientation="vertical"
+
+            <android.support.v4.widget.SwipeRefreshLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/swipe_container"
+                android:layout_below="@+id/secTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
-                <!--<include layout="@layout/items_section"
-                    android:id="@+id/section_top_threads"/>
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recView_top_thread"
-                    android:layout_margin="3dp"
+                <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>-->
+                    android:layout_height="wrap_content">
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recView_post"
-                    android:layout_margin="3dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
+                    <!--<include layout="@layout/items_section"
+                        android:id="@+id/section_top_threads"/>
 
-        </android.support.v4.widget.SwipeRefreshLayout>
-        <include layout="@layout/content_card"/>
-    </LinearLayout>
-</android.support.design.widget.CoordinatorLayout>
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recView_top_thread"
+                        android:layout_margin="3dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>-->
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recView_post"
+                        android:layout_margin="3dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+            </android.support.v4.widget.SwipeRefreshLayout>
+            <include layout="@layout/content_card"/>
+        </LinearLayout>
+    </android.support.design.widget.CoordinatorLayout>
+</layout>

@@ -7,7 +7,7 @@ import android.widget.ProgressBar;
 
 import com.android.volley.VolleyError;
 import com.github.ybq.android.spinkit.style.FadingCircle;
-import com.yamibo.bbs.splashscreen.R;
+import com.yamibo.bbs.Activities.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,10 +16,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import Adapter.MyRecyclerAdapter;
-import Adapter.SectionRecycleViewAdapter;
-import Model.Base_Items_Model;
-import Model.PostListItemsMod;
+import com.yamibo.bbs.Adapter.MyRecyclerAdapter;
+import com.yamibo.bbs.Adapter.SectionRecycleViewAdapter;
+import com.yamibo.bbs.data.Model.Base_Items_Model;
+import com.yamibo.bbs.data.Model.PostListItemsMod;
 import Utils.Utility;
 import VolleyService.VolleyHelper;
 import VolleyService.VolleyResultCallback;

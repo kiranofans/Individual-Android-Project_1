@@ -4,7 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 
-import com.yamibo.bbs.splashscreen.R;
+import com.yamibo.bbs.Activities.R;
 
 import java.text.DateFormat;
 import java.text.ParseException;

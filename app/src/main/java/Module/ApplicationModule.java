@@ -5,15 +5,15 @@ import android.content.Context;
 
 import javax.inject.Singleton;
 
-import Annotations.ApplicationContext;
-import Annotations.PreferenceInfo;
+import com.yamibo.bbs.Annotations.ApplicationContext;
+import com.yamibo.bbs.Annotations.PreferenceInfo;
 import Managers.SessionManager;
 import Utils.AppConstants;
 import dagger.Module;
 import dagger.Provides;
-import data.BaseDataManager;
-import data.DataManager;
-import data.prefs.PrefsHelper;
+import com.yamibo.bbs.data.BaseDataManager;
+import com.yamibo.bbs.data.DataManager;
+import com.yamibo.bbs.data.prefs.PrefsHelper;
 
 @Module
 public class ApplicationModule {

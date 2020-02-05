@@ -14,10 +14,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import Adapter.ImgViewPagerAdapter;
-import Adapter.MyRecyclerAdapter;
-import Model.Base_Items_Model;
-import Model.HitsMod;
+import com.yamibo.bbs.Adapter.ImgViewPagerAdapter;
+import com.yamibo.bbs.Adapter.MyRecyclerAdapter;
+import com.yamibo.bbs.data.Model.Base_Items_Model;
+import com.yamibo.bbs.data.Model.HitsMod;
 import Utils.Utility;
 import VolleyService.VolleyHelper;
 import VolleyService.VolleyResultCallback;

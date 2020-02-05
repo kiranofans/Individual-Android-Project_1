@@ -2,8 +2,6 @@ package root;
 
 import android.app.Application;
 
-import com.yamibo.bbs.splashscreen.AppController;
-
 import Component.ApplicationComponent;
 import Component.DaggerApplicationComponent;
 import Module.ApplicationModule;

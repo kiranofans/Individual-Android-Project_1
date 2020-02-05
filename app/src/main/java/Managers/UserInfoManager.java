@@ -10,7 +10,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONObject;
 
-import Model.UsersMod;
+import com.yamibo.bbs.data.Model.UsersMod;
 import Utils.ApiConstants;
 import VolleyService.VolleySingleton;
 

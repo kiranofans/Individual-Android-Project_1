@@ -1,6 +1,5 @@
 package Utils;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
@@ -12,18 +11,16 @@ import android.widget.Toast;
 import com.android.volley.RequestQueue;
 import com.github.ybq.android.spinkit.style.FadingCircle;
 
-import Adapter.ForumsRecView1Adapter;
-import Model.Base_Items_Model;
-import Model.ForumsListItemMod;
-import Model.PostListItemsMod;
+import com.yamibo.bbs.data.Model.Base_Items_Model;
+import com.yamibo.bbs.data.Model.PostListItemsMod;
 import Rest.OAuthAuthenticator;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import Model.ApiResponsesMod;
-import Model.TimeZoneMod;
+import com.yamibo.bbs.data.Model.ApiResponsesMod;
+import com.yamibo.bbs.data.Model.TimeZoneMod;
 
 import static Utils.ApiConstants.API_RESPONSE_CODE_UNKNOWN_ERROR;
 
