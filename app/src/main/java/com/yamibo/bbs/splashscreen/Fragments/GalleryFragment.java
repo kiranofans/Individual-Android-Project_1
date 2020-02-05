@@ -1,4 +1,4 @@
-package com.yamibo.bbs.Activities.Fragments;
+package com.yamibo.bbs.splashscreen.Fragments;
 
 import android.content.Context;
 import android.net.Uri;
@@ -16,8 +16,8 @@ import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.squareup.picasso.Picasso;
-import com.yamibo.bbs.Activities.MainNavTabActivity;
-import com.yamibo.bbs.Activities.R;
+import com.yamibo.bbs.splashscreen.MainNavTabActivity;
+import com.yamibo.bbs.splashscreen.R;
 
 import com.yamibo.bbs.data.Model.ImageMod;
 import VolleyService.VolleySingleton;

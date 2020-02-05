@@ -1,4 +1,4 @@
-package com.yamibo.bbs.Activities;
+package com.yamibo.bbs.splashscreen;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -25,12 +25,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.yamibo.bbs.Activities.Fragments.AccountFragment;
-import com.yamibo.bbs.Activities.Fragments.GalleryFragment;
-import com.yamibo.bbs.Activities.Fragments.ProfileFragment;
-import com.yamibo.bbs.Activities.Fragments.SettingsFragment;
-import com.yamibo.bbs.Activities.Fragments.SpaceFragment;
-import com.yamibo.bbs.Activities.Fragments.TabsFragment;
+import com.yamibo.bbs.splashscreen.Fragments.AccountFragment;
+import com.yamibo.bbs.splashscreen.Fragments.GalleryFragment;
+import com.yamibo.bbs.splashscreen.Fragments.ProfileFragment;
+import com.yamibo.bbs.splashscreen.Fragments.SettingsFragment;
+import com.yamibo.bbs.splashscreen.Fragments.SpaceFragment;
+import com.yamibo.bbs.splashscreen.Fragments.TabsFragment;
 
 import java.util.HashMap;
 

@@ -1,4 +1,4 @@
-package com.yamibo.bbs.Activities.Fragments;
+package com.yamibo.bbs.splashscreen.Fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.yamibo.bbs.Activities.MainNavTabActivity;
-import com.yamibo.bbs.Activities.R;
+import com.yamibo.bbs.splashscreen.MainNavTabActivity;
+import com.yamibo.bbs.splashscreen.R;
 import Managers.PostContentsManager;
 import com.yamibo.bbs.Adapter.MyRecyclerAdapter;
 import static Utils.ApiConstants.FORUM_ANIME_MANGA_URL;

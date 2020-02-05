@@ -7,7 +7,7 @@ import android.widget.ProgressBar;
 
 import com.android.volley.VolleyError;
 import com.github.ybq.android.spinkit.style.FadingCircle;
-import com.yamibo.bbs.Activities.R;
+import com.yamibo.bbs.splashscreen.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;

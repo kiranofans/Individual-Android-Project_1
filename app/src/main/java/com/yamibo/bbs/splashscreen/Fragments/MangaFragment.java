@@ -1,4 +1,4 @@
-package com.yamibo.bbs.Activities.Fragments;
+package com.yamibo.bbs.splashscreen.Fragments;
 
 import android.support.v4.app.Fragment;
 

@@ -5,10 +5,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.yamibo.bbs.Activities.Fragments.ActiveUsersFragment;
-import com.yamibo.bbs.Activities.Fragments.ForumsFragment;
-import com.yamibo.bbs.Activities.Fragments.MangaFragment;
-import com.yamibo.bbs.Activities.Fragments.NovelsFragment;
+import com.yamibo.bbs.splashscreen.Fragments.ActiveUsersFragment;
+import com.yamibo.bbs.splashscreen.Fragments.ForumsFragment;
+import com.yamibo.bbs.splashscreen.Fragments.MangaFragment;
+import com.yamibo.bbs.splashscreen.Fragments.NovelsFragment;
 
 /**可滑動Tab的類*/
 public class SlidingTabsAdapter extends FragmentStatePagerAdapter {

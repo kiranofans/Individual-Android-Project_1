@@ -1,4 +1,4 @@
-package com.yamibo.bbs.Activities.Fragments;
+package com.yamibo.bbs.splashscreen.Fragments;
 
 import android.content.Context;
 import android.net.Uri;
@@ -8,8 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.yamibo.bbs.Activities.MainNavTabActivity;
-import com.yamibo.bbs.Activities.R;
+import com.yamibo.bbs.splashscreen.MainNavTabActivity;
+import com.yamibo.bbs.splashscreen.R;
 
 /**
  * A simple {@link Fragment} subclass.

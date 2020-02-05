@@ -1,4 +1,4 @@
-package com.yamibo.bbs.Activities;
+package com.yamibo.bbs.splashscreen;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 

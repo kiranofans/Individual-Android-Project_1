@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
-import com.yamibo.bbs.Activities.R;
+import com.yamibo.bbs.splashscreen.R;
 
 import java.util.List;
 

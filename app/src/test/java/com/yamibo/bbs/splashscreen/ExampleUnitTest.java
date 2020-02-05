@@ -1,4 +1,4 @@
-package com.yamibo.bbs.Activities;
+package com.yamibo.bbs.splashscreen;
 
 import org.junit.Test;
 

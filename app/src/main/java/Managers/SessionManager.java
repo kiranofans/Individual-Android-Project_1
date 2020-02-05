@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-import com.yamibo.bbs.Activities.MainNavTabActivity;
+import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 
 import java.util.HashMap;
 

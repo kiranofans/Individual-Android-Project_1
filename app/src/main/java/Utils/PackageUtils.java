@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
-import com.yamibo.bbs.Activities.BuildConfig;
+import com.yamibo.bbs.splashscreen.BuildConfig;
 
 public class PackageUtils {
     /**

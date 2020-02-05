@@ -1,4 +1,4 @@
-package com.yamibo.bbs.Activities.Fragments;
+package com.yamibo.bbs.splashscreen.Fragments;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -18,13 +18,13 @@ import android.widget.ProgressBar;
 import com.yamibo.bbs.Adapter.RecyclerViewForumAdmin;
 import com.yamibo.bbs.ViewModels.ViewModelForums;
 import com.yamibo.bbs.data.Model.ForumsContentMod.ForumThreadMod;
-import com.yamibo.bbs.Activities.MainNavTabActivity;
-import com.yamibo.bbs.Activities.R;
+import com.yamibo.bbs.splashscreen.MainNavTabActivity;
+import com.yamibo.bbs.splashscreen.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.yamibo.bbs.Activities.databinding.FragmentPostsBinding;
+import com.yamibo.bbs.splashscreen.databinding.FragmentPostsBinding;
 
 public class AdminFragment extends Fragment {
     private ViewModelForums adminViewModel;

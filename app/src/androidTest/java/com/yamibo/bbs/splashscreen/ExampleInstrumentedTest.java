@@ -1,4 +1,4 @@
-package com.yamibo.bbs.Activities;
+package com.yamibo.bbs.splashscreen;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

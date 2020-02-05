@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.yamibo.bbs.Activities.R;
+import com.yamibo.bbs.splashscreen.R;
 
 import java.util.Arrays;
 import java.util.Comparator;

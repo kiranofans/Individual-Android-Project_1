@@ -1,4 +1,4 @@
-package com.yamibo.bbs.Activities.Fragments;
+package com.yamibo.bbs.splashscreen.Fragments;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -17,8 +17,8 @@ import com.github.ybq.android.spinkit.style.FadingCircle;
 import com.yamibo.bbs.data.Model.ApiResponsesMod;
 import com.yamibo.bbs.data.Model.Base_Items_Model;
 import com.yamibo.bbs.data.Model.ForumsListItemMod;
-import com.yamibo.bbs.Activities.MainNavTabActivity;
-import com.yamibo.bbs.Activities.R;
+import com.yamibo.bbs.splashscreen.MainNavTabActivity;
+import com.yamibo.bbs.splashscreen.R;
 import Managers.SessionManager;
 
 import Managers.ForumsManager;

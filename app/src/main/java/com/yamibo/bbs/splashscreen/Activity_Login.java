@@ -1,4 +1,4 @@
-package com.yamibo.bbs.Activities;
+package com.yamibo.bbs.splashscreen;
 
 import android.annotation.TargetApi;
 import android.app.LoaderManager;
@@ -34,7 +34,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.github.ybq.android.spinkit.style.FadingCircle;
-import com.yamibo.bbs.Activities.Fragments.ForumsFragment;
+import com.yamibo.bbs.splashscreen.Fragments.ForumsFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.yamibo.bbs.data.Model.ForumsContentMod.ForumThreadMod;
-import com.yamibo.bbs.Activities.databinding.ListItemsPostsBinding;
+import com.yamibo.bbs.splashscreen.databinding.ListItemsPostsBinding;
 
 import java.util.List;
 

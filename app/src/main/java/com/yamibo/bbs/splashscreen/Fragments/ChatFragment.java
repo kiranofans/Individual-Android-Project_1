@@ -1,4 +1,4 @@
-package com.yamibo.bbs.Activities.Fragments;
+package com.yamibo.bbs.splashscreen.Fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -17,8 +17,8 @@ import android.view.WindowManager;
 import android.widget.SearchView;
 
 import com.android.volley.VolleyError;
-import com.yamibo.bbs.Activities.MainNavTabActivity;
-import com.yamibo.bbs.Activities.R;
+import com.yamibo.bbs.splashscreen.MainNavTabActivity;
+import com.yamibo.bbs.splashscreen.R;
 
 import Rest.RestRequest;
 import Utils.RestClientUtils;
