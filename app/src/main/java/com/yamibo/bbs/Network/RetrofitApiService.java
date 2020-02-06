@@ -1,5 +1,6 @@
 package com.yamibo.bbs.Network;
 
+import com.yamibo.bbs.data.Model.ForumListMod.ForumListMod;
 import com.yamibo.bbs.data.Model.Variables;
 import com.yamibo.bbs.data.Model.LoginMod.LoginResponseMod;
 
@@ -21,8 +22,8 @@ public interface RetrofitApiService {
     String accessToken = "";
 
     @GET(ApiConstants.FORUM_ADMIN_URL)
-    Call<Variables> getAdminForum(@Query("version") String version, @Query("module") String module,
-                                  @Query("fid") String forumsId, @Query("page") String pageNum);
+    Call<ForumListMod> getAdminForumData(@Query("version") String version, @Query("module") String module,
+                                         @Query("fid") String forumsId, @Query("page") String pageNum);
 
     @GET(ApiConstants.FORUM_ANIME_MANGA_URL)
     Call<Variables> getAnimeMangaForum(@Query("version") int version, @Query("module") String module,

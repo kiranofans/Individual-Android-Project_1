@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.yamibo.bbs.Network.RetrofitApiService;
 import com.yamibo.bbs.Network.RetrofitClient;
+import com.yamibo.bbs.data.Model.ForumListMod.ForumListMod;
 import com.yamibo.bbs.data.Model.ForumsContentMod.ForumThreadMod;
 import com.yamibo.bbs.data.Model.Variables;
 
@@ -32,16 +33,17 @@ public class RepositoryAdminThread {
         _application=application;
     }
     //Api call
-    public MutableLiveData<List<ForumThreadMod>> getThreadLiveData(Call<Variables> forumCall, int pageNum){
+    public MutableLiveData<List<ForumThreadMod>> getThreadLiveData(Call<ForumListMod> forumCall, int pageNum){
         RetrofitApiService apiService = RetrofitClient.getRetrofitService();
-        forumCall= apiService.getAdminForum("4","forumdisplay","16",pageNum+"");
+        forumCall= apiService.getAdminForumData("4","forumdisplay","16",pageNum+"");
 
-        forumCall.enqueue(new Callback<Variables>() {
+        forumCall.enqueue(new Callback<ForumListMod>() {
             @Override
-            public void onResponse(Call<Variables> call, Response<Variables> response) {
-                Variables variablesResponse = response.body();
-                if(variablesResponse!=null && variablesResponse.getForumThreadlist()!=null){
-                    threadList=variablesResponse.getForumThreadlist();
+            public void onResponse(Call<ForumListMod> call, Response<ForumListMod> response) {
+                ForumListMod forumListMod = response.body();
+                Variables variablesObj = forumListMod.getVariables();
+                if(variablesObj!=null){
+                    threadList=variablesObj.getForumThreadlist();
                    // Utility.getFixedTopThreads(threadList, variablesResponse.getT, threadList);
 
                     threadLiveData.setValue(threadList);
@@ -50,7 +52,7 @@ public class RepositoryAdminThread {
             }
 
             @Override
-            public void onFailure(Call<Variables> call, Throwable t) {
+            public void onFailure(Call<ForumListMod> call, Throwable t) {
                 Toast.makeText(_application,"Failed to call admin API. "
                                 +t.getMessage(),Toast.LENGTH_LONG).show();
             }
