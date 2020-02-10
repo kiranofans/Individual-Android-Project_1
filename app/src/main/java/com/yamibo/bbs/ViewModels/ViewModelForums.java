@@ -20,8 +20,7 @@ public class ViewModelForums extends AndroidViewModel {
     //private RepositoryForums forumsRepo;
 
     //Forums Variables class
-    private Call<Variables> forumCall;
-    private Call<ForumListMod> forumLIstCall;
+    private Call<ForumListMod> forumListCall;
 
     public ViewModelForums(@NonNull Application application) {
         super(application);
@@ -30,7 +29,7 @@ public class ViewModelForums extends AndroidViewModel {
 
     }
     public LiveData<List<ForumThreadMod>> getForumThreads(int threadPageNum){
-        return threadRepo.getThreadLiveData(forumCall,threadPageNum);
+        return threadRepo.getThreadLiveData(forumListCall,threadPageNum);
     }
 
    /* public LiveData<List<ForumListInfo>> getForums(){
