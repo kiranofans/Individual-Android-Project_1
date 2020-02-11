@@ -28,8 +28,8 @@ public class ViewModelForums extends AndroidViewModel {
         threadRepo = new RepositoryAdminThread(application);
 
     }
-    public LiveData<List<ForumThreadMod>> getForumThreads(int threadPageNum){
-        return threadRepo.getThreadLiveData(forumListCall,threadPageNum);
+    public LiveData<List<ForumThreadMod>> getForumThreads(String forumsId, int threadPageNum){
+        return threadRepo.getThreadLiveData(forumListCall,threadPageNum,forumsId);
     }
 
    /* public LiveData<List<ForumListInfo>> getForums(){

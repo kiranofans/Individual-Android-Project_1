@@ -39,6 +39,7 @@ public class AdminFragment extends Fragment {
 
     private ProgressBar progressBar;
 
+    private final String ADMIN_FORUM_ID="16";
     private int currentPageNum = 1;
     private boolean isLoading = false;
 
@@ -61,7 +62,7 @@ public class AdminFragment extends Fragment {
         super.onViewCreated(v, savedInstanceState);
 
         admList = new ArrayList<>();
-        getAdminForumData(currentPageNum);
+        getAdminForumData(currentPageNum,ADMIN_FORUM_ID);
         swipeToRefreshListener();
     }
 
@@ -85,7 +86,7 @@ public class AdminFragment extends Fragment {
                     if ((visibleItemCount + firstVisibleItemPos) >= totalItemCount
                             && firstVisibleItemPos >= 0 && totalItemCount >= 15) {
                         currentPageNum++;
-                        getAdminForumData(currentPageNum);
+                        getAdminForumData(currentPageNum,ADMIN_FORUM_ID);
 
                         isLoading = true;
                         //Assign True again to make the isLoading variable to False;
@@ -104,13 +105,13 @@ public class AdminFragment extends Fragment {
     private void swipeToRefreshListener() {
         admBinding.swipeContainer.setOnRefreshListener(() -> {
             currentPageNum = 1;
-            getAdminForumData(currentPageNum);
+            getAdminForumData(currentPageNum,ADMIN_FORUM_ID);
         });
     }
 
-    private void getAdminForumData(int pageNumber) {
+    private void getAdminForumData(int pageNumber,String forumId) {
         admBinding.swipeContainer.setRefreshing(true);
-        adminViewModel.getForumThreads(pageNumber).observe(this, new Observer<List<ForumThreadMod>>() {
+        adminViewModel.getForumThreads(forumId,pageNumber).observe(this, new Observer<List<ForumThreadMod>>() {
             @Override
             public void onChanged(@Nullable List<ForumThreadMod> forumThreadMods) {
                 isLoading = false;

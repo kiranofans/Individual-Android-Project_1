@@ -33,9 +33,9 @@ public class RepositoryAdminThread {
         _application=application;
     }
     //Api call
-    public MutableLiveData<List<ForumThreadMod>> getThreadLiveData(Call<ForumListMod> forumCall, int pageNum){
+    public MutableLiveData<List<ForumThreadMod>> getThreadLiveData(Call<ForumListMod> forumCall, int pageNum, String forumsId){
         RetrofitApiService apiService = RetrofitClient.getRetrofitService();
-        forumCall= apiService.getAdminForumData("4","forumdisplay","16",pageNum+"");
+        forumCall= apiService.getAdminForumData("4","forumdisplay",forumsId,pageNum+"");
 
         forumCall.enqueue(new Callback<ForumListMod>() {
             @Override
