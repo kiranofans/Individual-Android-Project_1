@@ -4,7 +4,9 @@ package com.yamibo.bbs.data.Model.ForumsContentMod;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Reply {
+import java.io.Serializable;
+
+public class Reply implements Serializable {
 
     @SerializedName("pid")
     @Expose

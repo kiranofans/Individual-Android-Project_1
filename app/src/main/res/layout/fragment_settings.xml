@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/frame_setting"
-    tools:context=".Fragments.SettingsFragment">
+    tools:context="com.yamibo.bbs.Fragments.SettingsFragment">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"

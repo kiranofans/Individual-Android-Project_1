@@ -38,8 +38,10 @@ public class AppConstants extends Application{
     public static final int USER_PERMISSION_LEVEL_8 = 8;
     public static final int USER_PERMISSION_LEVEL_9 = 9;
 
+    public static final String KEY_EXTRA_FORUMS_THREAD="EXTRA_FORUMS_THREAD";
 
     public static final SparseArray<boolean[]> USER_PERMISSION_ACCESS_MAP = new SparseArray<>();
+
     static{
         USER_PERMISSION_ACCESS_MAP.append(USER_PERMISSION_LEVEL_TOURIST, new boolean[]{
                 true, false, false, false, false

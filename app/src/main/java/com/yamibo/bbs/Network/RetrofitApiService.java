@@ -19,11 +19,14 @@ import static Utils.ApiConstants.HEADER_COOKIE_AUTH;
 
 public interface RetrofitApiService {
     final String[] loginCredential = new String[]{"username", "password"};
+    final String FORUM_ADMIN_URL="api/mobile/index.php?";
+
     String accessToken = "";
 
-    @GET(ApiConstants.FORUM_ADMIN_URL)
+    @GET(FORUM_ADMIN_URL)
     Call<ForumListMod> getAdminForumData(@Query("version") String version, @Query("module") String module,
-                                         @Query("fid") String forumsId, @Query("page") String pageNum);
+                                         @Query("fid") String forumsId, @Query("sort")String sort,
+                                         @Query("page") String pageNum);
 
     @GET(ApiConstants.FORUM_ANIME_MANGA_URL)
     Call<Variables> getAnimeMangaForum(@Query("version") int version, @Query("module") String module,

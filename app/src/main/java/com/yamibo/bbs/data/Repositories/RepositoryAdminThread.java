@@ -25,17 +25,15 @@ public class RepositoryAdminThread {
             new MutableLiveData<>();
     private Application _application;
 
-   /* enum class ForumId{
-        ADMIN,ANIME_DISCUSS,CHAT,VIDEO_GAMES,
-    }*/
-
     public RepositoryAdminThread(Application application){
         _application=application;
     }
     //Api call
-    public MutableLiveData<List<ForumThreadMod>> getThreadLiveData(Call<ForumListMod> forumCall, int pageNum, String forumsId){
+    public MutableLiveData<List<ForumThreadMod>> getThreadLiveData(Call<ForumListMod> forumCall,
+                                                                   int pageNum, String forumsId){
         RetrofitApiService apiService = RetrofitClient.getRetrofitService();
-        forumCall= apiService.getAdminForumData("4","forumdisplay",forumsId,pageNum+"");
+        forumCall= apiService.getAdminForumData("4","forumdisplay",forumsId,
+                "displayorder",pageNum+"");
 
         forumCall.enqueue(new Callback<ForumListMod>() {
             @Override
@@ -44,7 +42,6 @@ public class RepositoryAdminThread {
                 Variables variablesObj = forumListMod.getVariables();
                 if(variablesObj!=null){
                     threadList=variablesObj.getForumThreadlist();
-                   // Utility.getFixedTopThreads(threadList, variablesResponse.getT, threadList);
 
                     threadLiveData.setValue(threadList);
 

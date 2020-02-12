@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.yamibo.bbs.splashscreen.Fragments.AdminFragment;
+import com.yamibo.bbs.Fragments.AdminFragment;
 import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 import com.yamibo.bbs.splashscreen.R;
 

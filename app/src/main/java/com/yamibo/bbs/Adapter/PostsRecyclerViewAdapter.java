@@ -1,6 +1,7 @@
 package com.yamibo.bbs.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,18 +9,22 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.yamibo.bbs.data.Model.ForumsContentMod.ForumThreadMod;
+import com.yamibo.bbs.splashscreen.PostActivity;
+import com.yamibo.bbs.splashscreen.R;
 import com.yamibo.bbs.splashscreen.databinding.ListItemsPostsBinding;
 
 import java.util.List;
 
-public class RecyclerViewForumAdmin extends RecyclerView.Adapter<BaseViewHolder2> {
+import static Utils.AppConstants.KEY_EXTRA_FORUMS_THREAD;
+
+public class PostsRecyclerViewAdapter extends RecyclerView.Adapter<BaseViewHolder2> {
     private List<ForumThreadMod> adminThreadList;
     private Context _context;
 
     private View v;
     private ListItemsPostsBinding admRecViewBinding;
 
-    public RecyclerViewForumAdmin(Context context, List<ForumThreadMod> adminList) {
+    public PostsRecyclerViewAdapter(Context context, List<ForumThreadMod> adminList) {
         this._context = context;
         this.adminThreadList = adminList;
     }
@@ -35,7 +40,6 @@ public class RecyclerViewForumAdmin extends RecyclerView.Adapter<BaseViewHolder2
 
     @Override
     public void onBindViewHolder(@NonNull BaseViewHolder2 baseViewHolder2, int i) {
-        ForumThreadMod threadList = adminThreadList.get(i);
         baseViewHolder2.bind(adminThreadList.get(i));
     }
 
@@ -56,7 +60,25 @@ public class RecyclerViewForumAdmin extends RecyclerView.Adapter<BaseViewHolder2
             admRecViewBinding.postTvAuthor.setText(obj.getAuthor());
             admRecViewBinding.postTitle.setText(obj.getSubject());
             admRecViewBinding.postTvDate.setText(obj.getDateline());
-            //Glide.with(_context).load(obj.get).into(admRecViewBinding.postImgs);
+
+            openPostContent(obj);
+            if(getAdapterPosition()==0){
+                admRecViewBinding.threadTvSection.setVisibility(View.VISIBLE);
+                admRecViewBinding.threadTvSection.setText(_context.getString(R.string.forums_threads));
+            }
+        }
+        private void openPostContent(ForumThreadMod obj){
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if(position!=RecyclerView.NO_POSITION){
+                        Intent postContentIntent = new Intent(_context, PostActivity.class);
+                        postContentIntent.putExtra(KEY_EXTRA_FORUMS_THREAD,obj);
+                        _context.startActivity(postContentIntent);
+                    }
+                }
+            });
         }
     }
 }

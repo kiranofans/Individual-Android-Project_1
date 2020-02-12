@@ -50,7 +50,7 @@
             android:theme="@style/AppTheme" />
         <activity android:name="com.yamibo.bbs.splashscreen.AccountRegistPage" />
         <activity
-            android:name="com.yamibo.bbs.splashscreen.Activity_Post"
+            android:name="com.yamibo.bbs.splashscreen.PostActivity"
             android:label="百合會帖子">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />

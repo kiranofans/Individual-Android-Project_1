@@ -1,4 +1,4 @@
-package com.yamibo.bbs.splashscreen.Fragments;
+package com.yamibo.bbs.Fragments;
 
 import android.content.Context;
 import android.net.Uri;

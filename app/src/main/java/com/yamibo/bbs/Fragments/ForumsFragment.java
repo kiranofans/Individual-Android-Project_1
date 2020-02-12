@@ -1,4 +1,4 @@
-package com.yamibo.bbs.splashscreen.Fragments;
+package com.yamibo.bbs.Fragments;
 
 import android.annotation.TargetApi;
 import android.app.Activity;

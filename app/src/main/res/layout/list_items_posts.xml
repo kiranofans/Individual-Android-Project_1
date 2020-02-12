@@ -8,6 +8,15 @@
         android:layout_height="wrap_content"
         tools:actionBarNavMode="standard">
 
+        <TextView
+            android:id="@+id/thread_tv_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_dark_red"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone" />
         <android.support.v7.widget.CardView
             android:id="@+id/cardView1"
             android:layout_width="match_parent"
@@ -15,7 +24,7 @@
             android:layout_margin="4dp"
             android:layout_marginVertical="@dimen/cardview_compat_inset_shadow"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/thread_tv_section">
 
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/const2"

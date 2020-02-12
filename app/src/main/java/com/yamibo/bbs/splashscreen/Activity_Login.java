@@ -34,7 +34,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.github.ybq.android.spinkit.style.FadingCircle;
-import com.yamibo.bbs.splashscreen.Fragments.ForumsFragment;
+import com.yamibo.bbs.Fragments.ForumsFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -67,7 +67,6 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
     private static final String PREF_FILE = AppConstants.PREF_FILE_GLOBAL;
 
     private static SessionManager sessionMg;
-    private MainNavTabActivity main;
 
     private EditText mPswdEditText;
     private TextView usrnameInput;
@@ -337,16 +336,7 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
     public void onLoaderReset(android.content.Loader<Cursor> loader) {
     }
 
-   /* @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == RC_GET_AUTH_CODE && sessionMg.isLoggedIn()) {
-        }
-    }*/
-
     public void userLogin() {
-        main = new MainNavTabActivity();
         auth = new AuthMod.Auth();
         final StringRequest request = new StringRequest(Request.Method.POST, LOGIN_REQUEST_API_URL,
                 new Response.Listener<String>() {

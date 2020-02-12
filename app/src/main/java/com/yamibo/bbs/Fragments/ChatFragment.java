@@ -1,4 +1,4 @@
-package com.yamibo.bbs.splashscreen.Fragments;
+package com.yamibo.bbs.Fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -75,7 +75,7 @@ public class ChatFragment extends Fragment implements
 
     @Override
     public void onViewCreated(View v, Bundle savedInstanceState) {
-        recyclerView = (RecyclerView) v.findViewById(R.id.recView_post);
+        recyclerView = (RecyclerView) v.findViewById(R.id.recycler_view_post);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         postItemInstance = PostListItemsMod.getInstance();
         secsList = new ArrayList<>();

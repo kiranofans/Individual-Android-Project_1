@@ -25,12 +25,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.yamibo.bbs.splashscreen.Fragments.AccountFragment;
-import com.yamibo.bbs.splashscreen.Fragments.GalleryFragment;
-import com.yamibo.bbs.splashscreen.Fragments.ProfileFragment;
-import com.yamibo.bbs.splashscreen.Fragments.SettingsFragment;
-import com.yamibo.bbs.splashscreen.Fragments.SpaceFragment;
-import com.yamibo.bbs.splashscreen.Fragments.TabsFragment;
+import com.yamibo.bbs.Fragments.AccountFragment;
+import com.yamibo.bbs.Fragments.GalleryFragment;
+import com.yamibo.bbs.Fragments.ProfileFragment;
+import com.yamibo.bbs.Fragments.SettingsFragment;
+import com.yamibo.bbs.Fragments.SpaceFragment;
+import com.yamibo.bbs.Fragments.TabsFragment;
 
 import java.util.HashMap;
 
