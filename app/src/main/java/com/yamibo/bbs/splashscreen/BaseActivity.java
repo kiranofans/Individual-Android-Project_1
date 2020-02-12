@@ -41,8 +41,8 @@ public abstract class BaseActivity extends AppCompatActivity {
                 " Publish At: "+date);
     }
     void configToolbar(){
-        if(baseActivityBinding.sharedToolbar!=null){
-            setSupportActionBar(baseActivityBinding.sharedToolbar);
+        if(baseActivityBinding.baseToolbar!=null){
+            setSupportActionBar(baseActivityBinding.baseToolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         }

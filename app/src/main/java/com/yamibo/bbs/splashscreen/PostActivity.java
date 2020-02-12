@@ -37,17 +37,20 @@ public class PostActivity extends BaseActivity {
 
     private void getExtraObjectData(){
         ForumThreadMod forumThreadObj = (ForumThreadMod) getIntent().getSerializableExtra(KEY_EXTRA_FORUMS_THREAD);
-        postBinding.postDateTv.setText(forumThreadObj.getDateline());
-        setToolbarTitle(forumThreadObj.getSubject(),forumThreadObj.getAuthor(),forumThreadObj.getDateline());
+        //postBinding.postDateTv.setText(forumThreadObj.getDateline());
+        postBinding.toolbar.baseToolbar.setTitle(forumThreadObj.getSubject());
+        postBinding.toolbar.baseToolbar.setSubtitle("Author: "+forumThreadObj.getAuthor()+
+                "Publish At: "+forumThreadObj.getDateline());
+        //setToolbarTitle(forumThreadObj.getSubject(),forumThreadObj.getAuthor(),forumThreadObj.getDateline());
 
     }
 
     private void setToolbar(){
-        postToolbar = (Toolbar) findViewById(R.id.sharedToolbar);
+        postToolbar = (Toolbar) findViewById(R.id.baseToolbar);
         setSupportActionBar(postToolbar);
         ViewCompat.setTransitionName(findViewById(R.id.app_bar_layout), "");
 
-        collapseToolbar =(CollapsingToolbarLayout)findViewById(R.id.collapse_toolbar);
+        collapseToolbar =(CollapsingToolbarLayout)findViewById(R.id.collapsy_toolbar);
         collapseToolbar.setTitleEnabled(true);
         collapseToolbar.setExpandedTitleColor(getResources()
                 .getColor(android.R.color.transparent,null));

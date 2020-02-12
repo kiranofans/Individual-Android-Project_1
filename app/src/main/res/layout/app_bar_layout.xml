@@ -6,58 +6,89 @@
         android:layout_height="match_parent"
         android:id="@+id/chat_drawer">
         <android.support.design.widget.AppBarLayout
+            android:id="@+id/app_bar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/app_bar_layout"
-            android:background="@color/color_light_yellow"
             android:animateLayoutChanges="true"
-            android:transitionName="shared_appBar"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            android:fitsSystemWindows="true">
+            android:background="@android:color/white"
+            android:fitsSystemWindows="true"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
             <android.support.design.widget.CollapsingToolbarLayout
-                android:id="@+id/collapse_toolbar"
+                android:id="@+id/collapsy_toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:fitsSystemWindows="true"
                 android:theme="@style/ThemeOverlay.AppCompat.Light"
-                app:contentScrim="@color/color_light_yellow"
+                app:contentScrim="#fff5d7"
                 app:expandedTitleMarginEnd="64dp"
                 app:expandedTitleMarginStart="48dp"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
                 <FrameLayout
                     android:id="@+id/imgViewPagerFrame"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
-                    <android.support.constraint.ConstraintLayout
-                        xmlns:android="http://schemas.android.com/apk/res/android"
+
+                    <LinearLayout
+                        android:id="@+id/linear"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/color_light_yellow"
-                        xmlns:app="http://schemas.android.com/apk/res-auto">
-                        <ImageView
-                            android:id="@+id/imgView_toolbar"
-                            android:layout_width="wrap_content"
-                            android:layout_height="80dp"
-                            android:src="@mipmap/bear_banner"
-                            app:layout_constraintDimensionRatio="w,3:1"
-                            android:layout_gravity="center_vertical"
-                            android:scrollIndicators="bottom"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent">
-                        </ImageView>
-                    </android.support.constraint.ConstraintLayout>
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/white"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/imgViewPager">
+
+                        <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                            xmlns:app="http://schemas.android.com/apk/res-auto"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@android:color/white">
+
+                            <android.support.v4.view.ViewPager
+                                android:id="@+id/imgViewPager"
+                                android:layout_width="match_parent"
+                                android:layout_height="127dp"
+                                android:layout_gravity="center_vertical"
+                                android:scrollIndicators="bottom"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintHorizontal_bias="0.0"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintVertical_bias="0.0"
+                                app:layout_constraintVertical_chainStyle="packed" />
+                        </android.support.constraint.ConstraintLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4dp"
+                            android:background="@color/color_dark_red"
+                            android:text="熱點推薦"
+                            android:textAlignment="center"
+                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                            android:textColor="@color/color_light_yellow" />
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/hitsRecView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/white" />
+                    </LinearLayout>
                 </FrameLayout>
+
                 <android.support.v7.widget.Toolbar
-                    android:id="@+id/sharedToolbar"
+                    android:id="@+id/baseToolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    app:layout_collapseMode="pin"
                     android:elevation="4dp"
                     android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
-
+                    app:layout_collapseMode="pin"
+                    app:layout_scrollFlags="enterAlways|scroll"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
             </android.support.design.widget.CollapsingToolbarLayout>
         </android.support.design.widget.AppBarLayout>
         <android.support.v4.widget.NestedScrollView
