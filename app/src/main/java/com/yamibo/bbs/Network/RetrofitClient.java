@@ -3,7 +3,7 @@ package com.yamibo.bbs.Network;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static Utils.ApiConstants.BASE_URL;
+import static com.yamibo.bbs.Network.ApiConstants.BASE_URL;
 
 public class RetrofitClient {
     private static Retrofit retrofit = null;

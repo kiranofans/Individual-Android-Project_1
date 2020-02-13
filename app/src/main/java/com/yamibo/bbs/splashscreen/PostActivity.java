@@ -13,7 +13,7 @@ import com.yamibo.bbs.data.Model.ForumsContentMod.ForumThreadMod;
 import com.yamibo.bbs.splashscreen.databinding.ActivityPostBinding;
 import com.yamibo.bbs.splashscreen.databinding.AppBarLayoutBinding;
 
-import static Utils.AppConstants.KEY_EXTRA_FORUMS_THREAD;
+import static com.yamibo.bbs.data.AppConstants.KEY_EXTRA_FORUMS_THREAD;
 
 public class PostActivity extends BaseActivity {
     private SearchView searchView;

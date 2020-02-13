@@ -4,7 +4,9 @@ package com.yamibo.bbs.data.Model.ForumsContentMod;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Forum {
+import java.io.Serializable;
+
+public class Forum implements Serializable {
 
     @SerializedName("fid")
     @Expose
@@ -36,7 +38,7 @@ public class Forum {
     @SerializedName("threadcount")
     @Expose
     private String threadcount;
-    @SerializedName("password")
+    @SerializedName("pswdEditText")
     @Expose
     private String password;
 

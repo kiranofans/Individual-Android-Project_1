@@ -9,7 +9,6 @@ import com.yamibo.bbs.Network.RetrofitApiService;
 import com.yamibo.bbs.Network.RetrofitClient;
 import com.yamibo.bbs.data.Model.LoginMod.LoginResponseMod;
 import com.yamibo.bbs.data.Model.LoginMod.LoginVariables;
-import com.yamibo.bbs.data.Model.Notice;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,11 +36,20 @@ public class LoginRepository {
         loginCall.enqueue(new Callback<LoginResponseMod>() {
             @Override
             public void onResponse(Call<LoginResponseMod> call, Response<LoginResponseMod> response) {
-                if(response.isSuccessful()&&response.body()!=null){
-                    Log.d(TAG,"Logged in successful!");
+                LoginResponseMod loginResponseMod=response.body();
+                if(response.isSuccessful()&& loginResponseMod!=null){
                     LoginVariables loginDataMod =response.body().getVariables();
-                    loggedInDataList.add(loginDataMod);
-                    loginLiveData.setValue(loggedInDataList);
+                    if(loginDataMod.getAuth()==null){
+                        Toast.makeText(_application,"Logged in failed.\n"
+                                +response.body().getMessage().getMessagestr(),Toast.LENGTH_LONG).show();
+                    }else{
+                        Log.d(TAG,"Logged in successful!");
+                        Toast.makeText(_application,"Logged in successfully.\n"
+                                +response.body(),Toast.LENGTH_LONG).show();
+                        loggedInDataList.add(loginDataMod);
+                        loginLiveData.setValue(loggedInDataList);
+                    }
+
                 }
             }
 

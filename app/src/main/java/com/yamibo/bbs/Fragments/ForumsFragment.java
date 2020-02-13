@@ -14,17 +14,12 @@ import android.widget.ProgressBar;
 
 import com.android.volley.VolleyError;
 import com.github.ybq.android.spinkit.style.FadingCircle;
-import com.yamibo.bbs.data.Model.ApiResponsesMod;
 import com.yamibo.bbs.data.Model.Base_Items_Model;
-import com.yamibo.bbs.data.Model.ForumsListItemMod;
 import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 import com.yamibo.bbs.splashscreen.R;
 import Managers.SessionManager;
 
 import Managers.ForumsManager;
-import Utils.Utility;
-import VolleyService.VolleyHelper;
-import VolleyService.VolleyResultCallback;
 
 import org.json.*;
 
@@ -33,8 +28,8 @@ import java.util.*;
 import com.yamibo.bbs.Adapter.MyRecyclerAdapter;
 import com.yamibo.bbs.Adapter.ForumsRecView1Adapter;
 
-import static Utils.ApiConstants.FORUMS_API_URL;
-import static Utils.AppConstants.PREF_FILE_GLOBAL;
+import static com.yamibo.bbs.Network.ApiConstants.FORUMS_API_URL;
+import static com.yamibo.bbs.data.AppConstants.PREF_FILE_GLOBAL;
 
 public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItemClickListener {
     private static RecyclerView recyclerView, recyclerView1;
@@ -42,7 +37,7 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
     private static ForumsRecView1Adapter recAdp;
 
     private static List<Base_Items_Model> forumsList_1;
-    private static List<ForumsListItemMod> forumsList;
+    //private static List<ForumsListItemMod> forumsList;
     private static int pos = 0;
 
     private static View v;
@@ -87,11 +82,11 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
         recyclerView1.setLayoutManager(new LinearLayoutManager(getContext()));
 
 
-        forumsJsonParser();
+        //forumsJsonParser();
 
     }
 
-    public void forumsJsonParser() {
+    /*public void forumsJsonParser() {
         progressBar.setVisibility(View.VISIBLE);
         progressBar.setIndeterminateDrawable(new FadingCircle());
         forumsList = new ArrayList<>();
@@ -135,7 +130,7 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
                 Utility.showErrorMessageToast(getContext(), error.getMessage());
             }
         });
-    }
+    }*/
 
     @Override
     public void onItemClick(int position) {
@@ -179,12 +174,12 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
     }*/
     }
 
-    private void forumsFiltering(String fid, ForumsListItemMod forumsListItem) {
+    /*private void forumsFiltering(String fid, ForumsListItemMod forumsListItem) {
         if (fid.equals("16")) {
             forumsList.add(forumsListItem);
         } else {
             forumsList_1.add(forumsListItem);
         }
-    }
+    }*/
 }
 

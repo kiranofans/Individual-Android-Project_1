@@ -7,7 +7,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
-import VolleyService.VolleySingleton;
 
 public class AppController extends Application {
 /** This class extends from Application which should be executed on app launch.
@@ -20,7 +19,6 @@ public class AppController extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        VolleySingleton.getInstance(this);
         mInstance = this;
     }
 

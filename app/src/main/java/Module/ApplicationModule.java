@@ -8,11 +8,10 @@ import javax.inject.Singleton;
 import com.yamibo.bbs.Annotations.ApplicationContext;
 import com.yamibo.bbs.Annotations.PreferenceInfo;
 import Managers.SessionManager;
-import Utils.AppConstants;
+import com.yamibo.bbs.data.AppConstants;
 import dagger.Module;
 import dagger.Provides;
-import com.yamibo.bbs.data.BaseDataManager;
-import com.yamibo.bbs.data.DataManager;
+
 import com.yamibo.bbs.data.prefs.PrefsHelper;
 
 @Module
@@ -41,12 +40,12 @@ public class ApplicationModule {
         return AppConstants.PREF_FILE_GLOBAL;
     }
 
-    @Provides
+  /*  @Provides
     @Singleton
     DataManager provideDataManager(BaseDataManager mDataManager) {
         return mDataManager;
     }
-
+*/
 
     @Provides
     @Singleton

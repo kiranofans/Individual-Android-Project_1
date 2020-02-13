@@ -14,7 +14,7 @@ import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 import com.yamibo.bbs.splashscreen.R;
 import Managers.SessionManager;
 
-import static Utils.AppConstants.PREF_FILE_GLOBAL;
+import static com.yamibo.bbs.data.AppConstants.PREF_FILE_GLOBAL;
 
 /**
  * A simple {@link Fragment} subclass.

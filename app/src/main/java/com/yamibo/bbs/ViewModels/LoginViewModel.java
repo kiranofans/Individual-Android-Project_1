@@ -26,5 +26,4 @@ public class LoginViewModel extends AndroidViewModel {
     public LiveData<List<LoginVariables>> getLoggedInData(String username, String password){
         return loginRepo.getLoggedInData(loginCall,username,password);
     }
-
 }

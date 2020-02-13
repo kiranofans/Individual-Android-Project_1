@@ -15,7 +15,7 @@ import com.yamibo.bbs.splashscreen.databinding.ListItemsPostsBinding;
 
 import java.util.List;
 
-import static Utils.AppConstants.KEY_EXTRA_FORUMS_THREAD;
+import static com.yamibo.bbs.data.AppConstants.KEY_EXTRA_FORUMS_THREAD;
 
 public class PostsRecyclerViewAdapter extends RecyclerView.Adapter<BaseViewHolder2> {
     private List<ForumThreadMod> adminThreadList;

@@ -10,17 +10,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yamibo.bbs.Fragments.AdminFragment;
+import com.yamibo.bbs.data.Model.ForumListMod.Catlist;
+import com.yamibo.bbs.data.Model.ForumListMod.ForumListInfoMod;
 import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 import com.yamibo.bbs.splashscreen.R;
 
 import java.util.List;
 
-import com.yamibo.bbs.data.Model.ForumsListItemMod;
-
 public class ForumsRecView1Adapter extends RecyclerView.Adapter<ForumsRecView1Adapter.SingleViewHolder> implements View.OnClickListener{
     private Context context;
 
-    private List<ForumsListItemMod> itemsList;
+    private List<ForumListInfoMod> itemsList;
     private OnItemClickListener listener;
 
     @Override
@@ -37,7 +37,7 @@ public class ForumsRecView1Adapter extends RecyclerView.Adapter<ForumsRecView1Ad
         this.listener = listener;
     }
 
-    public ForumsRecView1Adapter(Context _context, List<ForumsListItemMod> forumsList){
+    public ForumsRecView1Adapter(Context _context, List<ForumListInfoMod> forumsList){
         this.context=_context;
         itemsList=forumsList;
     }
@@ -51,12 +51,12 @@ public class ForumsRecView1Adapter extends RecyclerView.Adapter<ForumsRecView1Ad
 
     @Override
     public void onBindViewHolder(@NonNull SingleViewHolder holder, int position) {
-        ForumsListItemMod forumsList=itemsList.get(position);
+        ForumListInfoMod forumsList=itemsList.get(position);
 
         //Calling the txtViews
         holder.descriptTv.setText(forumsList.getDescription());
-        holder.numOfDailyNewPosts.setText(forumsList.getNumOftodayPosts());
-        holder.titleTv.setText(forumsList.getForumsTitles());
+        holder.numOfDailyNewPosts.setText(forumsList.getTodayposts());
+        holder.titleTv.setText(forumsList.getName());
     }
 
     @Override

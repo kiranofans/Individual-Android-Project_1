@@ -2,29 +2,23 @@ package root;
 
 import android.app.Application;
 
-import Component.ApplicationComponent;
-import Component.DaggerApplicationComponent;
 import Module.ApplicationModule;
 
 public class YamiboApp extends Application {
 
-    private ApplicationComponent mApplicationComponent;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        mApplicationComponent = DaggerApplicationComponent.builder()
+        /*mApplicationComponent = DaggerApplicationComponent.builder()
                 .applicationModule(new ApplicationModule(this)).build();
-        mApplicationComponent.inject(this);
-    }
-
-    public ApplicationComponent getComponent() {
-        return mApplicationComponent;
+        mApplicationComponent.inject(this);*/
     }
 
 
-    // Needed to replace the component with a test specific one
+
+   /* // Needed to replace the component with a test specific one
     public void setComponent(ApplicationComponent applicationComponent) {
         mApplicationComponent = applicationComponent;
-    }
+    }*/
 }

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
+import com.yamibo.bbs.data.Model.LoginMod.LoginResponseMod;
 import com.yamibo.bbs.data.Model.LoginMod.LoginVariables;
 import com.yamibo.bbs.data.Model.UserProfileMod.UserProfileVariables;
 import com.yamibo.bbs.splashscreen.MainNavTabActivity;
@@ -16,20 +17,18 @@ import javax.inject.Inject;
 
 import com.yamibo.bbs.Annotations.ApplicationContext;
 import com.yamibo.bbs.Annotations.PreferenceInfo;
-import Utils.AppConstants;
-import Utils.Login.LoggedInMode;
+import com.yamibo.bbs.data.AppConstants;
 import com.yamibo.bbs.data.prefs.PrefsHelper;
 
-import static Utils.AppConstants.PREF_KEY_AVATAR;
-import static Utils.AppConstants.PREF_KEY_FIRST_TIME;
-import static Utils.AppConstants.PREF_KEY_GROUPID;
-import static Utils.AppConstants.PREF_KEY_LOGGED_IN_MODE;
-import static Utils.AppConstants.PREF_KEY_LOGIN;
-import static Utils.AppConstants.PREF_KEY_LOGIN_TOKEN;
-import static Utils.AppConstants.PREF_KEY_NOTICES;
-import static Utils.AppConstants.PREF_KEY_READ_AUTH;
-import static Utils.AppConstants.PREF_KEY_UID;
-import static Utils.AppConstants.PREF_KEY_USERNAME;
+import static com.yamibo.bbs.data.AppConstants.PREF_KEY_AVATAR;
+import static com.yamibo.bbs.data.AppConstants.PREF_KEY_FIRST_TIME;
+import static com.yamibo.bbs.data.AppConstants.PREF_KEY_GROUPID;
+import static com.yamibo.bbs.data.AppConstants.PREF_KEY_LOGIN;
+import static com.yamibo.bbs.data.AppConstants.PREF_KEY_LOGIN_TOKEN;
+import static com.yamibo.bbs.data.AppConstants.PREF_KEY_NOTICES;
+import static com.yamibo.bbs.data.AppConstants.PREF_KEY_READ_AUTH;
+import static com.yamibo.bbs.data.AppConstants.PREF_KEY_UID;
+import static com.yamibo.bbs.data.AppConstants.PREF_KEY_USERNAME;
 
 public class SessionManager extends Application implements PrefsHelper {
     private static String LOGCAT_TAG = SessionManager.class.getSimpleName();
@@ -113,16 +112,26 @@ public class SessionManager extends Application implements PrefsHelper {
         return userData;
     }
 
-    @Override
+    /*@Override
     public int getUserLoggedInMode() {
         //Set Logout by default
         return sharedPrefs.getInt(PREF_KEY_LOGGED_IN_MODE,
                 LoggedInMode.LOGGED_IN_MODE_LOGOUT.getType());
+    }*/
+
+    /*@Override
+    public void setUserLoggedIn(LoggedInMode mode) {
+        sharedPrefs.edit().putInt(PREF_KEY_LOGGED_IN_MODE, mode.getType()).apply();
+    }*/
+
+    @Override
+    public int getUserLoggedInMode() {
+        return 0;
     }
 
     @Override
-    public void setUserLoggedIn(LoggedInMode mode) {
-        sharedPrefs.edit().putInt(PREF_KEY_LOGGED_IN_MODE, mode.getType()).apply();
+    public void setUserLoggedIn(LoginResponseMod mode) {
+
     }
 
     @Override

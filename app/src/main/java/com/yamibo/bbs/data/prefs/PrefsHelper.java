@@ -1,11 +1,11 @@
 package com.yamibo.bbs.data.prefs;
 
-import Utils.Login.LoggedInMode;
+import com.yamibo.bbs.data.Model.LoginMod.LoginResponseMod;
 
 public interface PrefsHelper {
 
     int getUserLoggedInMode();
-    void setUserLoggedIn(LoggedInMode mode);
+    void setUserLoggedIn(LoginResponseMod mode);
 
     String getUserId();
 

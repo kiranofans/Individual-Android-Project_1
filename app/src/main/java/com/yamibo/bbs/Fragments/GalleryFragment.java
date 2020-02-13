@@ -6,32 +6,17 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
-import com.android.volley.Request;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.squareup.picasso.Picasso;
-import com.yamibo.bbs.splashscreen.MainNavTabActivity;
-import com.yamibo.bbs.splashscreen.R;
-
-import com.yamibo.bbs.data.Model.ImageMod;
-import VolleyService.VolleySingleton;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import com.yamibo.bbs.Adapter.MyRecyclerAdapter;
 import com.yamibo.bbs.Adapter.SectionRecycleViewAdapter;
 import com.yamibo.bbs.data.Model.Base_Items_Model;
+import com.yamibo.bbs.splashscreen.MainNavTabActivity;
+import com.yamibo.bbs.splashscreen.R;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,30 +24,31 @@ import com.yamibo.bbs.data.Model.Base_Items_Model;
  * {@link GalleryFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  */
-public class GalleryFragment extends Fragment implements MyRecyclerAdapter.OnItemClickListener{
+public class GalleryFragment extends Fragment implements MyRecyclerAdapter.OnItemClickListener {
     private OnFragmentInteractionListener mListener;
     private static RecyclerView recView;
     private static MyRecyclerAdapter recViewAdp;
     private static List<Base_Items_Model> picsList;
     private List<SectionRecycleViewAdapter.Sections> albumSecList;
-    private String imgApiUrl="https://pixabay.com/api/?key=5303976-fd6581ad4ac165d1b75cc15b3&q=kitten&image_type=photo&pretty=true";
+    private String imgApiUrl = "https://pixabay.com/api/?key=5303976-fd6581ad4ac165d1b75cc15b3&q=kitten&image_type=photo&pretty=true";
 
     public GalleryFragment() {/*Required empty public constructor*/}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ((MainNavTabActivity)getActivity()).fragsCustomToolbar("我的相冊");
+        ((MainNavTabActivity) getActivity()).fragsCustomToolbar("我的相冊");
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_gallery, container, false);
     }
-    @Override
-    public void onViewCreated(View v,Bundle savedInstanceState){
-        recView=(RecyclerView)v.findViewById(R.id.gallery_rec);
-        recView.setLayoutManager(new GridLayoutManager(getContext(),2));
 
-        getImages();
+    @Override
+    public void onViewCreated(View v, Bundle savedInstanceState) {
+        recView = (RecyclerView) v.findViewById(R.id.gallery_rec);
+        recView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+
+        //getImages();
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -94,18 +80,20 @@ public class GalleryFragment extends Fragment implements MyRecyclerAdapter.OnIte
 
     }
 
-    /** This interface must be implemented by activities that contain this
+    /**
+     * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
      * See the Android Training lesson
      * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * Communicating with Other Fragments for more information.*/
+     * Communicating with Other Fragments for more information.
+     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-    private void getImages(){
+    /*private void getImages(){
         picsList=new ArrayList<>();
         JsonObjectRequest imgRequest=new JsonObjectRequest(Request.Method.GET, imgApiUrl, null,
                 new com.android.volley.Response.Listener<JSONObject>() {
@@ -135,6 +123,6 @@ public class GalleryFragment extends Fragment implements MyRecyclerAdapter.OnIte
             }
         });
         VolleySingleton.getInstance(getContext()).addToRequestQueue(imgRequest);
-    }
+    }*/
 
 }

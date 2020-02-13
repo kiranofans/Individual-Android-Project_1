@@ -15,13 +15,7 @@ import com.yamibo.bbs.splashscreen.R;
 
 import java.util.*;
 
-import com.yamibo.bbs.data.Model.ForumsListItemMod;
-import com.yamibo.bbs.data.Model.HitsMod;
-import com.yamibo.bbs.data.Model.ImageMod;
-import com.yamibo.bbs.data.Model.PostListItemsMod;
 import com.yamibo.bbs.data.Model.Base_Items_Model;
-import Utils.Constants;
-
 /**Using Dynamic Method Dispatch or Runtime Polymorphism*/
 public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
     private Context context;
@@ -56,14 +50,10 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
     public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v;
         switch (viewType) {
-            case Constants.ViewTypes.FORUMS_TYPES:
+           /* case Constants.ViewTypes.FORUMS_TYPES:
                 v = LayoutInflater.from(parent.getContext()).inflate
                         (R.layout.list_items_forums, parent, false);
                 return new ForumsHolder(v,viewType);
-            case Constants.ViewTypes.POSTS_TYPES:
-                v = LayoutInflater.from(parent.getContext()).inflate
-                            (R.layout.list_items_posts, parent, false);
-                return new PostsHolder(v,viewType);
             case Constants.ViewTypes.GALLERY:
                 v=LayoutInflater.from(parent.getContext()).inflate
                         (R.layout.list_items_gallery,parent,false);
@@ -71,7 +61,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
             case Constants.ViewTypes.HITS:
                 v=LayoutInflater.from(parent.getContext()).inflate(R.layout.list_items_hits,
                         parent,false);
-                return new HitsHolder(v,viewType);
+                return new HitsHolder(v,viewType);*/
         }
         return null;
     }
@@ -92,7 +82,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
 
     }
 
-    /**ForumsHolder*/
+    /**ForumsHolder*//*
     public class ForumsHolder extends BaseViewHolder<ForumsListItemMod>{
         private TextView titleTv, descriptTv, numOfDailyNewPosts;
         private ImageView imgIcons;
@@ -125,49 +115,12 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
             descriptTv.setText(obj.getDescription());
             titleTv.setText(obj.getForumsTitles());
             numOfDailyNewPosts.setText(obj.getNumOftodayPosts());
-           /*Picasso.with(context).load(forumsImgUrls).fit().centerInside()
-                    .into(imgIcons);*/
+           *//*Picasso.with(context).load(forumsImgUrls).fit().centerInside()
+                    .into(imgIcons);*//*
         }
-    }
+    }*/
 
-    /**PostsHolder*/
-    public class PostsHolder extends BaseViewHolder<PostListItemsMod>{
-        private TextView titleTv,lastposterTv, postDate,authors,lastReplyDate;
-
-        private ImageView imgIcons;
-        public PostsHolder(View itemView, int viewType) {
-            super(itemView);
-            //Declare Views
-           // lastposterTv = (TextView) itemView.findViewById(R.id.lastRepliedPosters);
-            titleTv = (TextView) itemView.findViewById(R.id.postTitle);
-            postDate = (TextView) itemView.findViewById(R.id.post_tv_date);
-            authors=(TextView)itemView.findViewById(R.id.post_tv_author);
-            imgIcons = (ImageView) itemView.findViewById(R.id.postImgs);
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (listener != null) {
-                        int position = getAdapterPosition();
-                        if (position != RecyclerView.NO_POSITION) {
-                            listener.onItemClick(position);
-                        }
-                    }
-                }
-            });
-
-        }
-
-        @Override
-        public void bind(PostListItemsMod obj) {
-            String avatarUrls=obj.getPostAvatarUrls();
-            //lastposterTv.setText(obj.getPostLastReplies());
-            titleTv.setText(obj.getPostTitles());
-            postDate.setText(obj.getPostDates());
-            authors.setText(obj.getPostAuthors());
-        }
-    }
-    /**PostsHolder*/
+   /* *//**PostsHolder*//*
     public class GalleryHolder extends BaseViewHolder<ImageMod>{
         View v;
         private TextView titleTv, lastposterTv, postDate,authors,lastReplyDate;
@@ -187,8 +140,8 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
                     .into(galleryImgs);
 
         }
-    }
-    private class HitsHolder extends BaseViewHolder<HitsMod>{
+    }*/
+   /* private class HitsHolder extends BaseViewHolder<HitsMod>{
         View v;
         private TextView hitsTitle,hitsPostDates,hitsAuthor;
         public HitsHolder(View itemView,int viewType) {
@@ -217,6 +170,6 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder>{
             hitsPostDates.setText(obj.getHitsPostDate());
             hitsAuthor.setText(obj.getHitsAuthor());
         }
-    }
+    }*/
 }
 

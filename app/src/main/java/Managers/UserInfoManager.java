@@ -10,11 +10,10 @@ import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONObject;
 
-import com.yamibo.bbs.data.Model.UsersMod;
-import Utils.ApiConstants;
-import VolleyService.VolleySingleton;
+import com.yamibo.bbs.Network.ApiConstants;
+import com.yamibo.bbs.data.Model.UserProfileMod.UserProfileVariables;
 
-import static Utils.ApiConstants.LOGIN_REQUEST_API_URL;
+import static com.yamibo.bbs.Network.ApiConstants.LOGIN_REQUEST_API_URL;
 
 public class UserInfoManager extends AppCompatActivity {
     private Context context;
@@ -22,7 +21,7 @@ public class UserInfoManager extends AppCompatActivity {
 
     private String mAccessToken = "";
     private String mAccessSecrete = "";
-    private UsersMod.UserProfile mCurrentUserProfile;
+    private UserProfileVariables mCurrentUserProfile;
 
     private static UserInfoManager mUserInfoMgrInstance;
 
@@ -41,21 +40,21 @@ public class UserInfoManager extends AppCompatActivity {
     public String getUserId(){
         String userId = "";
         if(mCurrentUserProfile != null){
-            userId = mCurrentUserProfile.getUsrID();
+            userId = mCurrentUserProfile.getMemberUid();
         }
         return userId;
     }
     public String getUsername(){
         String username = "";
         if(mCurrentUserProfile != null){
-            username = mCurrentUserProfile.getUsername();
+            username = mCurrentUserProfile.getMemberUsername();
         }
         return username;
     }
 
     public void setUserName(String userName){
         if(mCurrentUserProfile != null){
-            mCurrentUserProfile.setUsername(userName);
+            mCurrentUserProfile.setMemberUsername(userName);
         }
     }
 
@@ -69,7 +68,7 @@ public class UserInfoManager extends AppCompatActivity {
         }
         return allow;
     }*/
-    /*public Map<String, String> startJsonUserLogin(final Context context, String username, String pswd, OnUserLoginFinishListener listener) throws JSONException {
+    /*public Map<String, String> startJsonUserLogin(final Context context, String usernameEditText, String pswd, OnUserLoginFinishListener listener) throws JSONException {
         VolleyHelper.volleyPOSTRequest(context, LOGIN_REQUEST_API_URL, new VolleyResultCallback() {
             @Override
             public void jsonResponse(JSONObject response) {
@@ -97,14 +96,14 @@ public class UserInfoManager extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("username", username);
-                params.put("password", pswd);
+                params.put("usernameEditText", usernameEditText);
+                params.put("pswdEditText", pswd);
                 params.put("authtoken",mAccessToken);
                 return params;
             }
         };
     }*/
-    public void jsonUserLogout(final OnUserLoginFinishListener listener) {
+    /*public void jsonUserLogout(final OnUserLoginFinishListener listener) {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, LOGIN_REQUEST_API_URL, null, new
                 Response.Listener<JSONObject>() {
                     @Override
@@ -120,7 +119,7 @@ public class UserInfoManager extends AppCompatActivity {
             }
         });
         VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(request);
-    }
+    }*/
 
     public interface OnUserLoginFinishListener {
         void OnUserLoginFinish(int RC);

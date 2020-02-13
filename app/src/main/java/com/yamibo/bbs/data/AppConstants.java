@@ -1,4 +1,4 @@
-package Utils;
+package com.yamibo.bbs.data;
 
 import android.app.Application;
 import android.media.audiofx.BassBoost;
@@ -8,7 +8,7 @@ public class AppConstants extends Application{
     //Shared Preferences Keys
     public static final String PREF_FILE_GLOBAL = "pref_file_global";
     public static final String PREF_KEY_USERNAME ="member_username";
-    public static final String PREF_KEY_PASSWORD = "password";
+    public static final String PREF_KEY_PASSWORD = "pswdEditText";
     public static final String PREF_KEY_USERNAME_PASSWORD ="";
     public static final String PREF_KEY_COOKIEPRE ="cookiepre";
     public static final String PREF_KEY_EMAIL ="email";

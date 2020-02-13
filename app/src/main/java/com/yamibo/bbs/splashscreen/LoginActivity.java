@@ -1,7 +1,6 @@
 package com.yamibo.bbs.splashscreen;
 
 import android.annotation.TargetApi;
-import android.app.Application;
 import android.app.LoaderManager;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -10,6 +9,7 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,86 +25,51 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.github.ybq.android.spinkit.style.FadingCircle;
-import com.yamibo.bbs.Fragments.ForumsFragment;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.yamibo.bbs.ViewModels.LoginViewModel;
+import com.yamibo.bbs.data.Model.LoginMod.LoginVariables;
+import com.yamibo.bbs.splashscreen.databinding.ActivityLoginBinding;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import Managers.SessionManager;
+import com.yamibo.bbs.data.AppConstants;
 
-import com.yamibo.bbs.ViewModels.LoginViewModel;
-import com.yamibo.bbs.data.Model.AuthMod;
-import com.yamibo.bbs.data.Model.LoginMod.LoginVariables;
-
-import Utils.AppConstants;
-import VolleyService.VolleySingleton;
-
-import static Utils.ApiConstants.LOGIN_REQUEST_API_URL;
-import static Utils.AppConstants.PREF_FILE_GLOBAL;
-import static Utils.AppConstants.PREF_KEY_AVATAR;
-import static Utils.AppConstants.PREF_KEY_GROUPID;
-import static Utils.AppConstants.PREF_KEY_LOGIN_TOKEN;
-import static Utils.AppConstants.PREF_KEY_NOTICES;
-import static Utils.AppConstants.PREF_KEY_PASSWORD;
-import static Utils.AppConstants.PREF_KEY_READ_AUTH;
-import static Utils.AppConstants.PREF_KEY_UID;
-import static Utils.AppConstants.PREF_KEY_USERNAME;
-import static Utils.AppConstants.PREF_KEY_USERNAME_PASSWORD;
+import static com.yamibo.bbs.data.AppConstants.PREF_FILE_GLOBAL;
+import static com.yamibo.bbs.data.AppConstants.PREF_KEY_PASSWORD;
+import static com.yamibo.bbs.data.AppConstants.PREF_KEY_USERNAME;
+import static com.yamibo.bbs.data.AppConstants.PREF_KEY_USERNAME_PASSWORD;
 
 public class LoginActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String LOG_TAG = LoginActivity.class.getSimpleName();
 
     private static final String PREF_FILE = AppConstants.PREF_FILE_GLOBAL;
 
-    private static SessionManager sessionMg;
-
-    private EditText mPswdEditText;
-    private TextView usrnameInput;
+    private SessionManager sessionMg;
 
     private LoginViewModel loginViewModel;
-    private List<LoginVariables> loggedInDataList=new ArrayList<>();
+    private ActivityLoginBinding loginBinding;
+    private List<LoginVariables> loggedInDataList = new ArrayList<>();
 
-    private Button forgotPswd, contactUs, loginBtn;
     private ProgressBar progressBar;
-    private View loginForm;
 
-    private static String username, pswd;
+    private String username, pswd;
     private SharedPreferences mPreference;
     private List<String> usernameList;
 
-    private static JSONObject jObj;
-
-    public static String ACCESS_TOKEN;
-    private static AuthMod.Auth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-
+        loginBinding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
 
         mPreference = getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE);
-        auth = new AuthMod.Auth();
 
         initContentView();
 
@@ -117,46 +82,38 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
 
     private void initContentView() {
         // Init the login form.
-        usrnameInput = (AutoCompleteTextView) findViewById(R.id.username);
-        contactUs = (Button) findViewById(R.id.contactBtn);
-        forgotPswd = (Button) findViewById(R.id.forgetPswdBtn);
-        mPswdEditText = (EditText) findViewById(R.id.password);
+        username = loginBinding.usernameEditText.getText().toString();
+        pswd = loginBinding.pswdEditText.getText().toString();
 
-        username = usrnameInput.getText().toString();
-        pswd = mPswdEditText.getText().toString();
-
-        mPswdEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        loginBinding.pswdEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-                    userLogin();
                     return true;
                 }
                 return false;
             }
         });
 
-        loginForm = findViewById(R.id.login_form);
         progressBar = findViewById(R.id.login_loader);
 
         //Session manager and login
-        sessionMg = new SessionManager(getApplicationContext(),PREF_FILE_GLOBAL);
-        loginBtn = (Button) findViewById(R.id.loginBtn);
+        sessionMg = new SessionManager(getApplicationContext(), PREF_FILE_GLOBAL);
         setBtnOnClicks();
         updateContentView();
     }
 
     private void updateContentView() {
-        //Declaration and initialization the username and password sharePreferences
-        String username = mPreference.getString(PREF_KEY_USERNAME, "");
-        String password = mPreference.getString(PREF_KEY_PASSWORD, "");
+        //Declaration and initialization the usernameEditText and pswdEditText sharePreferences
+        String username = mPreference.getString(PREF_KEY_USERNAME, loginBinding.usernameEditText.getText().toString());
+        String password = mPreference.getString(PREF_KEY_PASSWORD, loginBinding.pswdEditText.getText().toString());
         int storedUsernamePasssword = mPreference.getInt(PREF_KEY_USERNAME_PASSWORD, -1);
 
         //Assign the input field value from sharePreferences
         if (!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)) {
-            usrnameInput.setText(username);
+            loginBinding.usernameEditText.setText(username);
             if (storedUsernamePasssword > 0) {
-                mPswdEditText.setText(password);
+                loginBinding.pswdEditText.setText(password);
             } else {
 
             }
@@ -164,18 +121,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
         if (storedUsernamePasssword > 0) {
 
         }
-        mPswdEditText.addTextChangedListener(new TextWatcher() {
+        loginBinding.pswdEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 if (TextUtils.isEmpty(s)) {
-                    //show password
+                    //show pswdEditText
                 }
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (TextUtils.isEmpty(s)) {
-                    //hide password
+                    //hide pswdEditText
                 }
                 //mPasswordClearButton.setVisibility((TextUtils.isEmpty(mPasswordInput.getText())) ? View.INVISIBLE : View.VISIBLE)
             }
@@ -189,37 +146,37 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
 
     private boolean attemptLogin() {
         // Reset errors.
-        usrnameInput.setError(null);
-        mPswdEditText.setError(null);
+        loginBinding.usernameEditText.setError(null);
+        loginBinding.pswdEditText.setError(null);
 
         // Store values at the time of the login attempt.
-        username = usrnameInput.getText().toString();
-        pswd = mPswdEditText.getText().toString();
+        username = loginBinding.usernameEditText.getText().toString();
+        pswd = loginBinding.pswdEditText.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid password, if the user entered one.
+        // Check for a valid pswdEditText, if the user entered one.
         if (!TextUtils.isEmpty(pswd) && !isPasswordValid(pswd)) {
-            mPswdEditText.setError(getString(R.string.error_invalid_password));
-            focusView = mPswdEditText;
+            loginBinding.pswdEditText.setError(getString(R.string.error_invalid_password));
+            focusView = loginBinding.pswdEditText;
             return cancel = true;
 
         } else if (TextUtils.isEmpty(pswd)) {
-            mPswdEditText.setError(getString(R.string.error_empty_password));
-            focusView = mPswdEditText;
+            loginBinding.pswdEditText.setError(getString(R.string.error_empty_password));
+            focusView = loginBinding.pswdEditText;
             return cancel = true;
         }
 
-        // Check for a valid username.
+        // Check for a valid usernameEditText.
         if (TextUtils.isEmpty(username)) {
-            usrnameInput.setError(getString(R.string.error_field_required));
-            focusView = usrnameInput;
+            loginBinding.usernameEditText.setError(getString(R.string.error_field_required));
+            focusView = loginBinding.usernameEditText;
             cancel = true;
             return false;
         } else if (!isUsernameValid(username)) {
-            usrnameInput.setError(getString(R.string.invalid_username));
-            focusView = usrnameInput;
+            loginBinding.usernameEditText.setError(getString(R.string.invalid_username));
+            focusView = loginBinding.usernameEditText;
             cancel = true;
             return false;
         }
@@ -231,7 +188,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            userLogin();
             return cancel = false;
         }
         return cancel;
@@ -249,16 +205,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
     }
 
     private void setBtnOnClicks() {
-        loginBtn.setOnClickListener(new OnClickListener() {
+        loginBinding.loginButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Check for empty data in the form
-                attemptLogin();
-                if (!attemptLogin()) {//if cancel=false
-                    startActivity(new Intent(LoginActivity.this,
-                            MainNavTabActivity.class));
-                    finish();
-                }
+                userLogin();
+                startActivity(new Intent(LoginActivity.this, MainNavTabActivity.class));
+                finish();
                 /*progressBar.setVisibility(View.VISIBLE);
                 progressBar.setIndeterminateDrawable(new FadingCircle());*/
             }
@@ -289,7 +242,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
         progressBar.setVisibility(View.GONE);
     }
 
-    /*Add Email and username to autocompleteTextView*/
+    /*Add Email and usernameEditText to autocompleteTextView*/
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
@@ -311,9 +264,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
     @Override
     protected void onDestroy() {
         progressBar.setVisibility(View.GONE);
-        loginBtn.setOnClickListener(null);
-        forgotPswd.setOnClickListener(null);
-        contactUs.setOnClickListener(null);
+        loginBinding.loginButton.setOnClickListener(null);
+        loginBinding.forgetPswdBtn.setOnClickListener(null);
+        loginBinding.contactBtn.setOnClickListener(null);
         super.onDestroy();
     }
 
@@ -350,11 +303,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
     public void onLoaderReset(android.content.Loader<Cursor> loader) {
     }
 
-    private void userLogin(){
-        loginViewModel.getLoggedInData(username,pswd).observe(this, new Observer<List<LoginVariables>>() {
+    private void userLogin() {
+        loginViewModel.getLoggedInData(username, pswd).observe(this, new Observer<List<LoginVariables>>() {
             @Override
             public void onChanged(@Nullable List<LoginVariables> loginVariables) {
-                loggedInDataList.addAll(loginVariables);
+                if (attemptLogin() == false) {//cancel = false
+                    loggedInDataList.addAll(loginVariables);
+
+                }
             }
         });
     }

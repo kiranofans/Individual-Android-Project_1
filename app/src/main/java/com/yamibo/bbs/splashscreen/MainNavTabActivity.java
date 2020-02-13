@@ -36,11 +36,10 @@ import java.util.HashMap;
 
 import Managers.HitsManager;
 import Managers.SessionManager;
-import Utils.AppConstants;
-import Utils.Login.LoggedInMode;
+import com.yamibo.bbs.data.AppConstants;
 
-import static Utils.AppConstants.PREF_KEY_AVATAR;
-import static Utils.AppConstants.PREF_KEY_USERNAME;
+import static com.yamibo.bbs.data.AppConstants.PREF_KEY_AVATAR;
+import static com.yamibo.bbs.data.AppConstants.PREF_KEY_USERNAME;
 
 public class MainNavTabActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener, AccountFragment.OnFragmentInteractionListener,
@@ -92,7 +91,7 @@ public class MainNavTabActivity extends AppCompatActivity implements
         vpRecView.setLayoutManager(new LinearLayoutManager(this));
         imgVp = (ViewPager) findViewById(R.id.imgViewPager);
 
-        hitsMgr.getHitsData(MainNavTabActivity.this, vpRecView, imgVp);
+        //hitsMgr.getHitsData(MainNavTabActivity.this, vpRecView, imgVp);
 
         //Drawer and collapsable toolbar
         setCollapsedBarMain();
@@ -179,7 +178,7 @@ public class MainNavTabActivity extends AppCompatActivity implements
         session = new SessionManager(MainNavTabActivity.this,
                 AppConstants.PREF_FILE_GLOBAL);
         if (session.isLoggedIn()) {
-            session.setUserLoggedIn(LoggedInMode.LOGGED_IN_MODE_SERVER);
+            //session.setUserLoggedIn(LoggedInMode.LOGGED_IN_MODE_SERVER);
             plsLogBtn.setVisibility(View.GONE);
             regBtn.setVisibility(View.GONE);
             tvOr.setVisibility(View.GONE);

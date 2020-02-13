@@ -1,29 +1,10 @@
 package Managers;
 
-import android.content.Context;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.RecyclerView;
-import android.widget.Toast;
-
-import com.android.volley.VolleyError;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import com.yamibo.bbs.Adapter.ImgViewPagerAdapter;
 import com.yamibo.bbs.Adapter.MyRecyclerAdapter;
 import com.yamibo.bbs.data.Model.Base_Items_Model;
-import com.yamibo.bbs.data.Model.HitsMod;
-import Utils.Utility;
-import VolleyService.VolleyHelper;
-import VolleyService.VolleyResultCallback;
 
-import static Utils.ApiConstants.FORUM_DAILY_HITS_URL;
-import static Utils.ApiConstants.IMG_BASE_URL;
+import java.util.List;
 
 public class HitsManager {
     private static volatile HitsManager hitsInstance;
@@ -47,7 +28,7 @@ public class HitsManager {
         return hitsInstance;
     }
 
-    public void getHitsData(final Context context,
+   /* public void getHitsData(final Context context,
                             final RecyclerView recView, final ViewPager imgVp){
         imgUrlList = new ArrayList<>();
         hitsList = new ArrayList<>();
@@ -94,5 +75,5 @@ public class HitsManager {
 
             }
         });
-    }
+    }*/
 }

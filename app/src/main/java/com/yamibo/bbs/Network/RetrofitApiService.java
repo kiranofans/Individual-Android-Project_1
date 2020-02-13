@@ -4,9 +4,7 @@ import com.yamibo.bbs.data.Model.ForumListMod.ForumListMod;
 import com.yamibo.bbs.data.Model.Variables;
 import com.yamibo.bbs.data.Model.LoginMod.LoginResponseMod;
 
-import Utils.ApiConstants;
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -15,10 +13,10 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
-import static Utils.ApiConstants.HEADER_COOKIE_AUTH;
+import static com.yamibo.bbs.Network.ApiConstants.HEADER_COOKIE_AUTH;
 
 public interface RetrofitApiService {
-    final String[] loginCredential = new String[]{"username", "password"};
+    final String[] loginCredential = new String[]{"usernameEditText", "pswdEditText"};
     final String FORUM_ADMIN_URL="api/mobile/index.php?";
 
     String accessToken = "";
@@ -63,9 +61,10 @@ public interface RetrofitApiService {
                                        @Query("version") int version, @Query("module") String module);
 
     @GET(ApiConstants.MY_POSTS_API_URL)
-    Call<Variables> getUserPosts(@Query("username") String username, @Query("version") int version,
+    Call<Variables> getUserPosts(@Query("usernameEditText") String username, @Query("version") int version,
                                  @Query("module") String module, @Query("page")int pageNum);
 
+    @Headers({"Content-Transfer-Encoding:charset=gbk","Accept-Charset:gbk"})
     @FormUrlEncoded//module=login&loginsubmit=yes
     @POST(ApiConstants.LOGIN_REQUEST_API_URL)
     Call<LoginResponseMod> getUserLogin(@Field("username") String username, @Field("password") String password,
