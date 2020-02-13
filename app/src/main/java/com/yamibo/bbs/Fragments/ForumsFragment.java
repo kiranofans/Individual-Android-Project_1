@@ -51,7 +51,6 @@ public class ForumsFragment extends Fragment implements MyRecyclerAdapter.OnItem
     private SwipeRefreshLayout swiper;
 
     private MainNavTabActivity main = new MainNavTabActivity();
-    private static ApiResponsesMod apiResponses;
 
     private ForumsManager forumsMgr;
 

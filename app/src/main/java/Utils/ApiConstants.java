@@ -20,8 +20,9 @@ public class ApiConstants extends Application {
     //Forum names
     public static final String FORUMS_API_URL = BASE_URL + "api/mobile/index.php?version=4&module=forumindex";
     public static final String USER_PROFILE_API_URL = BASE_URL + "api/mobile/index.php?version=4&module=profile";
-    public static final String LOGIN_REQUEST_API_URL = BASE_URL + "api/mobile/index.php?module=login&loginsubmit=yes";
     public static final String MY_POSTS_API_URL = BASE_URL + "api/mobile/index.php?version=4&module=mythread&page=1";//my posts
+
+    public static final String LOGIN_REQUEST_API_URL = BASE_URL + "api/mobile/index.php?";
 
     public static final String JSON_CANCEL_OBJECT = "json_cancel_object";
 

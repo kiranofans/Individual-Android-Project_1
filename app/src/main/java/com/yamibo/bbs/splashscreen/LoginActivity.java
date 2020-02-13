@@ -1,7 +1,10 @@
 package com.yamibo.bbs.splashscreen;
 
 import android.annotation.TargetApi;
+import android.app.Application;
 import android.app.LoaderManager;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
@@ -11,6 +14,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -46,7 +50,11 @@ import java.util.List;
 import java.util.Map;
 
 import Managers.SessionManager;
+
+import com.yamibo.bbs.ViewModels.LoginViewModel;
 import com.yamibo.bbs.data.Model.AuthMod;
+import com.yamibo.bbs.data.Model.LoginMod.LoginVariables;
+
 import Utils.AppConstants;
 import VolleyService.VolleySingleton;
 
@@ -62,8 +70,9 @@ import static Utils.AppConstants.PREF_KEY_UID;
 import static Utils.AppConstants.PREF_KEY_USERNAME;
 import static Utils.AppConstants.PREF_KEY_USERNAME_PASSWORD;
 
-public class Activity_Login extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
-    private static final String LOG_TAG = Activity_Login.class.getSimpleName();
+public class LoginActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+    private static final String LOG_TAG = LoginActivity.class.getSimpleName();
+
     private static final String PREF_FILE = AppConstants.PREF_FILE_GLOBAL;
 
     private static SessionManager sessionMg;
@@ -71,9 +80,12 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
     private EditText mPswdEditText;
     private TextView usrnameInput;
 
+    private LoginViewModel loginViewModel;
+    private List<LoginVariables> loggedInDataList=new ArrayList<>();
+
     private Button forgotPswd, contactUs, loginBtn;
     private ProgressBar progressBar;
-    private static View loginForm;
+    private View loginForm;
 
     private static String username, pswd;
     private SharedPreferences mPreference;
@@ -88,6 +100,8 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
 
         mPreference = getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE);
         auth = new AuthMod.Auth();
@@ -241,7 +255,7 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
                 //Check for empty data in the form
                 attemptLogin();
                 if (!attemptLogin()) {//if cancel=false
-                    startActivity(new Intent(Activity_Login.this,
+                    startActivity(new Intent(LoginActivity.this,
                             MainNavTabActivity.class));
                     finish();
                 }
@@ -279,7 +293,7 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(Activity_Login.this,
+                new ArrayAdapter<>(LoginActivity.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
     }
 
@@ -336,82 +350,13 @@ public class Activity_Login extends AppCompatActivity implements LoaderManager.L
     public void onLoaderReset(android.content.Loader<Cursor> loader) {
     }
 
-    public void userLogin() {
-        auth = new AuthMod.Auth();
-        final StringRequest request = new StringRequest(Request.Method.POST, LOGIN_REQUEST_API_URL,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            jObj = new JSONObject(response);
-                            JSONObject loginMsg = jObj.getJSONObject("Message");
-                            String msgVal = loginMsg.getString("messageval");
-                            String msgTr = loginMsg.getString("messagestr");
-                            if (msgVal.equals("login_succeed")) {
-                                JSONObject varObj = jObj.getJSONObject("Variables");
-                                JSONObject notice = varObj.getJSONObject("notice");
-                                Iterator<String> iter = notice.keys();
-
-                                String avatarUrl = varObj.getString("member_avatar");
-                                String userName = varObj.getString("member_username");
-                                String uid = varObj.getString("member_uid");
-                                String groupId = varObj.getString("groupid");
-                                String readAuth = varObj.getString("readaccess");
-
-                                //Loop through the notice JSONObjects
-                                String notices = "";
-                                while (iter.hasNext()) {
-                                    String key = iter.next();
-                                    notices = notice.getString(key);
-                                }
-                                auth.setAccessToken(varObj.getString("auth"));
-                                if (varObj.getString("auth") != null) {
-                                    ACCESS_TOKEN = auth.getAccessToken();
-                                    Toast.makeText(Activity_Login.this,
-                                            msgTr, Toast.LENGTH_SHORT).show();
-                                    Intent signInIntent = new Intent(Activity_Login.this, ForumsFragment.class);
-                                    Bundle mBundle = new Bundle();
-                                    mBundle.putString(PREF_KEY_LOGIN_TOKEN, ACCESS_TOKEN);
-                                    mBundle.putString(PREF_KEY_READ_AUTH,readAuth);
-                                    mBundle.putString(PREF_KEY_AVATAR,avatarUrl);
-                                    mBundle.putString(PREF_KEY_USERNAME,userName);
-                                    mBundle.putString(PREF_KEY_GROUPID,groupId);
-                                    mBundle.putString(PREF_KEY_UID,uid);
-                                    mBundle.putString(PREF_KEY_NOTICES,notices);
-                                    signInIntent.putExtras(mBundle);
-
-                                    sessionMg.createLoginSession(true, ACCESS_TOKEN,
-                                            notices, groupId, avatarUrl, readAuth, userName, uid);
-                                }
-                            } else {
-                                Toast.makeText(Activity_Login.this,
-                                        msgTr, Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (JSONException je) {
-                            Log.d("JSON ERROR", je.getMessage());
-                        }
-                    }
-                }, new Response.ErrorListener() {
+    private void userLogin(){
+        loginViewModel.getLoggedInData(username,pswd).observe(this, new Observer<List<LoginVariables>>() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("Volley Error: ", error.getMessage()
-                        + "\nCause: "+error.getCause());
+            public void onChanged(@Nullable List<LoginVariables> loginVariables) {
+                loggedInDataList.addAll(loginVariables);
             }
-        }) {
-            @Override
-            public String getBodyContentType() {
-                return "application/x-www-form-urlencoded; charset=gbk";
-            }
-
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("username", username);
-                params.put("password", pswd);
-                return params;
-            }
-        };
-        VolleySingleton.getInstance(this).addToRequestQueue(request);
+        });
     }
 
     private interface ProfileQuery {

@@ -108,7 +108,7 @@ public class MainNavTabActivity extends AppCompatActivity implements
         //Fragments
         setTabsFragment(new TabsFragment());//init
         initChildFragments();
-       // getBasicUserInfo();
+        // getBasicUserInfo();
 
     }
 
@@ -250,7 +250,7 @@ public class MainNavTabActivity extends AppCompatActivity implements
         plsLogBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainNavTabActivity.this, Activity_Login.class));
+                startActivity(new Intent(MainNavTabActivity.this, LoginActivity.class));
             }
         });
         regBtn.setOnClickListener(new View.OnClickListener() {

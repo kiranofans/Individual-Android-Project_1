@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
+import com.google.gson.Gson;
+import com.yamibo.bbs.data.Model.LoginMod.LoginVariables;
+import com.yamibo.bbs.data.Model.UserProfileMod.UserProfileVariables;
 import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 
 import java.util.HashMap;
@@ -21,6 +24,7 @@ import static Utils.AppConstants.PREF_KEY_AVATAR;
 import static Utils.AppConstants.PREF_KEY_FIRST_TIME;
 import static Utils.AppConstants.PREF_KEY_GROUPID;
 import static Utils.AppConstants.PREF_KEY_LOGGED_IN_MODE;
+import static Utils.AppConstants.PREF_KEY_LOGIN;
 import static Utils.AppConstants.PREF_KEY_LOGIN_TOKEN;
 import static Utils.AppConstants.PREF_KEY_NOTICES;
 import static Utils.AppConstants.PREF_KEY_READ_AUTH;
@@ -39,6 +43,7 @@ public class SessionManager extends Application implements PrefsHelper {
     private static final String IS_KEY_LOGGED_IN = "login_succeed";
     private String defAvatarURL = "https://bbs.yamibo.com/uc_server/avatar.php?uid=330107&size=small";
 
+
     @Inject
     public SessionManager(@ApplicationContext Context context, @PreferenceInfo String prefFileName) {
         sharedPrefs = context.getSharedPreferences(prefFileName, Context.MODE_PRIVATE);
@@ -46,26 +51,24 @@ public class SessionManager extends Application implements PrefsHelper {
 
     }
 
-    public void createLoginSession(boolean isLoggedIn,
-                                   String authToken, String notice, String groupId,
-                                   String avatarUrl, String readAuth, String usrName, String uid) {
+    public void getUserInfo(UserProfileVariables userProfileMod){
+        sharedPrefs = _context.getSharedPreferences(SHARED_NAME, Context.MODE_PRIVATE);
+        editor = sharedPrefs.edit();
+        Gson gson = new Gson();
+        String userJson = gson.toJson(userProfileMod);
+        editor.putString(PREF_KEY_GROUPID, userJson);
+
+        editor.commit();
+    }
+    public void createLoginSession(boolean isLoggedIn, LoginVariables loginMod) {
         sharedPrefs = _context.getSharedPreferences(SHARED_NAME, Context.MODE_PRIVATE);
 
         editor = sharedPrefs.edit();
+        Gson gson = new Gson();
+        String logingJson = gson.toJson(loginMod);
 
-        //Storing login (state) value as TRUE
         editor.putBoolean(IS_KEY_LOGGED_IN, true);
-        String[] noticeArr = {"newmypost", "newpm", "newprompt", "newpush"};
-        for (int i = 0; i < noticeArr.length; i++) {
-            editor.putString(PREF_KEY_NOTICES, sharedPrefs.getString(noticeArr[i], notice));
-        }
-        editor.putString(PREF_KEY_AVATAR, avatarUrl);
-        editor.putString(PREF_KEY_GROUPID, groupId);
-        editor.putString(PREF_KEY_READ_AUTH, readAuth);
-        editor.putString(PREF_KEY_USERNAME, usrName);
-        editor.putString(PREF_KEY_UID, uid);
-        editor.putString(PREF_KEY_LOGIN_TOKEN, authToken);
-        editor.putString(PREF_KEY_NOTICES, notice);
+        editor.putString(PREF_KEY_LOGIN, logingJson);
 
         editor.commit();
     }

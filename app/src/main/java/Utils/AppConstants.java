@@ -38,7 +38,10 @@ public class AppConstants extends Application{
     public static final int USER_PERMISSION_LEVEL_8 = 8;
     public static final int USER_PERMISSION_LEVEL_9 = 9;
 
+    //Preferences keys
     public static final String KEY_EXTRA_FORUMS_THREAD="EXTRA_FORUMS_THREAD";
+    public static final String PREF_KEY_LOGIN = "PREF_KEY_LOGIN";
+    public static final String PREF_KEY_USER_INFO = "PREF_KEY_USER_INFO";
 
     public static final SparseArray<boolean[]> USER_PERMISSION_ACCESS_MAP = new SparseArray<>();
 

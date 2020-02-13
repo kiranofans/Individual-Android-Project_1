@@ -17,7 +17,7 @@
         android:label="Yamibo"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/NoActionBarTheme">
         <activity
             android:name="com.yamibo.bbs.splashscreen.SplashScreenActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -31,7 +31,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.yamibo.bbs.splashscreen.Activity_Login"
+            android:name="com.yamibo.bbs.splashscreen.LoginActivity"
             android:label="@string/title_activity_login"
             android:launchMode="singleTop"
             android:windowSoftInputMode="adjustPan">
@@ -47,10 +47,11 @@
         <activity
             android:name="com.yamibo.bbs.splashscreen.MainNavTabActivity"
             android:label="Yamibo"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/NoActionBarTheme" />
         <activity android:name="com.yamibo.bbs.splashscreen.AccountRegistPage" />
         <activity
             android:name="com.yamibo.bbs.splashscreen.PostActivity"
+            android:theme="@style/AppTheme"
             android:label="百合會帖子">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />

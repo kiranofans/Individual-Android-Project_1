@@ -21,7 +21,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         baseActivityBinding= DataBindingUtil.setContentView(this,R.layout.app_bar_layout);
 
-        configToolbar();
+        //configToolbar();
 
     }
 
@@ -38,8 +38,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     void setToolbarTitle(String title, String author, String date){
         getSupportActionBar().setTitle(title);
         getSupportActionBar().setSubtitle("Author: "+author+
-                " Publish At: "+date);
+                "   Publish At: "+date);
     }
+
     void configToolbar(){
         if(baseActivityBinding.baseToolbar!=null){
             setSupportActionBar(baseActivityBinding.baseToolbar);

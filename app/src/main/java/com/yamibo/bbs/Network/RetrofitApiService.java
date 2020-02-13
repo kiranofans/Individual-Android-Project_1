@@ -27,11 +27,7 @@ public interface RetrofitApiService {
     Call<ForumListMod> getAdminForumData(@Query("version") String version, @Query("module") String module,
                                          @Query("fid") String forumsId, @Query("sort")String sort,
                                          @Query("page") String pageNum);
-
-    @GET(ApiConstants.FORUM_ANIME_MANGA_URL)
-    Call<Variables> getAnimeMangaForum(@Query("version") int version, @Query("module") String module,
-                                       @Query("fid") String forumsId, @Query("page") String pageNum);
-
+/*
     @GET(ApiConstants.FORUM_CHATTING_URL)
     Call<Variables> getChattingForum(@Query("version") int version, @Query("module") String module,
                                      @Query("fid") String forumsId, @Query("page") String pageNum);
@@ -44,7 +40,7 @@ public interface RetrofitApiService {
     @GET(ApiConstants.FORUM_LITERATURE_URL)
     Call<Variables> getLiteratrueForum(@Header("Authorization") @Query("version") int version,
                                        @Query("module") String module, @Query("fid") String forumsId,
-                                       @Query("page") String pageNum);
+                                       @Query("page") String pageNum);*/
 
     @GET(ApiConstants.FORUM_DAILY_HITS_URL)
     Call<Variables> getDailyHits(@Query("version") int version, @Query("module") String module,
@@ -70,9 +66,9 @@ public interface RetrofitApiService {
     Call<Variables> getUserPosts(@Query("username") String username, @Query("version") int version,
                                  @Query("module") String module, @Query("page")int pageNum);
 
-    @FormUrlEncoded
+    @FormUrlEncoded//module=login&loginsubmit=yes
     @POST(ApiConstants.LOGIN_REQUEST_API_URL)
-    void loginAccount(@Field("username") String username,
-                      @Field("password") String password,
-                      Callback<LoginResponseMod> loginResult);
+    Call<LoginResponseMod> getUserLogin(@Field("username") String username, @Field("password") String password,
+                                        @Query("module") String module,@Query("loginsubmit")String loginSubmit,
+                                        @Query("version")String version);
 }

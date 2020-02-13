@@ -17,7 +17,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RepositoryAdminThread {
+public class AdminThreadRepository {
 
     private List<ForumThreadMod> threadList = new ArrayList<>();
 
@@ -25,7 +25,7 @@ public class RepositoryAdminThread {
             new MutableLiveData<>();
     private Application _application;
 
-    public RepositoryAdminThread(Application application){
+    public AdminThreadRepository(Application application){
         _application=application;
     }
     //Api call
@@ -42,9 +42,7 @@ public class RepositoryAdminThread {
                 Variables variablesObj = forumListMod.getVariables();
                 if(variablesObj!=null){
                     threadList=variablesObj.getForumThreadlist();
-
                     threadLiveData.setValue(threadList);
-
                 }
             }
 
