@@ -16,7 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.yamibo.bbs.Adapter.PostsRecyclerViewAdapter;
-import com.yamibo.bbs.ViewModels.ForumsViewModel;
+import com.yamibo.bbs.ViewModels.ForumContentViewModel;
 import com.yamibo.bbs.data.Model.ForumsContentMod.ForumThreadMod;
 import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 import com.yamibo.bbs.splashscreen.R;
@@ -30,7 +30,7 @@ public class AnimeDiscussFragment extends Fragment implements MyRecyclerAdapter.
     private final String TAG = AnimeDiscussFragment.class.getSimpleName();
 
     private static View v;
-    private ForumsViewModel animeViewModel;
+    private ForumContentViewModel animeViewModel;
     private FragmentPostsBinding animeBinding;
 
     private PostsRecyclerViewAdapter recyclerViewAdapter;
@@ -48,7 +48,7 @@ public class AnimeDiscussFragment extends Fragment implements MyRecyclerAdapter.
         animeBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_posts,container,false);
 
         //Set ViewModel
-        animeViewModel= ViewModelProviders.of(requireActivity()).get(ForumsViewModel.class);
+        animeViewModel= ViewModelProviders.of(requireActivity()).get(ForumContentViewModel.class);
 
         v=animeBinding.getRoot();
         return v;
@@ -58,17 +58,32 @@ public class AnimeDiscussFragment extends Fragment implements MyRecyclerAdapter.
     public void onViewCreated(View v, Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
 
+        initRecyclerView();
+        setDataObserver();
         getForumContentData(currentPageNum,ANIME_FORUM_ID);
         swipeToRefreshListener();
+        onScrollListener();
     }
 
-    private void setDataToRecView() {
+    private void initRecyclerView(){
         recyclerViewAdapter = new PostsRecyclerViewAdapter(v.getContext(), animeList);
 
         animeBinding.recyclerViewPost.setLayoutManager(new LinearLayoutManager(v.getContext()));
         animeBinding.recyclerViewPost.setItemAnimator(new DefaultItemAnimator());
         animeBinding.recyclerViewPost.setAdapter(recyclerViewAdapter);//set recView adapter
-
+    }
+    private void setDataObserver(){
+        animeViewModel.getForumLiveData().observe(this, new Observer<List<ForumThreadMod>>() {
+            @Override
+            public void onChanged(@Nullable List<ForumThreadMod> forumThreadMods) {
+                isLoading = false;
+                animeList.addAll(forumThreadMods);
+                animeBinding.swipeContainer.setRefreshing(false);
+                recyclerViewAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+    private void onScrollListener() {
         animeBinding.recyclerViewPost.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -99,21 +114,15 @@ public class AnimeDiscussFragment extends Fragment implements MyRecyclerAdapter.
     }
 
     private void getForumContentData(int pageNumber, String forumId) {
+        Log.d(TAG,"API called "+pageNumber);
         animeBinding.swipeContainer.setRefreshing(true);
-        animeViewModel.getForumThreads(forumId, pageNumber).observe(this, new Observer<List<ForumThreadMod>>() {
-            @Override
-            public void onChanged(@Nullable List<ForumThreadMod> forumThreadMods) {
-                isLoading = false;
-                animeList.addAll(forumThreadMods);
-                animeBinding.swipeContainer.setRefreshing(false);
-                setDataToRecView();
-            }
-        });
+        animeViewModel.getForumThreads(forumId,pageNumber);
     }
 
     private void swipeToRefreshListener() {
         animeBinding.swipeContainer.setOnRefreshListener(() -> {
             currentPageNum = 1;
+            recyclerViewAdapter.clearListItems();
             getForumContentData(currentPageNum, ANIME_FORUM_ID);
         });
     }

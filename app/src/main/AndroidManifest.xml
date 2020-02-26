@@ -40,7 +40,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.yamibo.bbs.splashscreen.Registration"
+            android:name="com.yamibo.bbs.splashscreen.RegistrationActivity"
             android:label="註冊"
             android:launchMode="singleTop"
             android:windowSoftInputMode="adjustPan"></activity>
@@ -50,7 +50,7 @@
             android:theme="@style/NoActionBarTheme" />
         <activity android:name="com.yamibo.bbs.splashscreen.AccountRegistPage" />
         <activity
-            android:name="com.yamibo.bbs.splashscreen.PostActivity"
+            android:name="com.yamibo.bbs.splashscreen.ThreadContentActivity"
             android:theme="@style/AppTheme"
             android:label="百合會帖子">
             <intent-filter>
@@ -62,7 +62,7 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity
-            android:name="com.yamibo.bbs.splashscreen.Activity_Profile"
+            android:name="com.yamibo.bbs.splashscreen.ProfileActivity"
             android:label="用戶資料" />
     </application>
 

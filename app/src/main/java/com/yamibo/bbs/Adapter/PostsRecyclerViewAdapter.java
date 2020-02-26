@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.yamibo.bbs.data.Model.ForumsContentMod.ForumThreadMod;
-import com.yamibo.bbs.splashscreen.PostActivity;
+import com.yamibo.bbs.splashscreen.ThreadContentActivity;
 import com.yamibo.bbs.splashscreen.R;
 import com.yamibo.bbs.splashscreen.databinding.ListItemsPostsBinding;
 
@@ -48,6 +48,11 @@ public class PostsRecyclerViewAdapter extends RecyclerView.Adapter<BaseViewHolde
         return adminThreadList.size();
     }
 
+    public void clearListItems(){
+        adminThreadList.clear();
+        notifyDataSetChanged();
+    }
+
     class ForumAdminHolder extends BaseViewHolder2<ForumThreadMod> {
 
         public ForumAdminHolder(ListItemsPostsBinding admBinding) {
@@ -73,7 +78,7 @@ public class PostsRecyclerViewAdapter extends RecyclerView.Adapter<BaseViewHolde
                 public void onClick(View v) {
                     int position = getAdapterPosition();
                     if(position!=RecyclerView.NO_POSITION){
-                        Intent postContentIntent = new Intent(_context, PostActivity.class);
+                        Intent postContentIntent = new Intent(_context, ThreadContentActivity.class);
                         postContentIntent.putExtra(KEY_EXTRA_FORUMS_THREAD,obj);
                         _context.startActivity(postContentIntent);
                     }

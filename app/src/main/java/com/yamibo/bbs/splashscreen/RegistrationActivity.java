@@ -7,8 +7,8 @@ import android.widget.EditText;
 
 import Managers.SessionManager;
 
-public class Registration extends AppCompatActivity {
-    private static final String TAG = Registration.class.getSimpleName();
+public class RegistrationActivity extends AppCompatActivity {
+    private static final String TAG = RegistrationActivity.class.getSimpleName();
 
     private EditText inputUserName;
     private EditText inputPassword;
@@ -29,7 +29,7 @@ public class Registration extends AppCompatActivity {
 
         if (session.isLoggedIn()) {
             //take the user to main activity
-            startActivity(new Intent(Registration.this, MainNavTabActivity.class));
+            startActivity(new Intent(RegistrationActivity.this, MainNavTabActivity.class));
             finish();
         }
     }

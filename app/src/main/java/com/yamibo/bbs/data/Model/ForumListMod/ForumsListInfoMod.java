@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 
 import com.yamibo.bbs.data.Model.Sublist;
 
-public class ForumListInfoMod {
+public class ForumsListInfoMod {
 
     @SerializedName("fid")
     @Expose

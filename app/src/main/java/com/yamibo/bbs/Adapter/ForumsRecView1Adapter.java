@@ -10,8 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yamibo.bbs.Fragments.AdminFragment;
-import com.yamibo.bbs.data.Model.ForumListMod.Catlist;
-import com.yamibo.bbs.data.Model.ForumListMod.ForumListInfoMod;
+import com.yamibo.bbs.data.Model.ForumListMod.ForumsListInfoMod;
 import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 import com.yamibo.bbs.splashscreen.R;
 
@@ -20,7 +19,7 @@ import java.util.List;
 public class ForumsRecView1Adapter extends RecyclerView.Adapter<ForumsRecView1Adapter.SingleViewHolder> implements View.OnClickListener{
     private Context context;
 
-    private List<ForumListInfoMod> itemsList;
+    private List<ForumsListInfoMod> itemsList;
     private OnItemClickListener listener;
 
     @Override
@@ -37,7 +36,7 @@ public class ForumsRecView1Adapter extends RecyclerView.Adapter<ForumsRecView1Ad
         this.listener = listener;
     }
 
-    public ForumsRecView1Adapter(Context _context, List<ForumListInfoMod> forumsList){
+    public ForumsRecView1Adapter(Context _context, List<ForumsListInfoMod> forumsList){
         this.context=_context;
         itemsList=forumsList;
     }
@@ -51,7 +50,7 @@ public class ForumsRecView1Adapter extends RecyclerView.Adapter<ForumsRecView1Ad
 
     @Override
     public void onBindViewHolder(@NonNull SingleViewHolder holder, int position) {
-        ForumListInfoMod forumsList=itemsList.get(position);
+        ForumsListInfoMod forumsList=itemsList.get(position);
 
         //Calling the txtViews
         holder.descriptTv.setText(forumsList.getDescription());

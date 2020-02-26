@@ -14,6 +14,7 @@ public abstract class BaseViewHolder<T> extends RecyclerView.ViewHolder {
     int sectionedPosition;
     String title;
     SparseArray<Base_Items_Model> sectionList;
+
     public BaseViewHolder(View itemView) {
         super(itemView);
     }

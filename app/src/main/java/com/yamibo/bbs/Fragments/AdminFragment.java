@@ -15,7 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.yamibo.bbs.Adapter.PostsRecyclerViewAdapter;
-import com.yamibo.bbs.ViewModels.ForumsViewModel;
+import com.yamibo.bbs.ViewModels.ForumContentViewModel;
 import com.yamibo.bbs.data.Model.ForumsContentMod.ForumThreadMod;
 import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 import com.yamibo.bbs.splashscreen.R;
@@ -25,13 +25,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AdminFragment extends Fragment {
-    private ForumsViewModel adminViewModel;
+    private ForumContentViewModel adminViewModel;
     private View v;
     private FragmentPostsBinding admBinding;
 
     private PostsRecyclerViewAdapter recAdp;
-    private List<ForumThreadMod> admList;
-    //private List<SectionRecycleViewAdapter.Sections> sections;
+    private List<ForumThreadMod> admList=new ArrayList<>();
 
     public AdminFragment() {/*Required empty public constructor*/}
 
@@ -45,7 +44,7 @@ public class AdminFragment extends Fragment {
         ((MainNavTabActivity) getActivity()).fragsCustomToolbar("管理版");
         admBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_posts, container,
                 false);
-        adminViewModel = ViewModelProviders.of(requireActivity()).get(ForumsViewModel.class);
+        adminViewModel = ViewModelProviders.of(requireActivity()).get(ForumContentViewModel.class);
         v = admBinding.getRoot();
 
         // Inflate the layout for this fragment
@@ -56,20 +55,18 @@ public class AdminFragment extends Fragment {
     public void onViewCreated(View v, Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
 
-        admList = new ArrayList<>();
-        //postMgr = PostContentsManager.getInstance();
-
-        getForumContentData(currentPageNum, ADMIN_FORUM_ID);
-        swipeToRefreshListener();
-    }
-
-    private void setRecyclerViewOnScrollListener() {
         recAdp = new PostsRecyclerViewAdapter(v.getContext(), admList);
-
         admBinding.recyclerViewPost.setLayoutManager(new LinearLayoutManager(v.getContext()));
         admBinding.recyclerViewPost.setItemAnimator(new DefaultItemAnimator());
         admBinding.recyclerViewPost.setAdapter(recAdp);//set recView adapter
 
+        setAdminObserver();
+        getForumContentData(currentPageNum,ADMIN_FORUM_ID);
+        swipeToRefreshListener();
+        onScrollListener();
+    }
+
+    private void onScrollListener() {
         admBinding.recyclerViewPost.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -101,20 +98,24 @@ public class AdminFragment extends Fragment {
     private void swipeToRefreshListener() {
         admBinding.swipeContainer.setOnRefreshListener(() -> {
             currentPageNum = 1;
+            recAdp.clearListItems();
             getForumContentData(currentPageNum, ADMIN_FORUM_ID);
         });
     }
 
-    private void getForumContentData(int pageNumber, String forumId) {
-        admBinding.swipeContainer.setRefreshing(true);
-        adminViewModel.getForumThreads(forumId, pageNumber).observe(this, new Observer<List<ForumThreadMod>>() {
+    private void setAdminObserver(){
+        adminViewModel.getForumLiveData().observe(this, new Observer<List<ForumThreadMod>>() {
             @Override
             public void onChanged(@Nullable List<ForumThreadMod> forumThreadMods) {
                 isLoading = false;
                 admList.addAll(forumThreadMods);
                 admBinding.swipeContainer.setRefreshing(false);
-                setRecyclerViewOnScrollListener();
+                recAdp.notifyDataSetChanged();
             }
         });
+    }
+    private void getForumContentData(int pageNumber, String forumId) {
+        admBinding.swipeContainer.setRefreshing(true);
+        adminViewModel.getForumThreads(forumId,pageNumber);
     }
 }

@@ -15,7 +15,7 @@ import com.yamibo.bbs.splashscreen.databinding.AppBarLayoutBinding;
 
 import static com.yamibo.bbs.data.AppConstants.KEY_EXTRA_FORUMS_THREAD;
 
-public class PostActivity extends BaseActivity {
+public class ThreadContentActivity extends BaseActivity {
     private SearchView searchView;
     private CollapsingToolbarLayout collapseToolbar;
     private Toolbar postToolbar;

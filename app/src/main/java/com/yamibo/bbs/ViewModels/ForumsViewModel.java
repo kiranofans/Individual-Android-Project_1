@@ -2,29 +2,21 @@ package com.yamibo.bbs.ViewModels;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
-import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
 
-import java.util.List;
-
-import com.yamibo.bbs.data.Model.ForumListMod.ForumListMod;
-import com.yamibo.bbs.data.Model.ForumsContentMod.ForumThreadMod;
-import com.yamibo.bbs.data.Repositories.AdminThreadRepository;
-
-import retrofit2.Call;
+import com.yamibo.bbs.data.Model.ForumListMod.ForumsListInfoMod;
+import com.yamibo.bbs.data.Repositories.ForumsListRepository;
 
 public class ForumsViewModel extends AndroidViewModel {
-    private AdminThreadRepository threadRepo;
+    private final String TAG=ForumsViewModel.class.getSimpleName();
 
-    //Forums Variables class
-    private Call<ForumListMod> forumListCall;
+    private ForumsListRepository repo;
+
+    private MutableLiveData<ForumsListInfoMod> forumsListLiveData;
 
     public ForumsViewModel(@NonNull Application application) {
         super(application);
-        threadRepo = new AdminThreadRepository(application);
-
-    }
-    public LiveData<List<ForumThreadMod>> getForumThreads(String forumsId, int threadPageNum){
-        return threadRepo.getThreadLiveData(forumListCall,threadPageNum,forumsId);
+        repo=new ForumsListRepository(application);
     }
 }

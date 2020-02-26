@@ -1,6 +1,6 @@
 package com.yamibo.bbs.Network;
 
-import com.yamibo.bbs.data.Model.ForumListMod.ForumListMod;
+import com.yamibo.bbs.data.Model.ForumListMod.ForumsListMod;
 import com.yamibo.bbs.data.Model.Variables;
 import com.yamibo.bbs.data.Model.LoginMod.LoginResponseMod;
 
@@ -22,23 +22,9 @@ public interface RetrofitApiService {
     String accessToken = "";
 
     @GET(FORUM_ADMIN_URL)
-    Call<ForumListMod> getAdminForumData(@Query("version") String version, @Query("module") String module,
-                                         @Query("fid") String forumsId, @Query("sort")String sort,
-                                         @Query("page") String pageNum);
-/*
-    @GET(ApiConstants.FORUM_CHATTING_URL)
-    Call<Variables> getChattingForum(@Query("version") int version, @Query("module") String module,
-                                     @Query("fid") String forumsId, @Query("page") String pageNum);
-
-    @GET(ApiConstants.FORUM_VIDEO_GAME_URL)
-    Call<Variables> getVideoGameForum(@Header("Authorization") String authorization,
-                                      @Query("version") int version, @Query("module") String module,
-                                      @Query("fid") String forumsId, @Query("page") String pageNum);
-
-    @GET(ApiConstants.FORUM_LITERATURE_URL)
-    Call<Variables> getLiteratrueForum(@Header("Authorization") @Query("version") int version,
-                                       @Query("module") String module, @Query("fid") String forumsId,
-                                       @Query("page") String pageNum);*/
+    Call<ForumsListMod> getThreadsData(@Query("version") String version, @Query("module") String module,
+                                       @Query("fid") String forumsId, @Query("sort")String sort,
+                                       @Query("page") String pageNum);
 
     @GET(ApiConstants.FORUM_DAILY_HITS_URL)
     Call<Variables> getDailyHits(@Query("version") int version, @Query("module") String module,
@@ -52,8 +38,7 @@ public interface RetrofitApiService {
     //Put session token into authCookie
     @Headers("cookie:"+HEADER_COOKIE_AUTH+"="+accessToken)
     @POST(ApiConstants.FORUMS_API_URL)
-    Call<Variables> getAllForums(@Query("version") int version, @Query("module") String module,
-                                 @Query("fid") String forumsId, @Query("page") String pageNum);
+    Call<ForumsListMod> getAllForums(@Query("version") String version, @Query("module") String module);
 
     //Don't need "Authorization" header
     @GET(ApiConstants.USER_PROFILE_API_URL)

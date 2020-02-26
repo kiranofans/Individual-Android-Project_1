@@ -5,14 +5,14 @@ import android.content.Context;
 import java.util.List;
 
 import com.yamibo.bbs.Adapter.MyRecyclerAdapter;
-import com.yamibo.bbs.data.Model.ForumListMod.ForumListInfoMod;
+import com.yamibo.bbs.data.Model.ForumListMod.ForumsListInfoMod;
 
 public class ForumsManager {
     private static ForumsManager forumsInstance;
 
     private Context context;
 
-    private List<ForumListInfoMod> forumsList, forumsList_1;
+    private List<ForumsListInfoMod> forumsList, forumsList_1;
 
     private MyRecyclerAdapter recAdp, recycleAdp_1;
 
@@ -68,7 +68,7 @@ public class ForumsManager {
         });
     }*/
 
-    private void forumsFiltering(String fid, ForumListInfoMod forumsListItem) {
+    private void forumsFiltering(String fid, ForumsListInfoMod forumsListItem) {
         if (fid.equals("16")) {
             forumsList.add(forumsListItem);
         } else {
