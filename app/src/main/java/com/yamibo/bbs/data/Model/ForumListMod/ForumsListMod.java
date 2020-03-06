@@ -16,6 +16,10 @@ public class ForumsListMod {
     private String charset;
     @SerializedName("Variables")
     @Expose
+    private ForumsVariables forumsVariables;
+
+    @SerializedName("Variables")
+    @Expose
     private Variables variables;
 
     public String getVersion() {
@@ -34,12 +38,16 @@ public class ForumsListMod {
         this.charset = charset;
     }
 
-    public Variables getVariables() {
-        return variables;
+    public ForumsVariables getForumsVariables() {
+        return forumsVariables;
     }
 
+    public void setForumsVariables(ForumsVariables forumsVariables) {
+        this.forumsVariables = forumsVariables;
+    }
+
+    public Variables getVariables(){return variables;}
     public void setVariables(Variables variables) {
         this.variables = variables;
     }
-
 }

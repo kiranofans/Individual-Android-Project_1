@@ -10,6 +10,7 @@ import com.yamibo.bbs.ViewModels.ForumContentViewModel;
 import com.yamibo.bbs.data.Model.ForumListMod.CatlistMod;
 import com.yamibo.bbs.data.Model.ForumListMod.ForumsListInfoMod;
 import com.yamibo.bbs.data.Model.ForumListMod.ForumsListMod;
+import com.yamibo.bbs.data.Model.ForumListMod.ForumsVariables;
 import com.yamibo.bbs.data.Model.Variables;
 import com.yamibo.bbs.data.OnDataReceivedCallback;
 
@@ -23,13 +24,13 @@ public class ForumsListRepository {
     private final String TAG = ForumContentViewModel.class.getSimpleName();
 
     private Application _application;
-    private MutableLiveData<ForumsListInfoMod> forumsListLiveData = new MutableLiveData<>();
+    private MutableLiveData<List<ForumsListInfoMod>> forumsListLiveData = new MutableLiveData<>();
 
     public ForumsListRepository(Application application){
         _application=application;
     }
 
-    public MutableLiveData<List<CatlistMod>> getForumsListLiveData(Call<Variables> forumsListCall,
+    public MutableLiveData<List<ForumsListInfoMod>> getForumsListLiveData(Call<ForumsListMod> forumsListCall,
                                                                    int pageNum,
                                                                    OnDataReceivedCallback dataCallback){
         RetrofitApiService apiService = RetrofitClient.getRetrofitService();
@@ -38,10 +39,13 @@ public class ForumsListRepository {
             @Override
             public void onResponse(Call<ForumsListMod> call, Response<ForumsListMod> response) {
                 ForumsListMod forumsListMod = response.body();
-                Variables forumsVar = forumsListMod.getVariables();
+
+                ForumsVariables forumsVar = forumsListMod.getForumsVariables();
+               List<ForumsListInfoMod> listInfoMod=forumsVar.getForumlist();
+
                 if(forumsVar!=null){
                     Log.d(TAG,"onResponse");
-                    dataCallback.onForumsListDataReceived(forumsVar.);
+                    dataCallback.onForumsListDataReceived(listInfoMod);
                 }
             }
 
@@ -50,5 +54,6 @@ public class ForumsListRepository {
 
             }
         });
+        return forumsListLiveData;
     }
 }
