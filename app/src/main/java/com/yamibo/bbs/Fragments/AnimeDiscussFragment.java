@@ -15,18 +15,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.yamibo.bbs.Adapter.ForumsRecyclerViewAdapter;
 import com.yamibo.bbs.Adapter.PostsRecyclerViewAdapter;
 import com.yamibo.bbs.ViewModels.ForumContentViewModel;
 import com.yamibo.bbs.data.Model.ForumsContentMod.ForumThreadMod;
 import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 import com.yamibo.bbs.splashscreen.R;
-import com.yamibo.bbs.Adapter.MyRecyclerAdapter;
 import com.yamibo.bbs.splashscreen.databinding.FragmentPostsBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AnimeDiscussFragment extends Fragment implements MyRecyclerAdapter.OnItemClickListener {
+public class AnimeDiscussFragment extends Fragment implements ForumsRecyclerViewAdapter.OnItemClickListener {
     private final String TAG = AnimeDiscussFragment.class.getSimpleName();
 
     private static View v;

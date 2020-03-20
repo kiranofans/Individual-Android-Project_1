@@ -7,12 +7,10 @@ import android.util.Log;
 import com.yamibo.bbs.Network.RetrofitApiService;
 import com.yamibo.bbs.Network.RetrofitClient;
 import com.yamibo.bbs.ViewModels.ForumContentViewModel;
-import com.yamibo.bbs.data.Model.ForumListMod.CatlistMod;
 import com.yamibo.bbs.data.Model.ForumListMod.ForumsListInfoMod;
 import com.yamibo.bbs.data.Model.ForumListMod.ForumsListMod;
 import com.yamibo.bbs.data.Model.ForumListMod.ForumsVariables;
-import com.yamibo.bbs.data.Model.Variables;
-import com.yamibo.bbs.data.OnDataReceivedCallback;
+import com.yamibo.bbs.data.OnForumsListDataReceivedCallback;
 
 import java.util.List;
 
@@ -31,8 +29,7 @@ public class ForumsListRepository {
     }
 
     public MutableLiveData<List<ForumsListInfoMod>> getForumsListLiveData(Call<ForumsListMod> forumsListCall,
-                                                                   int pageNum,
-                                                                   OnDataReceivedCallback dataCallback){
+                                                                          OnForumsListDataReceivedCallback dataCallback){
         RetrofitApiService apiService = RetrofitClient.getRetrofitService();
         forumsListCall=apiService.getAllForums("4","forumindex");
         forumsListCall.enqueue(new Callback<ForumsListMod>() {

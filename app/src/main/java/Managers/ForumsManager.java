@@ -4,7 +4,7 @@ import android.content.Context;
 
 import java.util.List;
 
-import com.yamibo.bbs.Adapter.MyRecyclerAdapter;
+import com.yamibo.bbs.Adapter.ForumsRecyclerViewAdapter;
 import com.yamibo.bbs.data.Model.ForumListMod.ForumsListInfoMod;
 
 public class ForumsManager {
@@ -14,7 +14,7 @@ public class ForumsManager {
 
     private List<ForumsListInfoMod> forumsList, forumsList_1;
 
-    private MyRecyclerAdapter recAdp, recycleAdp_1;
+    private ForumsRecyclerViewAdapter recAdp, recycleAdp_1;
 
     /*public ForumsManager(Context context){
         this.context = context;
@@ -48,7 +48,7 @@ public class ForumsManager {
                     recAdp = new ForumsRecView1Adapter(context, forumsList);
                     recView1.setAdapter(recAdp);
 
-                    recycleAdp_1 = new MyRecyclerAdapter(context, forumsList_1);
+                    recycleAdp_1 = new ForumsRecyclerViewAdapter(context, forumsList_1);
                     recycleAdp_1.setOnItemClickListener(ForumsFragment.this);
                     recView2.setAdapter(recycleAdp_1);
                 }catch (JSONException je){

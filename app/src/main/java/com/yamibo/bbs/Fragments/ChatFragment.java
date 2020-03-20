@@ -15,16 +15,12 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.SearchView;
 
-import com.android.volley.VolleyError;
 import com.yamibo.bbs.Adapter.ImgViewPagerAdapter;
-import com.yamibo.bbs.Adapter.MyRecyclerAdapter;
+import com.yamibo.bbs.Adapter.ForumsRecyclerViewAdapter;
 import com.yamibo.bbs.Adapter.SectionRecycleViewAdapter;
 import com.yamibo.bbs.data.Model.Base_Items_Model;
 import com.yamibo.bbs.splashscreen.MainNavTabActivity;
 import com.yamibo.bbs.splashscreen.R;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,12 +28,12 @@ import java.util.List;
 import static com.yamibo.bbs.Network.ApiConstants.MY_POSTS_API_URL;
 
 public class ChatFragment extends Fragment implements
-        MyRecyclerAdapter.OnItemClickListener {
+        ForumsRecyclerViewAdapter.OnItemClickListener {
     private static String LOG_TAG = ChatFragment.class.getSimpleName();
 
     private static View v;
     private static RecyclerView recyclerView;
-    private static MyRecyclerAdapter recycleAdp;
+    private static ForumsRecyclerViewAdapter recycleAdp;
     private static List<Base_Items_Model> chatList;
     private static SwipeRefreshLayout refreshSwiper;
     private static Handler handler = new Handler();
@@ -109,7 +105,7 @@ public class ChatFragment extends Fragment implements
 
                 secsList.add(new SectionRecycleViewAdapter.Sections(0, "全部主題"));
                 secsList.add(new SectionRecycleViewAdapter.Sections(4, "版塊主題"));
-                recycleAdp = new MyRecyclerAdapter(getContext(), chatList);
+                recycleAdp = new ForumsRecyclerViewAdapter(getContext(), chatList);
                 recycleAdp.setOnItemClickListener(ChatFragment.this);
                 SectionRecycleViewAdapter.Sections[] secArr = new SectionRecycleViewAdapter.Sections[secsList.size()];
                 SectionRecycleViewAdapter secAdp = new SectionRecycleViewAdapter(getContext(), R.layout.items_section,

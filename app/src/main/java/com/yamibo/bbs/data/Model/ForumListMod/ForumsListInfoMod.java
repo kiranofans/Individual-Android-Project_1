@@ -1,13 +1,15 @@
 
 package com.yamibo.bbs.data.Model.ForumListMod;
 
+import java.io.Serializable;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import com.yamibo.bbs.data.Model.Base_Items_Model;
 import com.yamibo.bbs.data.Model.Sublist;
 
-public class ForumsListInfoMod {
+public class ForumsListInfoMod implements Serializable {
 
     @SerializedName("fid")
     @Expose

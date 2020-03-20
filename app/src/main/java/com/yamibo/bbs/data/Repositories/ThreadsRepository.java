@@ -12,7 +12,7 @@ import com.yamibo.bbs.Network.RetrofitClient;
 import com.yamibo.bbs.data.Model.ForumListMod.ForumsListMod;
 import com.yamibo.bbs.data.Model.ForumsContentMod.ForumThreadMod;
 import com.yamibo.bbs.data.Model.Variables;
-import com.yamibo.bbs.data.OnDataReceivedCallback;
+import com.yamibo.bbs.data.OnThreadDataReceived;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,7 +32,7 @@ public class ThreadsRepository {
     //Api call
     public MutableLiveData<List<ForumThreadMod>> getThreadLiveData(Call<ForumsListMod> forumCall,
                                                                    int pageNum, String forumsId,
-                                                                   OnDataReceivedCallback callback){
+                                                                   OnThreadDataReceived callback){
         RetrofitApiService apiService = RetrofitClient.getRetrofitService();
         forumCall= apiService.getThreadsData("4","forumdisplay",forumsId,
                 "displayorder",pageNum+"");
@@ -46,7 +46,7 @@ public class ThreadsRepository {
                     //threadList=variablesObj.getForumThreadlist();
                     //threadLiveData.setValue(threadList);
                     Log.d(TAG,"onResponse: ");
-                    callback.onForumDataReceived(variablesObj.getForumThreadlist());
+                    callback.onThreadDataReceived(variablesObj.getForumThreadlist());
                 }
             }
 

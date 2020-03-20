@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.yamibo.bbs.Adapter.MyRecyclerAdapter;
+import com.yamibo.bbs.Adapter.ForumsRecyclerViewAdapter;
 import com.yamibo.bbs.Adapter.SectionRecycleViewAdapter;
 import com.yamibo.bbs.data.Model.Base_Items_Model;
 import com.yamibo.bbs.splashscreen.MainNavTabActivity;
@@ -24,10 +24,10 @@ import java.util.List;
  * {@link GalleryFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  */
-public class GalleryFragment extends Fragment implements MyRecyclerAdapter.OnItemClickListener {
+public class GalleryFragment extends Fragment implements ForumsRecyclerViewAdapter.OnItemClickListener {
     private OnFragmentInteractionListener mListener;
     private static RecyclerView recView;
-    private static MyRecyclerAdapter recViewAdp;
+    private static ForumsRecyclerViewAdapter recViewAdp;
     private static List<Base_Items_Model> picsList;
     private List<SectionRecycleViewAdapter.Sections> albumSecList;
     private String imgApiUrl = "https://pixabay.com/api/?key=5303976-fd6581ad4ac165d1b75cc15b3&q=kitten&image_type=photo&pretty=true";
@@ -107,7 +107,7 @@ public class GalleryFragment extends Fragment implements MyRecyclerAdapter.OnIte
                                 ImageMod imgs=new ImageMod(urls);
                                 picsList.add(imgs);
                             }
-                            recViewAdp=new MyRecyclerAdapter(getContext(),picsList);
+                            recViewAdp=new ForumsRecyclerViewAdapter(getContext(),picsList);
                             recView.setAdapter(recViewAdp);
                             Log.d("T","Pics Size: "+picsList.size());
                             Picasso.with(getContext()).setLoggingEnabled(true);

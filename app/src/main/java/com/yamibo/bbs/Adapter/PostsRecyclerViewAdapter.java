@@ -69,7 +69,7 @@ public class PostsRecyclerViewAdapter extends RecyclerView.Adapter<BaseViewHolde
             openPostContent(obj);
             if(getAdapterPosition()==0){
                 admRecViewBinding.threadTvSection.setVisibility(View.VISIBLE);
-                admRecViewBinding.threadTvSection.setText(_context.getString(R.string.forums_threads));
+                admRecViewBinding.threadTvSection.setText(_context.getString(R.string.forum_sec_title_trheads));
             }
         }
         private void openPostContent(ForumThreadMod obj){

@@ -6,7 +6,9 @@ import com.google.gson.annotations.SerializedName;
 
 import com.yamibo.bbs.data.Model.Variables;
 
-public class ForumsListMod {
+import java.io.Serializable;
+
+public class ForumsListMod implements Serializable {
 
     @SerializedName("Version")
     @Expose

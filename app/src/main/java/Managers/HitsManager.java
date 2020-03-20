@@ -1,7 +1,7 @@
 package Managers;
 
 import com.yamibo.bbs.Adapter.ImgViewPagerAdapter;
-import com.yamibo.bbs.Adapter.MyRecyclerAdapter;
+import com.yamibo.bbs.Adapter.ForumsRecyclerViewAdapter;
 import com.yamibo.bbs.data.Model.Base_Items_Model;
 
 import java.util.List;
@@ -12,7 +12,7 @@ public class HitsManager {
     private List<String> imgUrlList;
     private List<Base_Items_Model> hitsList;
 
-    private MyRecyclerAdapter vpRecAdp;
+    private ForumsRecyclerViewAdapter vpRecAdp;
     private ImgViewPagerAdapter vpAdp;
 
     private HitsManager(){
@@ -53,7 +53,7 @@ public class HitsManager {
                         HitsMod posts = new HitsMod(title, date, author);
                         hitsList.add(posts);
                     }
-                    vpRecAdp = new MyRecyclerAdapter(context, hitsList);
+                    vpRecAdp = new ForumsRecyclerViewAdapter(context, hitsList);
                     recView.setAdapter(vpRecAdp);
                     vpAdp = new ImgViewPagerAdapter(context, imgUrlList);
                     imgVp.setAdapter(vpAdp);
